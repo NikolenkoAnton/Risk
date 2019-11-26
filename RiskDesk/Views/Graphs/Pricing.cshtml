@@ -1,0 +1,474 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Pricing</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
+    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+    <meta name="author" content="Bootstrap Gallery" />
+
+    <link href="@Url.Content("~/csss/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/csss/wysi/bootstrap-wysihtml5.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/csss/alertify.core.css")" rel="stylesheet" id="toggleCSS">
+    <script type="text/javascript" src="@Url.Content("~/js/alertify.min.js")"></script>
+
+    <link href="@Url.Content("~/csss/new.css")" rel="stylesheet">
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!-- Color Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
+
+    <script src="@Url.Content("~/js/jquery-ui-v1.10.3.js")"></script>
+
+    <script src="@Url.Content("~/js/date-picker/date.js")"></script>
+    <script src="@Url.Content("~/js/date-picker/daterangepicker.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/General.js")"></script>
+
+    <link rel="stylesheet" href="@Url.Content("~/csss/AutoComplete.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/csss/deal/DealScreen.css")" />
+
+    <script src="@Url.Content("~/DealScreenV2/DateInputComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/DealComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/DealPartComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/SelectInputComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/EventsComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/RenderComponent.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script>
+
+    <style>
+         .dashboard-wrapper {
+            background-image:url("@Url.Content("~/Background.jpg")");
+        }
+        .inputNumber {
+            position: relative;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        .dashboard-wrapper {
+            min-height:800px;
+        }
+        .inputNumber input {
+            width: 45px;
+            height: 42px;
+            line-height: 1.65;
+            float: left;
+            display: block;
+            padding: 0;
+            margin: 0;
+            padding-left: 20px;
+            border: 1px solid #eee;
+        }
+
+            .inputNumber input:focus {
+                outline: 0;
+            }
+
+        .inputNumber-nav {
+            float: left;
+            position: relative;
+            height: 42px;
+        }
+
+        .inputNumber-button {
+            position: relative;
+            cursor: pointer;
+            border-left: 1px solid #eee;
+            width: 20px;
+            text-align: center;
+            color: #333;
+            font-size: 13px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+            line-height: 1.7;
+            -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            .inputNumber-button.inputNumber-up {
+                position: absolute;
+                height: 50%;
+                top: 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .inputNumber-button.inputNumber-down {
+                position: absolute;
+                bottom: -1px;
+                height: 50%;
+            }
+
+            
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .mainContainer {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+        }
+
+        .containerItem {
+            display: flex;
+        }
+
+        .containerChild {
+            height: 100px;
+            width: 30%;
+        }
+
+        .container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: separate;
+            /* Способ отображения границы */
+            width: 100%;
+            /* Ширина таблицы */
+            border-spacing: 7px 11px;
+            /* Расстояние между ячейками */
+        }
+
+        td {
+            padding: 5px;
+            /* Поля вокруг текста */
+            padding: 5px;
+            /* Поля вокруг текста */
+            border: 1px solid #5bc0de;
+            /* Граница вокруг ячеек */
+        }
+
+        #container {
+            max-height: 250px;
+        }
+
+        #PageNumber {
+            float: left;
+            font-size: 18px;
+        }
+
+        .container_butt_pagination {
+            text-align: right;
+        }
+
+        .button {
+            padding: 10px 16px;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        /* Safari */
+    </style>
+
+    <script>
+        const getRequestData = async (url) => {
+
+            const response = await fetch(`${window.location.origin}/${url}`);
+            return response.json();
+        }
+
+        function Initialize() {
+            $(function () {
+                //$("#DealDate").datepicker();
+                $("#StartDate").datepicker();
+                //$("#EndDate").datepicker();
+            });
+            // Initialize the city
+            try {
+                //tableInit();
+                AddHeader();
+                document.querySelector('#FirstColumn').classList = '';
+                document.querySelector('#ThirdColumn').classList = 'active';
+               
+            } catch (e) {
+            }
+        }
+    </script>
+
+    <style>
+        .dropdownFilter {
+        }
+
+        .filterTitle {
+            text-align: center;
+        }
+
+        .filterCell {
+            display: inline-block;
+            width: 24%;
+        }
+
+        .dateFilterContainer {
+            width: 100%;
+            display: block;
+        }
+
+        .graphsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: scroll;
+        }
+
+        .graphCell {
+            display: flex;
+            width: 100%;
+        }
+
+        graphs {
+            width: 30%;
+        }
+
+        .inputDateCell {
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+        }
+
+        .dateLabel {
+            display: block;
+        }
+
+        .dateFilterContainer {
+            text-align: center;
+        }
+
+        .containerChild > p {
+            display: block;
+        }
+
+        .containerChild div {
+            width: 80%;
+            text-align: center;
+            font-size: 1.2em;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .containerChild input {
+            width: 80%;
+            height: 50px;
+        }
+
+        .containerChild {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: flex-start;
+        }
+
+        #DealBoxes {
+            display: block;
+            width: 205%;
+        }
+
+        .notesContainer {
+            flex: 0.77;
+            height: 150px;
+        }
+
+        /*.dealRow:hover:nth-child(n+2) {
+            background-color: #83bbe5;
+            opacity: 0.5;
+        }*/
+
+        .DealWrapper {
+            height: 100px;
+            width: 50%;
+        }
+
+        .PartsWrapperWrapper {
+            width: 90%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .PartsWrapper {
+            height: 100px;
+            width: 50%;
+            overflow-y: auto;
+        }
+        /*.DealWrapper {
+            font-size:16px;
+            height:100px;
+            border:1px solid black;
+            overflow-y:scroll;
+            margin-bottom:70px;
+        }
+        .DealWrapper > .row {
+            text-align:center;
+            border-bottom:1px solid black;
+        }*/
+
+        .InputWrapper {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .left-sidebar:nth-child(3){
+            margin-top:-20px;
+        }
+
+        .InputLabel {
+            padding:6px 12px;
+            height:34px;
+            background-color:#3187bf;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .partsRow {
+            align-items: center;
+            border: 1px solid black;
+            display: flex;
+            height: 50px;
+        }
+
+        .partsRowHeaders {
+            width: 90%;
+        }
+
+
+        .PartInfoWrapper > .row {
+            margin: 0;
+        }
+
+        #Add {
+            position: relative;
+            left: 30px;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .idCont,
+        .nameCont,
+        .dateCont,
+        .radioCont {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 25%;
+            text-align: center;
+        }
+
+        .PartsWrapperWrapper {
+            flex-wrap: wrap;
+        }
+
+        .partsValues > .RiskPremiumCont {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .RiskValue {
+            width: 50%;
+            height: 100%;
+            border-right: 1px solid black;
+            display: flex;
+            /* text-align: center; */
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .addPartsButt {
+            margin-top: 53px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .dropHeader, .InputLabel {
+            color:white;
+        }
+        .btn {
+            width:150px;
+        }
+        .partWrapp {
+            max-width:715px;
+        }
+        #StartDate {
+            text-align:center;
+        }
+        .dropCell {
+            width:22%;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body onload="Initialize()">
+
+    <!-- Header Start -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="~/img/logo.png" alt="Logo" />
+        </a>
+       
+    </header>
+    <!-- Header End -->
+
+    <!-- Main Container start -->
+    
+        
+    <div class="container">
+            <!-- Top Nav Start -->
+            <div id='cssmenu'>
+                <ul id="MainUL"></ul>
+            </div>
+            <!-- Top Nav End -->
+            <!-- Sub Nav End -->
+             <div class="sub-nav hidden-sm hidden-xs">
+              
+               
+            </div>
+            <!-- Sub Nav End -->
+            <!-- Dashboard Wrapper Start -->
+            <div class="dashboard-wrapper">
+                <div class="row">
+                    <iframe width="933" height="700" src="https://app.powerbi.com/view?r=eyJrIjoiNmY5NGRhN2EtZWVhYS00ODFiLTkwN2QtNDZhNTVjNjA0ZTBhIiwidCI6IjI5N2IxMzQyLTVhNzktNDc5OS05MmMyLTAzNWEwZDhhNmM5YSIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+                </div>
+                </div>
+                </div>
+
+</body>
+</html>

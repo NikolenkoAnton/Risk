@@ -1,0 +1,129 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
+    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+    <meta name="author" content="Bootstrap Gallery" />
+    <link rel="shortcut icon" href="~/img/favicon.ico">
+
+    <script src="~/js/alertify.min.js"></script>
+    <link href="~/csss/bootstrap.min.css" rel="stylesheet"/>
+    <link href="~/csss/alertify.core.css" rel="stylesheet" />
+
+    <link href="~/csss/new.css" rel="stylesheet">
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+
+    <link href="~/fonts/font-awesome.min.css" rel="stylesheet">
+
+    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    </style>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'http://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-40304444-1', 'iamsrinu.com');
+        ga('send', 'pageview');
+
+        const validatePass = () => document.getElementById('Password1').value === document.getElementById('Password2').value;
+        const clear = (arrErr) => {
+           
+            getInputs().forEach(el => el.value = '');
+            arrErr.forEach(mess => alertify.error(mess));
+        }
+        const getInputs = () => [...document.querySelectorAll('input')].slice(0,5);
+
+        const validate = () => {
+
+            const arrErr = [];
+            getInputs().forEach(el => {
+                if (!el.value.length && el.type === 'text') arrErr.push(`${el.name} must be at least 1 character!`);
+                if (el.type === 'password' && !validatePass()) arrErr.push(`Password don't match!`);
+
+            });
+            arrErr.length ? clear(arrErr) : document.querySelector('form').submit();
+     }
+
+    </script>
+</head>
+
+<body>
+
+    <!-- Main Container start -->
+    <div class="dashboard-container">
+
+        <div class="container">
+
+            <!-- border: 1px solid #ccc; -->
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-md-offset-4">
+                    <div class="sign-in-container">
+                        <form class="login-wrapper" method="post" action="">
+                            <div class="header">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <h3>Register<img src="~/img/logo1.png" alt="Logo" class="pull-right"></h3>
+                                        <p>Fill out the form below to register.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <div class="form-group">
+                                    <label for="FirstName">First Name</label>
+                                    <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="LastName">Last Name</label>
+                                    <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="userName">User Name</label>
+                                    <input type="text" class="form-control" id="userName" name="UserName" placeholder="User Name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Email">Email</label>
+                                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Password1">Password</label>
+                                    <input type="password" class="form-control" id="Password1" name="Password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Password2">Repeat Password</label>
+                                    <input type="password" class="form-control" id="Password2" name="PasswordConfirm" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <input class="btn btn-danger" name="Login" onclick="validate()" value="Login">
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Row End -->
+
+        </div>
+    </div>
+    <!-- Main Container end -->
+
+   
+
+</body>
+</html>

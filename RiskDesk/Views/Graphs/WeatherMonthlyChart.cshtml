@@ -1,0 +1,377 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MonthlyChart</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
+    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+    <meta name="author" content="Bootstrap Gallery" />
+
+    <link href="@Url.Content("~/csss/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/csss/wysi/bootstrap-wysihtml5.css")" rel="stylesheet">
+    <!--Alert Scripts-->
+    <link href="@Url.Content("~/csss/alertify.core.css")" rel="stylesheet" id="toggleCSS">
+    <script type="text/javascript" src="@Url.Content("~/js/alertify.min.js")"></script>
+    <link href="@Url.Content("~/csss/GraphNav.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/csss/new.css")" rel="stylesheet">
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!-- Color Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+
+    <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
+
+    <!--Included Scripts-->
+    <!--AutoComplete Scripts-->
+    <link rel="stylesheet" href="@Url.Content("~/csss/AutoComplete.css")" />
+
+    <!--Normal Scripts-->
+
+
+    <script src="@Url.Content("~/js/jquery.js")"></script>
+    <!--AutoComplete New--
+    <!--Custom Java Script-->
+    <script src="@Url.Content("~/Scripts/General.js")"></script>
+    <!--<script type="text/javascript" src="Scripts/DealEntry.js"></script>
+    <script type="text/javascript" src="Scripts/Facility.js"></script>-->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script>
+    <!--<!--Links to Azure-->-->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Graphs/Main.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Graphs/WeatherMonthly.js")"></script>
+
+    <!--<![endif]-->-->
+    <style>
+         .dashboard-wrapper {
+            background-image:url("@Url.Content("~/Background.jpg")");
+        }
+        #graph1 {
+             background-image:url("@Url.Content("~/Background.jpg")");  
+              background:rgba(255,255,255,0.5);
+        }
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: separate; /* Способ отображения границы */
+            width: 100%; /* Ширина таблицы */
+            border-spacing: 7px 11px; /* Расстояние между ячейками */
+        }
+
+        td {
+            padding: 5px; /* Поля вокруг текста */
+            padding: 5px; /* Поля вокруг текста */
+            border: 1px solid #5bc0de; /* Граница вокруг ячеек */
+        }
+
+        #container {
+            max-height: 250px;
+        }
+
+        #PageNumber {
+            float: left;
+            font-size: 18px;
+        }
+
+        .container_butt_pagination {
+            text-align: right;
+        }
+
+        .butt_pagination {
+            font-size: 14px;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            padding: 4px 6px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        /* Safari */
+
+    </style>
+    <script>
+
+
+        function Initialize() {
+            // Initialize the city
+            try {
+                //tableInit();
+                AddHeader();
+                document.querySelector('#FirstColumn').classList = '';
+                document.querySelector('#ThirdColumn').classList = 'active';
+
+
+
+            }
+            catch (e) {
+                HeaderDataErrorReport(e);
+            }
+        }
+    </script>
+
+
+    <style>
+
+
+        .dropdownFilter {
+        }
+
+        .filterTitle {
+            text-align: center;
+        }
+
+        .filterCell {
+            display: inline-block;
+            width: 24%;
+        }
+
+        .graphsContainer {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+        }
+
+        .graphCell {
+            width: 100%;
+        }
+    </style>
+<link href="@Url.Content("~/jquery.multiselect.css")" rel="stylesheet" />
+<script src="@Url.Content("~/jquery.multiselect.js")"></script>
+</head>
+
+<body onload="Initialize()">
+
+    <!-- Header Start -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="~/img/logo.png" alt="Logo" />
+        </a>
+        <div class="pull-right">
+            <ul id="mini-nav" class="clearfix">
+                <li class="list-box"> Hello </li>
+                <li class="list-box hidden-xs">
+                    <a href="#" data-toggle="modal" data-target="#modalMd">
+                        <span class="text-white">Code</span> <i class="fa fa-code"></i>
+                    </a>
+
+                </li>
+                <li class="list-box dropdown">
+                    <a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-film"></i>
+                    </a>
+                    <span class="info-label info-bg">9+</span>
+                    <ul class="dropdown-menu stats-widget clearfix">
+                        <li>
+                            <h5 class="text-success">$37895</h5>
+                            <p>Revenue <span class="text-success">+2%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (success)</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h5 class="text-warning">47,892</h5>
+                            <p>Downloads <span class="text-warning">+39%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (warning)</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h5 class="text-danger">28214</h5>
+                            <p>Uploads <span class="text-danger">-7%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (danger)</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list-box dropdown">
+                    <a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-calendar"></i>
+                    </a>
+                    <span class="info-label success-bg">6</span>
+                    <ul class="dropdown-menu server-activity">
+                        <li>
+                            <p><i class="fa fa-flag text-info"></i> Pending request<span class="time">3 hrs</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-fire text-warning"></i> Server Crashed<span class="time">3mins</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-user text-success"></i> 3 New users<span class="time">1 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-bell text-danger"></i>9 pending requests<span class="time">5 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-plane text-info"></i> Performance<span class="time">25 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-envelope text-warning"></i>12 new emails<span class="time">25 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-cog icon-spin text-success"></i> Location settings<span class="time">4 hrs</span></p>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list-box user-profile">
+                    <a id="drop7" href="#" role="button" class="dropdown-toggle user-avtar" data-toggle="dropdown">
+                        <img src="~/img/user5.png" alt="Bluemoon User">
+                    </a>
+                    <ul class="dropdown-menu server-activity">
+                        <li>
+                            <p><i class="fa fa-cog text-info"></i> Account Settings</p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-fire text-warning"></i> Payment Details</p>
+                        </li>
+                        <li>
+                            <div class="demo-btn-group clearfix">
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-facebook fa-lg icon-rounded info-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-twitter fa-lg icon-rounded twitter-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-linkedin fa-lg icon-rounded linkedin-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-pinterest fa-lg icon-rounded danger-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-google-plus fa-lg icon-rounded success-bg"></i>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="demo-btn-group clearfix">
+                                <button href="#" class="btn btn-danger">
+                                    Logout
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <!-- Header End -->
+    <!-- Main Container start -->
+    <div class="dashboard-container">
+
+        <div class="container">
+            <!-- Top Nav Start -->
+            <div id='cssmenu'>
+                <ul id="MainUL"></ul>
+            </div>
+            <!-- Top Nav End -->
+            <!-- Sub Nav End -->
+            <div class="sub-nav hidden-sm hidden-xs">
+                <div id="navCont">
+                    <div>Graphs</div>
+                    <!-- <div><a href="aggregates">  Aggregates</a></div> -->
+                    <div><a href="monthly">  Standart Graphs</a></div>
+                    <div id="selected"><a href="WeatherMonthly">  Weather Monthly</a></div>
+                    <div><a href="WeatherHourly">  Weather Hourly</a></div>
+                    <div><a href="HourlyScalar">  Hourly Scalar</a></div>
+                    <div><a href="Risk">  Risk</a></div>
+                    <div><a href="Peak">  Peak Model</a></div>
+                    <div><a href="Mape">  MAPE</a></div>
+                    <!-- <div><a href="Deal">  Deal Entry Chart</a></div> -->
+                </div>
+                <div class="custom-search hidden-sm hidden-xs">
+                    <input type="text" class="search-query" placeholder="Search here ...">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            <!-- Sub Nav End -->
+            <!-- Dashboard Wrapper Start -->
+            <div class="dashboard-wrapper">
+                <!-- Left Sidebar Start -->
+                <div class="left-sidebar" id="graphSideBar">
+                    <!-- Row Start -->
+                    <div class="filterContainer">
+
+                        <div class="filterCell">
+                            <div class="filterTitle">Select Month</div>
+                            <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeMontlyDropdowns(this)">
+                            </select>
+                        </div>
+
+                        <div class="filterCell">
+                            <div class="filterTitle">Select Weather Scenario</div>
+                            <select id="FilterScenario" multiple="multiple" class="form-control dropdownFilter" onchange="changeMontlyDropdowns(this)">
+                              
+                            </select>
+                        </div>
+
+                        <div class="filterCell">
+                            <div class="filterTitle">Select Wholesale Block</div>
+                            <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" onchange="changeMontlyDropdowns(this)">
+                               
+                            </select>
+                        </div>
+                        <div class="filterCell">
+                            <div class="filterTitle">Select AccountID</div>
+                            <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeMontlyDropdowns(this)">
+                             
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="graphsContainer">
+
+                        <div class="graphCell">
+                            <div class="graphs" id="graph1"></div>
+
+                            <div class="table" id="table1"></div>
+
+                        </div>
+                        <div class="graphCell">
+                            <div class="graphs" id="graph2"></div>
+
+                            <div class="table" id="table2"></div>
+
+                        </div>
+                        <!-- Left Sidebar End -->
+                        <!-- Right Sidebar Start -->
+                        <!-- Right Sidebar End -->
+                    </div>
+
+                    <!-- Dashboard Wrapper End -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

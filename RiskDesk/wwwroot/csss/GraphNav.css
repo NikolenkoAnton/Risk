@@ -1,0 +1,145 @@
+﻿.dashboard-wrapper {
+    /* background-image: url("@Url.Content("~/Background.jpg")"); */
+}
+
+.filterTitle,
+.dateLabel {
+    font-weight: bold;
+    color: white;
+}
+
+#graph1 {
+    border: 5px solid black;
+    /* background-image: url("@Url.Content("~/Background.jpg")"); */
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#graph2 {
+    border: 5px solid black;
+    /* background-image: url("@Url.Content("~/Background.jpg")"); */
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#graph3 {
+    border: 5px solid black;
+    /* background-image: url("@Url.Content("~/Background.jpg")"); */
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#graph4 {
+    border: 5px solid black;
+    /* background-image: url("@Url.Content("~/Background.jpg")"); */
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.filterTitle {
+    text-align: center;
+    font-size: 14px;
+}
+
+.filterCell {
+    display: inline-block;
+    width: 30%;
+    max-width: 500px;
+    margin-right: 133px;
+}
+
+#cont {
+    font-size: 20px;
+    border-right: 1px solid #ddd;
+    width: 200px;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    /* 100% Full-height */
+    position: absolute;
+    /* Stay in place */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+}
+
+.graphsContainer>.graphCell {
+    width: max-content;
+}
+
+.left-sidebar>.filterContainer {}
+
+.left-sidebar>.filterContainer>.filterCell>select {
+    height: 60px;
+}
+
+.link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    border-radius: 3px 0 0 0;
+    border-bottom: none;
+}
+
+.link>a {
+    color: #428bca;
+    border-radius: 4px;
+    padding: 15px 10px 15px 10px;
+    text-decoration: none;
+}
+
+
+.link.curr a {
+    background-color: #5c584f;
+    color: black;
+}
+
+.link a:hover {
+    background-color: #d9d8d4;
+    color: #428bca;
+}
+
+.link.curr a:hover {
+    background-color: #5c584f;
+}
+
+#graphSideBar {}
+
+#navCont {
+    display: flex;
+}
+
+#navCont>#selected {
+    color: yellow;
+}
+
+#navCont>div:nth-child(n+2) {
+    color: white;
+    margin-right: 10px;
+    cursor: pointer;
+    padding-right: 4px;
+    font-size: 14px;
+}
+
+#navCont>div:last-child {
+    border-right: none;
+}
+
+#navCont>div:first-child {
+    color: white;
+    font-size: 18px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+#navCont>div>a {
+    color: white;
+}
+
+#navCont>#selected>a {
+    color: yellow;
+}

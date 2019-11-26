@@ -1,0 +1,609 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Risk Desk</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
+    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+    <meta name="author" content="Bootstrap Gallery" />
+
+    <link href="@Url.Content("~/csss/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/csss/wysi/bootstrap-wysihtml5.css")" rel="stylesheet">
+    <!--Alert Scripts-->
+    <link href="@Url.Content("~/csss/alertify.core.css")" rel="stylesheet" id="toggleCSS">
+    <script type="text/javascript" src="@Url.Content("~/js/alertify.min.js")"></script>
+
+    <link href="@Url.Content("~/csss/new.css")" rel="stylesheet">
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!-- Color Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+
+    <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
+
+    <!--Included Scripts-->
+    <!--AutoComplete Scripts-->
+    <link rel="stylesheet" href="@Url.Content("~/csss/AutoComplete.css")" />
+    <!--Normal Scripts-->
+
+
+
+    <script src="@Url.Content("~/js/jquery.js")"></script>
+    <script src="@Url.Content("~/js/jquery.datatables.js")"></script>
+    <script src="@Url.Content("~/js/jquery.scrollUp.js")"></script>
+    <!--AutoComplete New--
+    <!--Custom Java Script-->
+    <script src="@Url.Content("~/Scripts/General.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Customer.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/AutoComplete.js")"></script>
+    <!--<script type="text/javascript" src="Scripts/DealEntry.js"></script>
+    <script type="text/javascript" src="Scripts/Facility.js"></script>-->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script>
+    <script src="@Url.Content("~/Azure/azure-storage.blob.js")"></script>
+    <script src="@Url.Content("~/Azure/AzureGeneral.js")"></script>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: separate; /* Способ отображения границы */
+            width: 100%; /* Ширина таблицы */
+            border-spacing: 7px 11px; /* Расстояние между ячейками */
+        }
+
+        td {
+            padding: 5px; /* Поля вокруг текста */
+            padding: 5px; /* Поля вокруг текста */
+            border: 1px solid #5bc0de; /* Граница вокруг ячеек */
+        }
+
+        #container {
+            max-height: 250px;
+        }
+
+        #PageNumber {
+            float: left;
+            font-size: 18px;
+        }
+
+        .container_butt_pagination {
+            text-align: right;
+        }
+
+        .butt_pagination {
+            font-size: 14px;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            padding: 4px 6px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        /* Safari */
+
+    </style>
+    <script>
+        const linkToCustFacil = '/custfac/facilityupdate';
+        const linkText = 'Customer to facility';
+
+        function AddLinkOnCustFac() {
+            const linkList = document.querySelector('#SecondColumnFirstUL');
+
+            const li = document.createElement('li');
+
+            const a = document.createElement('a');
+            a.href = linkToCustFacil;
+            a.innerText = linkText;
+            li.appendChild(a);
+            linkList.prepend(li);
+        }
+        /*An array containing all the country names in the world:*/
+        var LoadProfiles = [];
+        var Facilities = [];
+        var FileNameUpload = "";
+        var oTable;
+        var oTableMatch;
+        var RandomNumber = "TEST";
+        function Initialize() {
+            // Initialize the city
+            try {
+                //tableInit();
+                AddHeader();
+                CreateBaseTable();
+                AddLinkOnCustFac();
+
+            }
+            catch (e) {
+                HeaderDataErrorReport(e);
+            }
+        }
+    </script>
+
+
+</head>
+
+<body onload="Initialize()">
+
+    <!-- Header Start -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="~/img/logo.png" alt="Logo" />
+        </a>
+        <div class="pull-right">
+            <ul id="mini-nav" class="clearfix">
+                <li class="list-box"> Hello </li>
+                <li class="list-box hidden-xs">
+                    <a href="#" data-toggle="modal" data-target="#modalMd">
+                        <span class="text-white">Code</span> <i class="fa fa-code"></i>
+                    </a>
+                    <!--Modal
+                    <div class="modal fade" id="modalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title text-danger" id="myModalLabel5">Coding Style </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="img/documentation.png" alt="Esquare Admin">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                </li>
+                <li class="list-box dropdown">
+                    <a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-film"></i>
+                    </a>
+                    <span class="info-label info-bg">9+</span>
+                    <ul class="dropdown-menu stats-widget clearfix">
+                        <li>
+                            <h5 class="text-success">$37895</h5>
+                            <p>Revenue <span class="text-success">+2%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (success)</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h5 class="text-warning">47,892</h5>
+                            <p>Downloads <span class="text-warning">+39%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (warning)</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <h5 class="text-danger">28214</h5>
+                            <p>Uploads <span class="text-danger">-7%</span></p>
+                            <div class="progress progress-mini">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (danger)</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list-box dropdown">
+                    <a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-calendar"></i>
+                    </a>
+                    <span class="info-label success-bg">6</span>
+                    <ul class="dropdown-menu server-activity">
+                        <li>
+                            <p><i class="fa fa-flag text-info"></i> Pending request<span class="time">3 hrs</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-fire text-warning"></i> Server Crashed<span class="time">3mins</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-user text-success"></i> 3 New users<span class="time">1 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-bell text-danger"></i>9 pending requests<span class="time">5 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-plane text-info"></i> Performance<span class="time">25 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-envelope text-warning"></i>12 new emails<span class="time">25 min</span></p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-cog icon-spin text-success"></i> Location settings<span class="time">4 hrs</span></p>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list-box user-profile">
+                    <a id="drop7" href="#" role="button" class="dropdown-toggle user-avtar" data-toggle="dropdown">
+                        <img src="~/img/user5.png" alt="Bluemoon User">
+                    </a>
+                    <ul class="dropdown-menu server-activity">
+                        <li>
+                            <p><i class="fa fa-cog text-info"></i> Account Settings</p>
+                        </li>
+                        <li>
+                            <p><i class="fa fa-fire text-warning"></i> Payment Details</p>
+                        </li>
+                        <li>
+                            <div class="demo-btn-group clearfix">
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-facebook fa-lg icon-rounded info-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-twitter fa-lg icon-rounded twitter-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-linkedin fa-lg icon-rounded linkedin-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-pinterest fa-lg icon-rounded danger-bg"></i>
+                                </a>
+                                <a href="#" data-original-title="" title="">
+                                    <i class="fa fa-google-plus fa-lg icon-rounded success-bg"></i>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="demo-btn-group clearfix">
+                                <button href="#" class="btn btn-danger">
+                                    Logout
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <!-- Header End -->
+    <!-- Main Container start -->
+    <div class="dashboard-container">
+
+        <div class="container">
+            <!-- Top Nav Start -->
+            <div id='cssmenu'>
+                <ul id="MainUL"></ul>
+            </div>
+            <!-- Top Nav End -->
+            <!-- Sub Nav End -->
+            <div class="sub-nav hidden-sm hidden-xs">
+                <ul>
+                    <li><a href="" class="heading">Account Uploader</a></li>  <!--Main Form for Data Entry-->
+                    <li class="hidden-sm hidden-xs">
+                        <a href="#RemoveAbleDiv_Cust">Table of Accounts</a>
+                    </li>
+                    <li class="hidden-sm hidden-xs">
+                        <a href="#">Upload of Accounts</a>
+                    </li>
+                    <!--<li class="hidden-sm hidden-xs">
+                      <a href="#inputs">Status of Upload</a>
+                    </li>-->
+                </ul>
+                <div class="custom-search hidden-sm hidden-xs">
+                    <input type="text" class="search-query" placeholder="Search here ...">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            <!-- Sub Nav End -->
+            <!-- Dashboard Wrapper Start -->
+            <div class="dashboard-wrapper">
+                <!-- Left Sidebar Start -->
+                <div class="left-sidebar">
+                    <!-- Row Start -->
+                    <div id="RemoveAbleDiv_Cust" class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <div class="title">
+                                        Files Imported<a id="dynamic-tables"></a>
+                                    </div>
+                                </div>
+                                <div id="dtExampleWidget" class="widget-body">
+                                    <div id="dt_example" class="example_alt_pagination">
+                                        <div id="container" class="container" style="overflow-x:auto">
+                                            <!--width:  "100%",overflow:  "scroll",class: "scrollTable" });-->
+
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                        <div class="container_butt_pagination">
+                                            <div id="PageNumber">
+
+                                            </div>
+                                            <button class="butt_pagination" onclick="updateRows()" id="updageRows">Update</button>
+                                            <button class="butt_pagination" onclick="getPrevPageData()" id="next_page">Prev</button>
+                                            <button class="butt_pagination" onclick="getNextPageData()" id="prev_page">Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Row End -->
+                        <!-- Row Start -->
+                        <div id="RemoveUploadDiv_Facility" class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <div class="title">
+                                            Upload Files<a id="dynamic-tables-facility-upload"></a>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="dtExampleWidget-2" class="widget-body">
+                                        <div id="dt_example-2" class="example_alt_pagination">
+                                            <div class="form-group">
+                                                <input type="file" id="files" value="test" multiple>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <select id="FileTypeSel" onchange="changeTableDropDown(this)" class="form-control">
+                                                    <option value="N/A">
+                                                        - File Type -
+                                                    </option>
+                                                    <option value="Facility">
+                                                        Facility
+                                                    </option>
+                                                    <option value="Monthly Usage">
+                                                        Monthly Usage
+                                                    </option>
+                                                    <option value="Interval Data">
+                                                        Interval Data
+                                                    </option>
+                                                    <option value="Customer">
+                                                        Customer
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <select id="LineLength" class="form-control">
+                                                    <option value="0">
+                                                        - Line Length -
+                                                    </option>
+                                                    <option value="1">
+                                                        First Line
+                                                    </option>
+                                                    <option value="2">
+                                                        Second Line
+                                                    </option>
+                                                    <option value="3">
+                                                        Third Line
+                                                    </option>
+                                                    <option value="4">
+                                                        Fourth Line
+                                                    </option>
+                                                    <option value="5">
+                                                        Fifth Line
+                                                    </option>
+                                                    <option value="6">
+                                                        Sixth Line
+                                                    </option>
+                                                    <option value="7">
+                                                        Seventh Line
+                                                    </option>
+                                                    <option value="8">
+                                                        Eighth Line
+                                                    </option>
+                                                    <option value="9">
+                                                        Ninth Line
+                                                    </option>
+                                                    <option value="10">
+                                                        Tenth Line
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            </br>
+                                            </br>
+                                            <div class="form-group">
+                                                <input type="button" id="upload-button" class="btn btn-primary btn-lg" value="Upload File" onclick="UploadFiles('ICECURVE')" />
+                                                <!--<input type="button" id="validate-button" value="Validate File" onclick="ValidateFile('ICECURVE')"-->
+                                                <input type="button" id="validate-button" class="btn btn-primary btn-lg" value="Import File Into Table" onclick="ImportGenericData()" />
+                                                <input type="button" id="validate-button" class="btn btn-primary btn-lg" value="Return Bad Rows" onclick="returnBadRows()" />
+                                                <input type="button" id="validate-button" class="btn btn-primary btn-lg" value="Insert data to base table" onclick="upsertDataToBaseTable()" />
+                                                <!--<input type="button" id="validate-button" class="btn btn-primary btn-lg" value="Set Spinner" onclick="SetSpinnerAmount()" />-->
+                                                <div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content" style="width: 48px">
+                                                            -->
+                                                            <span class="fa fa-spinner fa-spin fa-3x"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--<div>-->
+                                            <!--<div class="widget">-->
+                                            <!--</div>-->
+                                            <!--</div>-->
+                                            <div class="form-group">
+                                                <div> Uploaded Bytes: <font id="read"> </font> </div>
+                                                <div class="progress">
+                                                    <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                                        0%
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <div class="clearfix">
+                                            </div>
+                                            <div id="modelloader"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--********************************************************************-->
+                        <!--Validation and Display Portion of the Page-->
+                        <!--********************************************************************-->
+                        <div id="ListUpload_Files" class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="widget">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Row End -->
+                        <!--Bottom Of Left Side Bar-->
+                    </div>
+                    <!-- Left Sidebar End -->
+                    <!-- Right Sidebar Start -->
+                    <div class="right-sidebar">
+                        <div class="wrapper">
+                            <button class="btn btn-block btn-warning" type="button" onclick="CalcImportDate()">
+                                Import Date
+                            </button>
+                        </div>
+                        <div class="wrapper">
+                            <button class="btn btn-block btn-info" type="button" onclick="CalcUnitPrice()">
+                                Run Unit Price
+                            </button>
+                        </div>
+                        <div class="wrapper">
+                            <button class="btn btn-block btn-info" type="button" onclick="CalcProspectLoad()">
+                                Run Prospect Load
+                            </button>
+                        </div>
+                        <div class="wrapper">
+                            <button class="btn btn-block btn-success" type="button" onclick="CalcPricing()">
+                                Run Pricing
+                            </button>
+                        </div>
+
+                        <hr class="hr-stylish-1">
+
+                        <div class="wrapper">
+                            <ul class="progress-stats">
+                                <li>
+                                    <div class="details">
+                                        <span>Customer Count</span>
+                                        <span id="CustomersDivLabel" class="pull-right">78</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="details">
+                                        <span>Facility Count</span>
+                                        <span id="FacilityDivLabel" class="pull-right">32</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style="width: 32%">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="details">
+                                        <span>Deal Count</span>
+                                        <span id="DealsDivLabel" class="pull-right">84</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" style="width: 84%">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="details">
+                                        <span>Files Count</span>
+                                        <span id="FilesDivLabel" class="pull-right">84</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" style="width: 84%">
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--<li>
+                                    <div class="details">
+                                        <span>Linux</span>
+                                        <span class="pull-right">44%</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="44" aria-valuemin="0" aria-valuemax="100" style="width: 44%">
+                                        </div>
+                                    </div>
+                                </li>-->
+                                <!--<li>
+                                    <div class="details">
+                                        <span>IPhone/IPad</span>
+                                        <span class="pull-right">67%</span>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="width: 67%">
+                                        </div>
+                                    </div>
+                                </li>-->
+                            </ul>
+                        </div>
+
+                        <hr class="hr-stylish-1">
+
+                        <div class="wrapper">
+                            <div class="btn-toolbar no-margin">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-success">
+                                        <i class="fa fa-headphones"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning">
+                                        <i class="fa fa-thumbs-down"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger">
+                                        <i class="fa fa-tasks"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-info">
+                                        <i class="fa fa-thumbs-up"></i>
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-default">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Sidebar End -->
+                </div>
+
+                <!-- Dashboard Wrapper End -->
+
+                <footer>
+                    <p>© BlueMoon 2013-14</p>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

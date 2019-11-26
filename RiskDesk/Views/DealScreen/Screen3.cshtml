@@ -1,0 +1,604 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Retail Deal Entry</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
+    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+    <meta name="author" content="Bootstrap Gallery" />
+
+    <link href="@Url.Content("~/csss/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/csss/wysi/bootstrap-wysihtml5.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/csss/alertify.core.css")" rel="stylesheet" id="toggleCSS">
+    <script type="text/javascript" src="@Url.Content("~/js/alertify.min.js")"></script>
+
+    <link href="@Url.Content("~/csss/new.css")" rel="stylesheet">
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!-- Color Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
+
+    <script src="@Url.Content("~/js/jquery-ui-v1.10.3.js")"></script>
+
+    <script src="@Url.Content("~/js/date-picker/date.js")"></script>
+    <script src="@Url.Content("~/js/date-picker/daterangepicker.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/General.js")"></script>
+
+    <link rel="stylesheet" href="@Url.Content("~/csss/AutoComplete.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/csss/deal/DealScreen.css")" />
+
+    <script src="@Url.Content("~/DealScreenV2/DateInputComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/DealComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/DealPartComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/SelectInputComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/EventsComponent.js")"></script>
+    <script src="@Url.Content("~/DealScreenV2/RenderComponent.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script>
+
+    <style>
+        .inputNumber {
+            position: relative;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        .dashboard-wrapper {
+            min-height:800px;
+        }
+        .inputNumber input {
+            width: 45px;
+            height: 42px;
+            line-height: 1.65;
+            float: left;
+            display: block;
+            padding: 0;
+            margin: 0;
+            padding-left: 20px;
+            border: 1px solid #eee;
+        }
+
+            .inputNumber input:focus {
+                outline: 0;
+            }
+
+        .inputNumber-nav {
+            float: left;
+            position: relative;
+            height: 42px;
+        }
+
+        .inputNumber-button {
+            position: relative;
+            cursor: pointer;
+            border-left: 1px solid #eee;
+            width: 20px;
+            text-align: center;
+            color: #333;
+            font-size: 13px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+            line-height: 1.7;
+            -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            .inputNumber-button.inputNumber-up {
+                position: absolute;
+                height: 50%;
+                top: 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .inputNumber-button.inputNumber-down {
+                position: absolute;
+                bottom: -1px;
+                height: 50%;
+            }
+
+            
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .mainContainer {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+        }
+
+        .containerItem {
+            display: flex;
+        }
+
+        .containerChild {
+            height: 100px;
+            width: 30%;
+        }
+
+        .container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: separate;
+            /* Способ отображения границы */
+            width: 100%;
+            /* Ширина таблицы */
+            border-spacing: 7px 11px;
+            /* Расстояние между ячейками */
+        }
+
+        td {
+            padding: 5px;
+            /* Поля вокруг текста */
+            padding: 5px;
+            /* Поля вокруг текста */
+            border: 1px solid #5bc0de;
+            /* Граница вокруг ячеек */
+        }
+
+        #container {
+            max-height: 250px;
+        }
+
+        #PageNumber {
+            float: left;
+            font-size: 18px;
+        }
+
+        .container_butt_pagination {
+            text-align: right;
+        }
+
+        .button {
+            padding: 10px 16px;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        /* Safari */
+    </style>
+
+    <script>
+        const getRequestData = async (url) => {
+
+            const response = await fetch(`${window.location.origin}/${url}`);
+            return response.json();
+        }
+
+        function Initialize() {
+            $(function () {
+                //$("#DealDate").datepicker();
+                $("#StartDate").datepicker();
+                //$("#EndDate").datepicker();
+            });
+            // Initialize the city
+            try {
+                //tableInit();
+                AddHeader();
+                document.querySelector('#FirstColumn').classList = '';
+                document.querySelector('#SecondColumn').classList = 'active';
+                renderDeal();
+                renderInputs();
+            } catch (e) {
+            }
+        }
+    </script>
+
+    <style>
+        .dropdownFilter {
+        }
+
+        .filterTitle {
+            text-align: center;
+        }
+
+        .filterCell {
+            display: inline-block;
+            width: 24%;
+        }
+
+        .dateFilterContainer {
+            width: 100%;
+            display: block;
+        }
+
+        .graphsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: scroll;
+        }
+
+        .graphCell {
+            display: flex;
+            width: 100%;
+        }
+
+        graphs {
+            width: 30%;
+        }
+
+        .inputDateCell {
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+        }
+
+        .dateLabel {
+            display: block;
+        }
+
+        .dateFilterContainer {
+            text-align: center;
+        }
+
+        .containerChild > p {
+            display: block;
+        }
+
+        .containerChild div {
+            width: 80%;
+            text-align: center;
+            font-size: 1.2em;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .containerChild input {
+            width: 80%;
+            height: 50px;
+        }
+
+        .containerChild {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: flex-start;
+        }
+
+        #DealBoxes {
+            display: block;
+            width: 205%;
+        }
+
+        .notesContainer {
+            flex: 0.77;
+            height: 150px;
+        }
+
+        /*.dealRow:hover:nth-child(n+2) {
+            background-color: #83bbe5;
+            opacity: 0.5;
+        }*/
+
+        .DealWrapper {
+            height: 100px;
+            width: 50%;
+        }
+
+        .PartsWrapperWrapper {
+            width: 90%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .PartsWrapper {
+            height: 100px;
+            width: 50%;
+            overflow-y: auto;
+        }
+        /*.DealWrapper {
+            font-size:16px;
+            height:100px;
+            border:1px solid black;
+            overflow-y:scroll;
+            margin-bottom:70px;
+        }
+        .DealWrapper > .row {
+            text-align:center;
+            border-bottom:1px solid black;
+        }*/
+
+        .InputWrapper {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .left-sidebar:nth-child(3){
+            margin-top:-20px;
+        }
+
+        .InputLabel {
+            padding:6px 12px;
+            height:34px;
+            background-color:#3187bf;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .partsRow {
+            align-items: center;
+            border: 1px solid black;
+            display: flex;
+            height: 50px;
+        }
+
+        .partsRowHeaders {
+            width: 90%;
+        }
+
+
+        .PartInfoWrapper > .row {
+            margin: 0;
+        }
+
+        #Add {
+            position: relative;
+            left: 30px;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .idCont,
+        .nameCont,
+        .dateCont,
+        .radioCont {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 25%;
+            text-align: center;
+        }
+
+        .PartsWrapperWrapper {
+            flex-wrap: wrap;
+        }
+
+        .partsValues > .RiskPremiumCont {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .RiskValue {
+            width: 50%;
+            height: 100%;
+            border-right: 1px solid black;
+            display: flex;
+            /* text-align: center; */
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .addPartsButt {
+            margin-top: 53px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .dropHeader, .InputLabel {
+            color:white;
+        }
+        .btn {
+            width:150px;
+        }
+        .partWrapp {
+            max-width:715px;
+        }
+        #StartDate {
+            text-align:center;
+        }
+        .dropCell {
+            width:22%;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body onload="Initialize()">
+
+    <!-- Header Start -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="~/img/logo.png" alt="Logo" />
+        </a>
+       
+    </header>
+    <!-- Header End -->
+
+    <!-- Main Container start -->
+    <div class="dashboard-container">
+
+        <div class="container">
+            <!-- Top Nav Start -->
+            <div id='cssmenu'>
+                <ul id="MainUL"></ul>
+            </div>
+            <!-- Top Nav End -->
+            <!-- Sub Nav End -->
+            <div class="sub-nav hidden-sm hidden-xs">
+
+                <div class="custom-search hidden-sm hidden-xs">
+
+                </div>
+            </div>
+            <!-- Sub Nav End -->
+            <!-- Dashboard Wrapper Start -->
+            <div class="dashboard-wrapper">
+                <!-- Left Sidebar Start -->
+                <div class="left-sidebar">
+                    <div class="DealWrapper col-md-12">
+                        <!-- <select id="DealsCombo" onclick="CheckMultipleSelect(this)" multiple="multiple" class="form-control dropdownFilter">
+        </select> -->
+                        <div id="DealDrop" class="drop" onclick="SelectDeal(event)">
+                            <div class="dropRow dropHeader">
+                                <div class="dropCell">DealID</div>
+                                <div class="dropCell">DealName</div>
+                                <div class="dropCell">DealDate</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="InputWrapper col-md-12">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-bottom:30px;">
+                                <div class="InputLabel"> DealName</div>
+                                <input class="form-control" type="text" id="InputName" placeholder="DealName">
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="InputWrapper col-md-12" style="margin-bottom:20px;">
+                        <div class="row" style="margin-top:-100px;">
+                            <div class="col-md-2">
+                                <div class="InputLabel"> CustomerName </div>
+                                <select id="CustomerSelect" class="form-control">
+                                    <option value="None" selected>
+                                        Not Selected
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="InputLabel"> BrokerName </div>
+                                <select id="BrokerSelect" class="form-control">
+                                    <option value="None" selected>
+                                        Not Selected
+                                    </option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <div class="InputLabel"> StartDate </div>
+
+                                <input class="form-control" type="text" id="StartDate" placeholder="StartDate">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="AddPartsWrapper col-md-12" style="margin-bottom:2%;">
+                        <div class="col-md-2" style="
+    padding-top: 10px;
+">
+                            <div style="
+    border: 1px solid #ccc;
+    text-align: center;
+">
+                                <div class="InputLabel"> Commited</div>
+                                <div style="
+    display: inline-block;
+">
+                                    <input type="radio" disabled="" id="contactChoice1" name="contact" value="yes">
+                                    <label for="contactChoice1">Yes</label>
+                                </div>
+                                <div style="
+    display: inline-block;
+">
+                                    <input type="radio" disabled="" id="contactChoice2" name="contact" value="no">
+                                    <label for="contactChoice2">No</label>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="InputLabel"> Commitment Date</div>
+                                <input class="form-control" type="text" id="CommitedDate" disabled="">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 partWrapp">
+                            <div style="color: white;background-color: #3187bf;font-size:16px;text-align:center;">Terms of Deal</div>
+                            <div id="PartDrop" class="drop">
+                                <div class="dropRow dropHeader">
+                                    <div class="dropCell">Term</div>
+                                    <div class="dropCell">Broker Fee</div>
+                                    <div class="dropCell">Deal Margin</div>
+                                    <div class="dropCell">Risk Premium</div>
+                                    <div class="dropCell" style="flex-basis:10%;">Delete</div>
+                                </div>
+                            </div>
+                            <div class="addWrapp">
+                                    <button type="button" id="Save" class="btn btn-lg btn-primary" data-original-title="" title=""  style="float:right;"onclick="AddDealPart()" >Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="LastWrapper col-md-12">
+                        <div class="row lastRow col-md-8 col-lg-8">
+
+                            <div>
+                                <div class="InputLabel"> Notes </div>
+                                <textarea cols="40" rows="5" id="Notes"></textarea>
+
+                            </div>
+                            <div class="buttonsCont float-left" style="
+    width: max-content;
+    float: right;
+">
+                                <button type="button" id="Calc" class="btn btn-lg btn-primary" data-original-title="" title="">
+                                    Calc Standard
+                                </button>
+                                <button type="button" id="Price" class="btn btn-lg btn-primary" data-original-title="" title="">Price Deals</button>
+                                <button type="button" id="Save" class="btn btn-lg btn-primary" data-original-title="" onclick="Save()" title="">Save</button>
+                                <button type="button" id="Save" class="btn btn-lg btn-primary" data-original-title="" onclick="SaveNewDeal()" title="">New deal</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @*<div class="LastWrapper col-md-12">
+                        <div class="buttonsCont col-md-offset-2 col-md-8">
+                            <button type="button" id="Calc" class="btn btn-lg btn-primary" data-original-title="" title="">
+                                Calc Standard
+                            </button>
+                            <button type="button" id="Price" class="btn btn-lg btn-primary" data-original-title="" title="">Price Deals</button>
+                            <button type="button" id="Save" class="btn btn-lg btn-primary" data-original-title="" onclick="Save()" title="">Save</button>
+                        </div>
+                    </div>*@
+
+                    <!-- Row Start -->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
