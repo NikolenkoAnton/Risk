@@ -6,58 +6,52 @@ using System.Text;
 
 namespace T
 {
-    [Route("api/[controller]")]
+    [Route("api/test")]
     [ApiController]
-    public class TestController : ControllerBase
+    public class DealScreen2Controller : ControllerBase
     {
-        private IDealEntryServiceSecond t;
+        private IDealEntryServiceSecond dealService;
 
-        public TestController(IDealEntryServiceSecond t)
+        public DealScreen2Controller(IDealEntryServiceSecond dealService)
         {
-            this.t = t;
+            this.dealService = dealService;
         }
 
-       
+
         [HttpGet("Deal/{id}")]
         public ActionResult<DealInfoDTO> DealInfo(int id)
         {
-            return t.DealInfo(id);
+            return dealService.DealInfo(id);
         }
 
         [HttpGet("Customer")]
         public IEnumerable<CustomerInfo> AllCustomer()
         {
-            return t.AllCustomer();
+            return dealService.AllCustomer();
         }
         [HttpGet("Broker")]
         public IEnumerable<BrokerInfo> AllBroker()
         {
-            return t.AllBroker();
+            return dealService.AllBroker();
         }
 
         [HttpGet("Deal")]
         public IEnumerable<DealListDTO> AllDeal()
         {
-            return t.AllDeal();
+            return dealService.AllDeal();
         }
-
-        //[HttpPut("Deal/Save")]
-        //public ActionResult SaveDeal(DealInfoDTO deal)
-        //{
-
-        //}DealPartDataBaseLower
 
         [HttpPost("single")]
         public DealInfoDTO UpdateSingle(DealPartDataBaseLower Parts)
         {
-            //return t.DealPartsUpdate(1, Parts.Parts);
+            //return dealService.DealPartsUpdate(1, Parts.Parts);
             return null;
         }
         [HttpPost("Deal/Update")]
         public ActionResult Update(DealInfoDTO Deal)
         {
             Deal.StartDate = Deal.StartDate.AddDays(1);
-            t.DealSave(Deal);
+            dealService.DealSave(Deal);
             return Ok();
         }
         [HttpPost("Deal/Create")]
@@ -65,14 +59,14 @@ namespace T
         {
             Deal.StartDate = Deal.StartDate.AddDays(1);
             Deal.WholeSaleDealID = "0";
-            t.DealSave(Deal);
+            dealService.DealSave(Deal);
             var a = AllDeal();
             int id = 0;
-            
-            
-             foreach(var deal in a)
+
+
+            foreach (var deal in a)
             {
-                if(deal.WholeSaleDealName == Deal.WholeSaleDealName)
+                if (deal.WholeSaleDealName == Deal.WholeSaleDealName)
                 {
                     id = Int32.Parse(deal.WholeSaleDealID);
                 }
@@ -81,9 +75,9 @@ namespace T
 
         }
         [HttpPost("Deal/PartsUpdate/{id}")]
-        public DealInfoDTO DealPartsUpdate(int id,[FromBody]IEnumerable<DealPartDataBase> Parts)
+        public DealInfoDTO DealPartsUpdate(int id, [FromBody]IEnumerable<DealPartDataBase> Parts)
         {
-            return t.DealPartsUpdate(id, Parts);
+            return dealService.DealPartsUpdate(id, Parts);
         }
     }
 }

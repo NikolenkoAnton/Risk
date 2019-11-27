@@ -20,17 +20,17 @@ namespace RiskDeskDev
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             //configuration.Bind("ConnectionString", "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ");
-        //    Configuration = new ConfigurationBuilder()
-        //    .AddInMemoryCollection(new Dictionary<string, string>
-        //    {
-        //        {"ConnectionString", "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; "
-        //},
-        //    })
-        //    .Build();
+            //    Configuration = new ConfigurationBuilder()
+            //    .AddInMemoryCollection(new Dictionary<string, string>
+            //    {
+            //        {"ConnectionString", "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; "
+            //},
+            //    })
+            //    .Build();
             Configuration = configuration;
 
         }
@@ -69,7 +69,6 @@ namespace RiskDeskDev
             services.AddSingleton<IDealService, DealService>();
             services.AddTransient<IMapePeakService, MapePeakService>();
             services.AddTransient<IDealEntryServiceSecond, DealEntryServiceSecond>();
-            DealEntryServiceSecond a = new DealEntryServiceSecond();
             //services.AddSingleton<TestController>();
 
 

@@ -4,14 +4,18 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using RiskDeskDev.Models.Graphs;
 
 namespace RiskDeskDev
 {
     public class HourlyScalarService : IHourlyScalarService
     {
-        private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
-
+        private readonly string ConnectionString;// = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
+        public HourlyScalarService(IConfiguration config)
+        {
+            ConnectionString = config.GetConnectionString("Develop");
+        }
         public IEnumerable<HourlyScalarDTO> HourlyScalarData(string Month, string Zone, string WholeSales, string AccNumbers)
         {
             DataSet ds = new DataSet();

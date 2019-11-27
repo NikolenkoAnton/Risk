@@ -1,4 +1,5 @@
-﻿using RiskDeskDev.GraphsBLL.DTO;
+﻿using Microsoft.Extensions.Configuration;
+using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.Models.Graphs;
 using System;
@@ -12,12 +13,12 @@ namespace RiskDeskDev.GraphsBLL.Services
 {
     public class MapePeakService : IMapePeakService
     {
-        private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
+        private readonly string ConnectionString;// = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
         private readonly IDB db;
 
-        public MapePeakService(IDB db)
+        public MapePeakService(IConfiguration config)
         {
-            this.db = db;
+            ConnectionString = config.GetConnectionString("Develop");
         }
 
         public DropsMape DropsMape()
@@ -56,21 +57,23 @@ namespace RiskDeskDev.GraphsBLL.Services
             DataRowCollection tableCol = set.Tables["SelectionItems1"].Rows;
 
 
-            Task graphTask = new Task(() => {
-                foreach(DataRow row in graphCol)
+            Task graphTask = new Task(() =>
+            {
+                foreach (DataRow row in graphCol)
                 {
                     PeakGraph graph = new PeakGraph
                     {
                         month = row[1].ToString(),
-                        cp = Math.Round(Convert.ToDouble(row[4]),2),
-                        ncp = Math.Round(Convert.ToDouble(row[5]),2),
+                        cp = Math.Round(Convert.ToDouble(row[4]), 2),
+                        ncp = Math.Round(Convert.ToDouble(row[5]), 2),
                     };
                     graphs.Add(graph);
 
                 }
             });
 
-            Task tableTask = new Task(() => {
+            Task tableTask = new Task(() =>
+            {
 
                 var query = from rec in tableCol.Cast<DataRow>()
                             group rec by rec[0];
@@ -79,11 +82,11 @@ namespace RiskDeskDev.GraphsBLL.Services
                     PeakTable graph = new PeakTable { acc = g.Key.ToString() };
 
                     foreach (var t in g)
-                        graph.SetLoad(Convert.ToInt32(t[1]) - 1,t[5],t[6],t[7]);
+                        graph.SetLoad(Convert.ToInt32(t[1]) - 1, t[5], t[6], t[7]);
 
                     tables.Add(graph);
                 }
-                
+
             });
 
             Task[] tasks = new Task[2]

@@ -24,14 +24,12 @@ namespace RiskDeskDev
 {
     public class DB : IDB
     {
-        private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
-
-
+        private readonly string ConnectionString;//"Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
 
         public DB(IConfiguration configuration)
         {
 
-            //ConnectionString = configuration["ConnectionString"];
+            ConnectionString = configuration.GetConnectionString("Develop");
         }
 
 

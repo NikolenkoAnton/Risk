@@ -12,21 +12,20 @@ using System.Threading.Tasks;
 
 namespace RiskDeskDev.GraphsBLL.Services
 {
-    
-     
+
+
     public class DealService : IDealService
     {
         static string DealInfoKeys = "DealID,DealName,DealDate,CounterPartyID,SecondCounterPartyID,SetPointID,CongestionZonesID,WholeSaleBlocksID,VolumeMW,VolumeMWh,Price,Fee,Cost,MTM,GrossMargin,Calculated,CommitmentDate,Notes";
 
-        static string[] DealSaveKeys = new string []{ "CongestionZonesID", "CounterPartyID", "DealDate", "DealID", "DealName", "EndDate", "Fee", "Notes", "Price", "SecondCounterPartyID", "SetPointID", "StartDate", "VolumeMW", "VolumeMWh", "WholeSaleBlocksID" };
+        static string[] DealSaveKeys = new string[] { "CongestionZonesID", "CounterPartyID", "DealDate", "DealID", "DealName", "EndDate", "Fee", "Notes", "Price", "SecondCounterPartyID", "SetPointID", "StartDate", "VolumeMW", "VolumeMWh", "WholeSaleBlocksID" };
         private readonly string ConnectionString;
         public DealService(IConfiguration configuration)
         {
-            ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";//= configuration["ConnectionString"];
-
+            ConnectionString = configuration.GetConnectionString("Develop");//= "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";//= configuration["ConnectionString"];
         }
         #region graphs
-        private void addProceduresParams(SqlCommand cmd,string Zone, string Counter, string WholeSales, string StartDate, string EndDate, string DealStart, string DealEnd)
+        private void addProceduresParams(SqlCommand cmd, string Zone, string Counter, string WholeSales, string StartDate, string EndDate, string DealStart, string DealEnd)
         {
             if (WholeSales != "0")
             {
@@ -92,12 +91,12 @@ namespace RiskDeskDev.GraphsBLL.Services
                 using (SqlCommand cmd = new SqlCommand())
                 {
 
-                   
+
 
                     string SqlCommandText = "[WebSite].[DealEntryFilteredGetInfo]";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = SqlCommandText;
-                    addProceduresParams(cmd, Zone,Counter, WholeSales, StartDate, EndDate, DealStart, DealEnd);
+                    addProceduresParams(cmd, Zone, Counter, WholeSales, StartDate, EndDate, DealStart, DealEnd);
                     cmd.Connection = con;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -148,9 +147,9 @@ namespace RiskDeskDev.GraphsBLL.Services
             }
         }
 
-        public Deal Deal(string Zone,string Counter,string WholeSales, string StartDate, string EndDate, string DealStart, string DealEnd)
+        public Deal Deal(string Zone, string Counter, string WholeSales, string StartDate, string EndDate, string DealStart, string DealEnd)
         {
-            DataSet set = DataBaseConnection1(Zone,Counter,WholeSales, StartDate, EndDate, DealStart, DealEnd);
+            DataSet set = DataBaseConnection1(Zone, Counter, WholeSales, StartDate, EndDate, DealStart, DealEnd);
 
             List<object[]> graph1 = new List<object[]>();
             List<object[]> graph2 = new List<object[]>();
@@ -193,7 +192,7 @@ namespace RiskDeskDev.GraphsBLL.Services
         }
         public DealDrops DealDrops()
         {
-           DataSet set = DataBaseConnection();
+            DataSet set = DataBaseConnection();
             List<object> zones = new List<object>();
             List<object> blocks = new List<object>();
             List<object> counters = new List<object>();
@@ -202,10 +201,10 @@ namespace RiskDeskDev.GraphsBLL.Services
             var t1 = set.Tables[1].Rows;
             var t2 = set.Tables[2].Rows;
 
-            foreach(DataRow rec in t0)
+            foreach (DataRow rec in t0)
             {
-               
-                zones.Add(new { name =rec[1].ToString() });
+
+                zones.Add(new { name = rec[1].ToString() });
             }
 
             foreach (DataRow rec in t1)
@@ -219,9 +218,9 @@ namespace RiskDeskDev.GraphsBLL.Services
             }
 
 
-            return new DealDrops{ zones=zones, blocks=blocks, counters=counters };
+            return new DealDrops { zones = zones, blocks = blocks, counters = counters };
         }
-        #endregion 
+        #endregion
 
         //public async Task<dynamic> Calculate(int id)
         //{
@@ -247,7 +246,7 @@ namespace RiskDeskDev.GraphsBLL.Services
         //    }
 
         //}
-       
+
         public async Task<dynamic> DropDownsInfo()
         {
             DataSet dealsSet = new DataSet();
@@ -312,9 +311,9 @@ namespace RiskDeskDev.GraphsBLL.Services
             });
             List<dynamic> counters = new List<dynamic>();
             List<dynamic> pointers = new List<dynamic>();
-            List<dynamic> deals= new List<dynamic>();
-            List<dynamic> locations= new List<dynamic>();
-            List<dynamic> wholesales= new List<dynamic>();
+            List<dynamic> deals = new List<dynamic>();
+            List<dynamic> locations = new List<dynamic>();
+            List<dynamic> wholesales = new List<dynamic>();
 
             #region
 
@@ -391,7 +390,7 @@ namespace RiskDeskDev.GraphsBLL.Services
                     locations,
                     wholesales,
                 };
-                        
+
         }
         private IEnumerable<DataRow> Rows(DataSet set) => set.Tables[0].Rows.Cast<DataRow>();
 
@@ -399,7 +398,7 @@ namespace RiskDeskDev.GraphsBLL.Services
         {
             DataSet set = new DataSet();
             List<string> keys = DealInfoKeys.Split(",").ToList();
-          
+
             List<dynamic> dealInfo = new List<dynamic>();
             Dictionary<string, object> dealInfo1 = new Dictionary<string, object>();
 
@@ -428,20 +427,20 @@ namespace RiskDeskDev.GraphsBLL.Services
             });
             await Task.Run(() =>
             {
-            foreach (DataRow row in Rows(set))
-            {
-                var columns = row.Table.Columns.Cast<DataColumn>().ToList();
+                foreach (DataRow row in Rows(set))
+                {
+                    var columns = row.Table.Columns.Cast<DataColumn>().ToList();
                     Dictionary<string, string> dict = new Dictionary<string, string>();
-                    foreach(var col in columns)
+                    foreach (var col in columns)
                     {
                         var str = col.ColumnName;
                         dict.Add(str, row[str].ToString());
                     }
                     var list = dict.AsEnumerable();
                     dealInfo.Add(list);
-                //dealInfo.Add({ row.ItemArray);
+                    //dealInfo.Add({ row.ItemArray);
                 }
-          
+
             });
             return dealInfo.ToList().FirstOrDefault();
 
@@ -449,7 +448,7 @@ namespace RiskDeskDev.GraphsBLL.Services
         }
 
         public async Task<dynamic> Calculate(int id)
-        {   
+        {
             var set = new DataSet();
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -467,7 +466,7 @@ namespace RiskDeskDev.GraphsBLL.Services
                     {
                         da.Fill(set, "SelectionItems");
                     }
-                    
+
 
                 }
             }
@@ -489,25 +488,25 @@ namespace RiskDeskDev.GraphsBLL.Services
                     cmd.CommandText = SqlCommandText;
                     AddProc(cmd, obj);
                     cmd.Connection = con;
-                    
+
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
                         da.Fill(set, "SelectionItems");
                     }
-                   
+
                 }
             }
         }
-        private void AddProc(SqlCommand cmd,SaveDTO1 obj)
+        private void AddProc(SqlCommand cmd, SaveDTO1 obj)
         {
             int counter = 0;
             int c1 = 0;
             int c2 = 0;
             int c3 = 0;
             int c4 = 0;
-            foreach(var k in DealSaveKeys)
+            foreach (var k in DealSaveKeys)
             {
-                foreach(var pair in obj.values)
+                foreach (var pair in obj.values)
                 {
                     if (k.ToLower() == pair.key.ToLower())
                     {
@@ -583,7 +582,7 @@ namespace RiskDeskDev.GraphsBLL.Services
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
-                        da.Fill(set1,"SelectionItems");
+                        da.Fill(set1, "SelectionItems");
                     }
 
 
@@ -594,7 +593,7 @@ namespace RiskDeskDev.GraphsBLL.Services
             return info;
 
         }
-        static string [] SaveInt = new string[]{ "DealID", "CounterPartyID", "SecondCounterPartyID", "SetPointID", "CongestionZonesID", " WholeSaleBlocksID" };
+        static string[] SaveInt = new string[] { "DealID", "CounterPartyID", "SecondCounterPartyID", "SetPointID", "CongestionZonesID", " WholeSaleBlocksID" };
         static string[] SaveFloat = new string[] { "VolumeMW", "VolumeMWh", "Price", "Fee" };
         static string[] SaveDate = new string[] { "DealDate", "StartDate", "EndDate" };
         static string[] SaveString = new string[] { "DealName", "Notes" };

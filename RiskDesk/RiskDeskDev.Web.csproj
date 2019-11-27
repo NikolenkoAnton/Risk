@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\T\Deal2.csproj" />
+    <ProjectReference Include="..\Deal2\RiskDeskDev.Deal2.csproj" />
   </ItemGroup>
 
   <ItemGroup>

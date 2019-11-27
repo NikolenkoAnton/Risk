@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\source\\R\\T\\Deal2.csproj": {}
+    "C:\\adam\\Risk\\Deal2\\RiskDeskDev.Deal2.csproj": {}
   },
   "projects": {
-    "D:\\source\\R\\T\\Deal2.csproj": {
+    "C:\\adam\\Risk\\Deal2\\RiskDeskDev.Deal2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\source\\R\\T\\Deal2.csproj",
-        "projectName": "Deal2",
-        "projectPath": "D:\\source\\R\\T\\Deal2.csproj",
+        "projectUniqueName": "C:\\adam\\Risk\\Deal2\\RiskDeskDev.Deal2.csproj",
+        "projectName": "RiskDeskDev.Deal2",
+        "projectPath": "C:\\adam\\Risk\\Deal2\\RiskDeskDev.Deal2.csproj",
         "packagesPath": "C:\\Users\\Anton\\.nuget\\packages\\",
-        "outputPath": "D:\\source\\R\\T\\obj\\",
+        "outputPath": "C:\\adam\\Risk\\Deal2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
