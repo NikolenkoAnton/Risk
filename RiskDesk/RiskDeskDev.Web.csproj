@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\chart.js\2.8.0\content\Scripts\" />
+    <Folder Include="wwwroot\ScatterPlot\" />
   </ItemGroup>
 
   <ItemGroup>

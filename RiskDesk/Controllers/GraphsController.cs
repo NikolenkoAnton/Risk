@@ -45,6 +45,11 @@ namespace RiskDeskDev.Controllers
             return View();
         }
 
+        public  IActionResult ScatterPlot()
+        {
+            return View();
+        }
+
         public IActionResult WeatherMonthly()
         {
             return View("~/Views/Graphs/WeatherMonthlyChart.cshtml");

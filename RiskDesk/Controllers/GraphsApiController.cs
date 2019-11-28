@@ -9,6 +9,7 @@ using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
 using RiskDeskDev.Models.Graphs;
+using RiskDeskDev.Web.GraphsBLL.Interfaces;
 
 namespace RiskDeskDev.Controllers
 {
@@ -16,7 +17,7 @@ namespace RiskDeskDev.Controllers
     {
         public DateTime? dealMax;
         public DateTime? dealMin;
-           public DateTime? max;
+        public DateTime? max;
         public DateTime? min;
         public List<object[]> graph1;
         public List<object[]> graph2;
@@ -45,32 +46,35 @@ namespace RiskDeskDev.Controllers
         private readonly IRiskService riskServ;
         private readonly IMapePeakService peakServ;
         private readonly IDealService dealServ;
+        private readonly IScatterPlotService scatterService;
         //private readonly DealService service;
-        public GraphsApiController(IDB d, IMapePeakService peakServ,IHourlyScalarService hourlyServ, IRiskService riskServ,IDealService dealServ)
+        public GraphsApiController(IDB d, IMapePeakService peakServ,
+            IHourlyScalarService hourlyServ, IRiskService riskServ,
+            IDealService dealServ, IScatterPlotService scatterService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
             this.riskServ = riskServ;
             this.peakServ = peakServ;
-            //service = new DealService(configuration);
             this.dealServ = dealServ;
-           // d = new DB();
+            this.scatterService = scatterService;
+            // d = new DB();
         }
 
 
         [HttpGet]
         [Route("Deal")]
-        public async Task<Deal> Deal([FromQuery]string Zone, [FromQuery]string Counter, [FromQuery] string WholeSales, [FromQuery] string StartDate, [FromQuery] string EndDate,[FromQuery] string StartDeal, [FromQuery] string EndDeal)
+        public async Task<Deal> Deal([FromQuery]string Zone, [FromQuery]string Counter, [FromQuery] string WholeSales, [FromQuery] string StartDate, [FromQuery] string EndDate, [FromQuery] string StartDeal, [FromQuery] string EndDeal)
         {
-          return await Task.Run(()=>dealServ.Deal(Zone,Counter,WholeSales, StartDate, EndDate, StartDeal, EndDeal));
+            return await Task.Run(() => dealServ.Deal(Zone, Counter, WholeSales, StartDate, EndDate, StartDeal, EndDeal));
         }
         //return new { dealMax, dealMin, max, min, graph1, graph2, graph3, graph4 };
 
         [HttpGet]
         [Route("DealDrops")]
-        public  async Task<DealDrops> DealDrops()
+        public async Task<DealDrops> DealDrops()
         {
-            return await Task.Run(()=>dealServ.DealDrops());
+            return await Task.Run(() => dealServ.DealDrops());
         }
 
         [HttpGet]
@@ -84,7 +88,7 @@ namespace RiskDeskDev.Controllers
         [Route("Peak")]
         public async Task<Peak> Peak(string Month, string Scenario, string AccNumbers)
         {
-            return await peakServ.DataPeak(Month,  Scenario,  AccNumbers);
+            return await peakServ.DataPeak(Month, Scenario, AccNumbers);
         }
 
 
@@ -114,41 +118,41 @@ namespace RiskDeskDev.Controllers
         [Route("Risk")]
         public List<RiskDataDTO> Risk(string Month, string Zone, string AccNumbers)
         {
-            return riskServ.RiskData( Month,  Zone,  AccNumbers);
+            return riskServ.RiskData(Month, Zone, AccNumbers);
         }
 
         [HttpGet]
         [Route("HourlyScalar")]
         public IEnumerable<HourlyScalarDTO> HourlyScalarData(string Month, string Zone, string WholeSales, string AccNumbers)
         {
-            return hourlyServ.HourlyScalarData( Month,  Zone,  WholeSales,  AccNumbers);
+            return hourlyServ.HourlyScalarData(Month, Zone, WholeSales, AccNumbers);
         }
         [HttpGet]
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
-            return  d.GetAllCongestionZone();
+            return d.GetAllCongestionZone();
         }
 
         [HttpGet]
         [Route("AccNumbers")]
         public List<AccNumberDTO> GetAccNumbers()
         {
-            return   d.GetAllAccNumber();
+            return d.GetAllAccNumber();
         }
 
         [HttpGet]
         [Route("WholeSales")]
-        public   List<WholeSalesDTO> GetWholeSales()
+        public List<WholeSalesDTO> GetWholeSales()
         {
-            return  d.GetAllWholeSalesBlock();
+            return d.GetAllWholeSalesBlock();
         }
 
         [HttpGet]
         [Route("HourlyAggregates")]
         public HourlyGraphsDataDTO getHourlyAggregatesGraphs(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers)//List<WholeSalesDTO> GetWholeSales()
         {
-            IEnumerable<HourlyDTO> list =  d.getHourlyGraph(StartDate, EndDate, Month, Scenario, WholeSales, AccNumbers);
+            IEnumerable<HourlyDTO> list = d.getHourlyGraph(StartDate, EndDate, Month, Scenario, WholeSales, AccNumbers);
             if (StartDate == "0" && EndDate == "0")
             {
                 DateTime max = list.Max(el => el.date);
@@ -162,14 +166,14 @@ namespace RiskDeskDev.Controllers
         [Route("Month")]
         public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
         {
-            return  d.getAllMonth();
+            return d.getAllMonth();
         }
 
         [HttpGet]
         [Route("Scenario")]
         public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
         {
-            return  d.getAllScenario();
+            return d.getAllScenario();
         }
 
         [HttpGet]
@@ -184,19 +188,19 @@ namespace RiskDeskDev.Controllers
 
         [HttpGet]
         [Route("WeatherMontlyGraphs")]
-        public List<MontlyGraphDTO> GetWeatherMontlyGraphs(string Month,string Scenario,string WholeSales, string AccNumbers)
+        public List<MontlyGraphDTO> GetWeatherMontlyGraphs(string Month, string Scenario, string WholeSales, string AccNumbers)
         {
-          
-            List<MontlyGraphDTO>list = d.GetWeatherMontlyGraphs(Month,Scenario, WholeSales, AccNumbers);
+
+            List<MontlyGraphDTO> list = d.GetWeatherMontlyGraphs(Month, Scenario, WholeSales, AccNumbers);
             return list;
 
         }
 
         [HttpGet]
         [Route("CongestionZonesGraphs")]
-        public List<CongestZoneGraphDTO>  GetCongestionZonesGraphs(string Zone,string WholeSales,string AccNumbers)
+        public List<CongestZoneGraphDTO> GetCongestionZonesGraphs(string Zone, string WholeSales, string AccNumbers)
         {
-            List<CongestZoneGraphDTO> list = d.GetCongestZoneGraphs(Zone,WholeSales,AccNumbers);
+            List<CongestZoneGraphDTO> list = d.GetCongestZoneGraphs(Zone, WholeSales, AccNumbers);
             return list;
         }
 
