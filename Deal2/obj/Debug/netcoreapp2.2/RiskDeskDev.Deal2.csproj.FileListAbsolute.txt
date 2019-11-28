@@ -1,8 +1,0 @@
-C:\adam\Risk\Deal2\bin\Debug\netcoreapp2.2\RiskDeskDev.Deal2.deps.json
-C:\adam\Risk\Deal2\bin\Debug\netcoreapp2.2\RiskDeskDev.Deal2.dll
-C:\adam\Risk\Deal2\bin\Debug\netcoreapp2.2\RiskDeskDev.Deal2.pdb
-C:\adam\Risk\Deal2\obj\Debug\netcoreapp2.2\RiskDeskDev.Deal2.csprojAssemblyReference.cache
-C:\adam\Risk\Deal2\obj\Debug\netcoreapp2.2\RiskDeskDev.Deal2.AssemblyInfoInputs.cache
-C:\adam\Risk\Deal2\obj\Debug\netcoreapp2.2\RiskDeskDev.Deal2.AssemblyInfo.cs
-C:\adam\Risk\Deal2\obj\Debug\netcoreapp2.2\RiskDeskDev.Deal2.dll
-C:\adam\Risk\Deal2\obj\Debug\netcoreapp2.2\RiskDeskDev.Deal2.pdb
