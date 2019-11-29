@@ -1,103 +1,93 @@
 ﻿google.charts.load('current', {
     'packages': ['corechart', 'scatter']
 });
-google.charts.setOnLoadCallback(drawStuff);
+google.charts.setOnLoadCallback(changeScatterPlotDropdowns);
+const blocksNames = ['2x16', '5x16', '7x8'];
 
-function drawStuff() {
+function drawStuff(dataRows) {
     // var button = document.getElementById('change-chart');
     var chartDiv = document.getElementById('graph1');
 
-    var data = new google.visualization.DataTable();
-    data.addColumn('number', 'Temperature (F)');
-    data.addColumn('number', '2X16');
-    data.addColumn('number', '5X16');
-    data.addColumn('number', '7X24');
-    data.addColumn('number', '7X8');
+    // var data = new google.visualization.DataTable();
+    // data.addColumn('number', 'Temperature (F)');
+    // // data.addColumn('number', 'Load (KW)');
+    // data.addColumn('number', '2x16');
+    // data.addColumn('number', '5x16');
+    // data.addColumn('number', '7x8');
+    //'#118DFF'  '#E8D166'  '#573B92'
+    //data.addColumn('string', '{ role: "style" }');
+    // 
 
-    data.addRows([
-        [0, 0, 67, 2, 65],
-        [1, 1, 88, 2, 65],
-        [2, 2, 77, 2, 65],
-        [3, 3, 93, 2, 65],
-        [4, 4, 85, 2, 65],
-        [5, 5, 91, 2, 65],
-        [6, 6, 71, 2, 65],
-        [7, 7, 78, 2, 65],
-        [8, 8, 93, 2, 65],
-        [9, 9, 80, 2, 65],
-        [10, 10, 82, 7, 89],
-        [11, 0, 75, 67, 12],
-        [12, 5, 80, 67, 12],
-        [13, 3, 90, 67, 12],
-        [14, 1, 72, 67, 12],
-        [15, 5, 75, 67, 12],
-        [16, 6, 68, 67, 12],
-        [17, 7, 98, 67, 12],
-        [18, 3, 82, 67, 12],
-        [19, 9, 94, 67, 12],
-        [20, 2, 79, 67, 12],
-        [21, 2, 95, 67, 12],
-        [22, 2, 86, 67, 12],
-        [23, 3, 67, 67, 12],
-        [24, 4, 60, 67, 12],
-        [25, 2, 80, 67, 12],
-        [26, 6, 92, 67, 12],
-        [27, 2, 81, 67, 12],
-        [28, 8, 79, 67, 12],
-        [29, 9, 83, 67, 12]
+    // data.addColumn('number', '7X24');
+    // data.addColumn('number', '7X8');
+
+    var data = google.visualization.arrayToDataTable([
+        ['Temperature (F)', '2x16', '5x16', '7x8'],
+        ...dataRows
+
     ]);
-
+    //“118DFF”, 5x16 to be “E8D166” and the 7x8 to be “573B92”
     var materialOptions = {
-        // chart: {
-        //     title: 'Students\' Final Grades',
-        //     subtitle: 'based on hours studied'
+        chart: {
+            title: 'Load \' Temperature Scatter Plot',
+        },
+        width: $(window).width(),
+        height: 650,
+        hAxis: {
+            title: 'Temperature (F)',
+            minValue: 0,
+            maxValue: 15
+        },
+        vAxis: {
+            title: 'Load KW',
+            minValue: 0,
+            maxValue: 15
+        },
+        // series: {
+        //     0: {
+        //         axis: 'load (KW)'
+        //     },
+        //     1: {
+        //         axis: 'temperature (F)'
+        //     }
         // },
-        width: $(window).width() * 0.92,
-        height: 600,
-        series: {
-            0: {
-                axis: 'hours studied',
-            },
-            1: {
-                axis: 'final grade'
-            }
-        },
-        axes: {
-            y: {
-                'hours studied': {
-                    label: 'Hours Studied',
-                },
-                'final grade': {
-                    label: 'Final Exam Grade'
-                }
-            }
-        },
+        // axes: {
+        //     y: {
+        //         'load (KW)': {
+        //             label: 'Load (KW)',
+        //         },
+        //     },
+        //     x: {
+        //         'temperature (F)': {
+        //             label: 'Temperature (F)',
+        //         }
+        //     }
+        // },
         backgroundColor: 'none',
-
-    };
-
-    var classicOptions = {
-        width: 800,
-        series: {
-            0: {
-                targetAxisIndex: 0
-            },
-            1: {
-                targetAxisIndex: 1
+        legend: {
+            position: 'left',
+            textStyle: {
+                color: 'blue',
+                // color: ['118DFF', 'E8D166'],
+                fontSize: 16
             }
         },
-        title: 'Students\' Final Grades - based on hours studied',
-
-        vAxes: {
-            // Adds titles to each axis.
-            0: {
-                title: 'Hours Studied'
-            },
-            1: {
-                title: 'Final Exam Grade'
-            }
-        }
+        colors: ['#118DFF', '#E8D166', '#573B92'],
     };
+
+    // var classicOptions = {
+    //     width: 800,
+    //     chart: {
+    //         title: 'Students\' Final Grades',
+    //         subtitle: 'based on hours studied'
+    //     },
+    //     hAxis: {
+    //         title: 'Temperature '
+    //     },
+    //     vAxis: {
+    //         title: 'Grade'
+    //     }
+    // };
 
     function drawMaterialChart() {
         var materialChart = new google.charts.Scatter(chartDiv);
@@ -106,75 +96,15 @@ function drawStuff() {
         // button.onclick = drawClassicChart;
     }
 
-    function drawClassicChart() {
-        var classicChart = new google.visualization.ScatterChart(chartDiv);
-        classicChart.draw(data, classicOptions);
-        // button.innerText = 'Change to Material';
-        // button.onclick = drawMaterialChart;
-    }
+    // function drawClassicChart() {
+    //     var classicChart = new google.visualization.ScatterChart(chartDiv);
+    //     classicChart.draw(data, classicOptions);
+    //     // button.innerText = 'Change to Material';
+    //     // button.onclick = drawMaterialChart;
+    // }
 
     drawMaterialChart();
 };
-//async function fillDropdownsAggregates() {
-//    const accNumbers = await getAccNumbers();
-
-//    const congestionZones = await getCongestionZones();
-
-//    const wholeSales = await getWholeSales();
-
-//    const accNumberDropdown = document.querySelector('#FilterAccNumber');
-
-//    const wholeSalesDropdown = document.querySelector('#FilterWholeSales');
-
-//    const congestionZonesDropdown = document.querySelector('#FilterCongestionZone');
-
-//    for (const number of accNumbers) {
-//        const index = accNumbers.indexOf(number) + 1;
-//        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, index);
-//    }
-
-//    for (const block of wholeSales) {
-//        const index = wholeSales.indexOf(block) + 1;
-//        wholeSalesDropdown.innerHTML += getSelectOption(block.block, index);
-//    }
-
-//    for (const zone of congestionZones) {
-//        const index = congestionZones.indexOf(zone) + 1;
-//        congestionZonesDropdown.innerHTML += getSelectOption(zone.zone, index);
-//    }
-
-//    //setStartedDropdownValue([accNumberDropdown, wholeSalesDropdown, congestionZonesDropdown]);
-
-//    $(wholeSalesDropdown).multiselect({
-//        selectAll: true
-//    });
-//    $(congestionZonesDropdown).multiselect({
-//        selectAll: true
-//    });
-
-//    $(accNumberDropdown).multiselect({
-//        selectAll: true
-//    });
-//}
-
-//const getSelectedMonths = (dropdown) => {
-//    let indexes = '';
-//    const options = [...dropdown.selectedOptions];
-//    for (const opt of options) {
-//        if (opt.value == '0') return '0';
-
-
-//        if (opt.value.length > 1) {
-//            if (opt.value == '10') indexes += 'O';
-
-//            if (opt.value == '11') indexes += 'N';
-
-//            if (opt.value == '11') indexes += 'D';
-//        } else indexes += opt.value;
-//    }
-//    return indexes.length ? indexes : '0';
-//}
-
 
 //string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
 const getFilteringScatterPlot = () => {
@@ -182,10 +112,11 @@ const getFilteringScatterPlot = () => {
 
     const hours = `Hours=${getSelectedHours(arr[4])}`;
     const month = `Month=${getSelectedMonths(arr[0])}`;
-    const scenario = `Scenario=${getSelectedFields(arr[1])}`;
+    // const scenario = `Scenario=${getSelectedFields(arr[1])}`;
+    const zones = `Zone=${getSelectedFields(arr[1])}`;
     const wholesale = `WholeSales=${getSelectedFields(arr[2])}`;
     const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
-    return `?${hours}&${month}&${scenario}&${wholesale}&${accNumbers}`;
+    return `?${hours}&${month}&${zones}&${wholesale}&${accNumbers}`;
 }
 
 async function fillHours() {
@@ -212,18 +143,15 @@ async function fillMonth() {
     });
 
 }
-async function fillScenario() {
-    const scenarios = await getScenario();
-    const scenatioDropdown = document.querySelector('#FilterScenario');
+async function fillCongestionZone() {
+    const congestionZones = await getCongestionZones();
+    const congestionZonesDropdown = document.querySelector('#FilterCongestionZone');
 
-    for (const scenario of scenarios) {
-
-        const index = scenarios.indexOf(scenario) + 1;
-
-        scenatioDropdown.innerHTML += getSelectOption(scenario.name, index);
-
+    for (const zone of congestionZones) {
+        const index = congestionZones.indexOf(zone) + 1;
+        congestionZonesDropdown.innerHTML += getSelectOption(zone.zone, index);
     }
-    $(scenatioDropdown).multiselect({
+    $(congestionZonesDropdown).multiselect({
 
         selectAll: true
 
@@ -270,16 +198,49 @@ function fillScatterPlotDropdowns() {
 
     fillHours()
     fillMonth()
-    fillScenario()
+    fillCongestionZone()
     fillWholeSales()
     fillAccNumbers()
 }
+const procesGraphsDataBeforeDrawc = (data) => {
+    const tempsArr = new Set(data.map(el => el.tempF));
+    const mapData = data.map(el => ({
+        block: el.wholeSaleBlocks,
+        temp: el.tempF,
+        KW: Math.round(el.loadKW),
+    }));
+
+    const graphRows = [];
+
+    for (const t of tempsArr) {
+        const row = [t, 0, 0, 0];
+        for (const blocks of mapData) {
+
+            if (blocks.temp === t) {
+                const blockIndex = blocksNames.indexOf(blocks.block) + 1;
+                row[blockIndex] = blocks.KW;
+            }
+
+        }
+        graphRows.push(row);
+
+    }
+    return graphRows;
+
+}
 
 async function changeScatterPlotDropdowns() {
-    const data = getGraphData();
+    const data = await getGraphData();
+    const graphRows = await procesGraphsDataBeforeDrawc(data);
+    drawStuff(graphRows);
+    console.log(data);
 }
 //WholeSale Block
 //Weather Scenario
 //ID
 //Months
 //Hours
+
+//wholeSaleBlocks
+//tempF
+//loadKW 

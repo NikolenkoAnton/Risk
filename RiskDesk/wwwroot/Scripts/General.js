@@ -469,9 +469,9 @@ const AddDataEntryHeader = container => {
 
     container.append(`<li><a href='${window.location.origin}/dealscreen'>WholeSale Deal Entry Screen</a></li>`);
     container.append(`<li><a href='${window.location.origin}/dealscreen/screen2'>Retail Deal Entry</a></li>`);
-    container.append(`<li><a href=#>Pricing Summary</a></li>`);
-    container.append(`<li><a href=#>Monthly Cash Flow</a></li>`);
-    container.append(`<li><a href=#>Monthly</a></li>`);
+    // container.append(`<li><a href=#>Pricing Summary</a></li>`);
+    // container.append(`<li><a href=#>Monthly Cash Flow</a></li>`);
+    // container.append(`<li><a href=#>Monthly</a></li>`);
 
 }
 

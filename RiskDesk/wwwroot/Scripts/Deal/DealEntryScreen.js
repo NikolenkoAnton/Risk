@@ -23,6 +23,21 @@ CommitmentDate
 Notes
 StartDate
 EndDate`;
+const SaveNewDealKeysString = `
+DealName
+DealDate
+CounterPartyID
+SecondCounterPartyID
+SetPointID
+CongestionZonesID
+WholeSaleBlocksID
+VolumeMW
+VolumeMWh
+Price
+Fee
+Notes
+StartDate
+EndDate`;
 
 const SaveKeysString = `DealID
 DealName
@@ -41,6 +56,7 @@ StartDate
 EndDate`;
 const neededDealKeys = dealKeysString.split('\n');
 const neededSaveKeys = SaveKeysString.split('\n');
+const neededSaveNewDealKeys = SaveNewDealKeysString.split('\n');
 let KeysById = [];
 let info = [];
 const GetRequestData = async (url) => {
@@ -292,10 +308,10 @@ const ClearFields = () => {
     selects.forEach(el => el.value = "None");
 }
 
-const GetInputsValues = () => {
+const GetInputsValues = (newDealKeys) => {
     const obj = [];
-
-    for (const k of neededSaveKeys) {
+    const currKeys = (newDealKeys !== undefined && newDealKeys) ? newDealKeys : neededSaveKeys;
+    for (const k of currKeys) {
         var a = document.querySelector(`#${k}`);
         if (a && a.value !== 'None' && Number(a.value) !== 0) {
 
@@ -400,34 +416,6 @@ const SaveRequest = () => {
     console.log(url);
 
     const datas = GetRequestData(url);
-
-    //console.log(d);
-    //fetch(url, {
-    //    method: 'Get', // или 'PUT'
-    //    headers: {
-    //        'Content-Type': 'application/json;charset=utf-8'
-    //    },
-    //    body: JSON.stringify(asd), // data может быть типа `string` или {object}!
-
-    //}).then(res => {
-    //    const urls = 'DealScreen/Save';
-    //    fetch(urls, {
-    //        method: 'POST', // или 'PUT'
-    //        headers: {
-    //            'Content-Type': 'application/json;charset=utf-8'
-    //        },
-    //        body: JSON.stringify(asd), // data может быть типа `string` или {object}!
-
-    //    }).then(res => alertify.success("screen"));
-    //})
-    //fetch('/Save', {
-    //    method: 'POST', // или 'PUT'
-    //    headers: {
-    //        'Content-Type': 'application/json;charset=utf-8'
-    //    },
-    //    body: JSON.stringify(asd), // data может быть типа `string` или {object}!
-
-    //})
 
 }
 const IsCalculatedInputsFill = () => {
@@ -608,6 +596,42 @@ const Save = async () => {
         alertify.success("Deal successfully updated!")
 
     }
+}
+const SaveNewDealRequest = () => {
+
+    const data = GetInputsValues(neededSaveNewDealKeys);
+    let arr1 = [];
+    let arr2 = [];
+    arr1.push('DealID');
+    arr2.push(0);
+    data.forEach(el => {
+        arr1.push(el.key);
+        arr2.push(el.value);
+
+    })
+    let mainArr = [...arr1, ...arr2];
+    let esc = encodeURIComponent;
+    var query = mainArr
+        .map((k, i) => `arr=` + esc(k))
+        .join('&');
+    let url = 'api/Help?' + query;
+    console.log(url);
+
+    const datas = GetRequestData(url);
+
+}
+
+const SaveNewDeal = async () => {
+    if (!SaveValidate()) {
+
+        return;
+    }
+    await SaveNewDealRequest();
+    UpdateDealsIDSelect();
+
+    alertify.success("Deal successfully saved!")
+    UpdateDealsIDSelect();
+    //neededSaveNewDealKeys
 }
 //Please fill in all necessary fields and press the calculate button”
 //Please press the calculate button before committing a deal

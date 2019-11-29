@@ -24,15 +24,3 @@ const getSelectedHours = (dropdown) => {
     }
     return hoursArr.length ? hoursArr.join('h') : '0';
 }
-
-
-
-// const getSelectedFields = (dropdown) => {
-//     const hoursArr = [];
-//     if (dropdown) {
-//         const options = [...dropdown.selectedOptions];
-//         for (const opt of options) opt.value === '0' ? '' : hoursArr.push(opt.value);
-//     }
-//     return hoursArr.length ? hoursArr.join('h') : '0';
-// }
-// month scenario wholeSales AccNumber Hours

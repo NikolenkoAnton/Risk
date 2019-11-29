@@ -223,9 +223,9 @@ namespace RiskDeskDev.Controllers
 
         [HttpGet]
         [Route("ScatterPlot")]
-        public List<ScatterPlotDTO> GetScatterPlot(string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
+        public List<ScatterPlotDTO> GetScatterPlot(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
         {
-            var data = scatterService.ScatterPlotData(Hours, Month, Scenario, WholeSales, AccNumbers);
+            var data = scatterService.ScatterPlotData(Hours, Month, Zone, WholeSales, AccNumbers);
             return data;
         }
         //WholeSale Block -

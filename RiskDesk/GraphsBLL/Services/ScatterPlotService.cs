@@ -20,19 +20,14 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
             _connectionString = configuration.GetConnectionString("Develop");
         }
 
-        public List<ScatterPlotDTO> ScatterPlotData(string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
+        public List<ScatterPlotDTO> ScatterPlotData(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
         {
             using (IDbConnection conn = new SqlConnection(_connectionString))
+
             {
+                var xmlModel = GetXMLModelForProcedure(Hours, Month, Zone, WholeSales, AccNumbers);
                 var data = conn.Query<ScatterPlotDTO>("[WebSite].[ScatterPlotFilteredGetInfo]",
-                // new
-                // {
-                //     WholeBlockString = GetXMLWholeSales(WholeSales),
-                //     //WeatherScenarioString = GetXMLScenario(Scenario),
-                //     UtilityAccountNumberString = GetXMLAccNumbers(AccNumbers),
-                //     MonthsString = GetXMLMonths(Month),
-                //     HoursString = GetXMLHours(Hours),
-                // },
+                xmlModel,
                     commandType: CommandType.StoredProcedure).ToList();
                 return data;
             }
@@ -46,19 +41,45 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
         Months:   @MonthsString VARCHAR(8000) = NULL
         Months:   @HoursString VARCHAR(8000) = NULL
         */
+
+        private ScatterPlotXMLModel GetXMLModelForProcedure(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
+        {
+            var model = new ScatterPlotXMLModel
+            {
+                WholeBlockString = GetXMLWholeSales(WholeSales),
+                CongestionZoneString = GetXMLZones(Zone),
+                UtilityAccountNumberString = GetXMLAccNumbers(AccNumbers),
+                MonthsString = GetXMLMonths(Month),
+                HoursString = GetXMLHours(Hours),
+            };
+
+            return model;
+
+        }
+        private string GetXMLZones(string Zone)
+        {
+            var result = "";
+
+            if (Zone != "0")
+            {
+                for (int i = 0; i < Zone.Length; i++)
+                {
+                    result += $"<Row><CZ>{Zone[i]}</CZ></Row>";
+                }
+
+            }
+            return result == "" ? null : result;
+        }
         private string GetXMLHours(string hours)
         {
             var result = "";
-            if (hours == "0") return "";
-
             //<Row><HR>1</HR></Row><Row><HR>2</HR></Row>
-
             var hoursArray = hours.Split("h");
             foreach (var h in hoursArray)
             {
                 result += $"<Row><HR>{h}</HR></Row>";
             }
-            return result;
+            return (result == "" || hours == "0") ? null : result;
 
         }
         private string GetXMLMonths(string Month)
@@ -93,7 +114,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
                     param += $"<Row><MN>{value}</MN></Row>";
                 }
             }
-            return param;
+            return param == "" ? null : param;
         }
         private string GetXMLScenario(string Scenario)
         {
@@ -106,7 +127,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
                     param += $"<Row><WS>{Scenario[i]}</WS></Row>";
                 }
             }
-            return param;
+            return param == "" ? null : param;
         }
         private string GetXMLWholeSales(string WholeSales)
         {
@@ -119,7 +140,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
                     param += $"<Row><WH>{WholeSales[i]}</WH></Row>";
                 }
             }
-            return param;
+            return param == "" ? null : param;
         }
         private string GetXMLAccNumbers(string AccNumbers)
         {
@@ -132,7 +153,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
                     param += $"<Row><UA>{AccNumbers[i]}</UA></Row>";
                 }
             }
-            return param;
+            return param == "" ? null : param;
         }
         private string ConvertAndConcatParamsToXmls(string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
         {

@@ -5,6 +5,7 @@ let FilterMonth = ['0'];
 let FilterWholeSales = ['0'];
 let FilterCounterparty = ['0'];
 let currentGraphs = '';
+const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'peak'];
 
 let filtersKeys = {
     FilterMonth,
@@ -224,3 +225,53 @@ async function fillDropdownsMonthly() {
         selectAll: true
     });
 }
+
+const getGraphUrl = () => {}
+const getGraphDiv = (graphUrl) => {}
+
+function SetCurrentGraph() {
+
+    const graphs = document.querySelectorAll('#navCont > div');
+    const graphName = window.location.pathname.split('/')[2];
+    const graphIndex = graphsNames.indexOf(graphName.toLowerCase()) + 1;
+    graphs[graphIndex].setAttribute('id', 'selected');
+}
+async function DrawHorizontalGraphsNav() {
+    let wrapper = document.querySelector('.sub-nav');
+    let html = ` 
+                    <div id="navCont">
+                    <div>Graphs</div>
+                    <div><a href="HourlyScalar">  Standart Graphs</a></div>
+                    <div><a href="HourlyScalar">  Hourly Shapes</a></div>
+                    <div><a href="Risk">  Volumetric Risk</a></div>
+                    <div><a href="WeatherHourly">  Weather Scenario</a></div>
+                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
+                    <div><a href="Peak">  Peak Model</a></div>`;
+    wrapper.innerHTML = html;
+    SetCurrentGraph();
+}
+
+
+/*
+  <div id="navCont">
+                    <div>Graphs</div>
+                     <div><a href="aggregates">  Aggregates</a></div> 
+                    <div id="selected"><a href="monthly">  Standart Graphs</a></div>
+
+                     <div><a href="WeatherMonthly">  Weather Monthly</a></div> 
+
+                     <div><a href="WeatherHourly">  Weather Hourly</a></div> 
+                    <div><a href="WeatherHourly">  Weather Scenario</a></div>
+
+                     <div><a href="HourlyScalar">  Hourly Scalar</a></div> 
+                    <div><a href="HourlyScalar">  Hourly Shapes</a></div>
+                      <div><a href="Risk">  Risk</a></div> 
+                    <div><a href="Risk">  Volumetric Risk</a></div>
+
+                    <div><a href="Peak">  Peak Model</a></div>
+                    <div><a href="Mape">  MAPE</a></div>
+                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
+
+                     <div><a href="Deal">  Deal Entry Chart</a></div> 
+                </div> 
+*/

@@ -44,7 +44,7 @@ function drawChartWeatherHourly(arr) {
     ]);
 
     var options = {
-        width: 1250,
+        width: $(window).width(),
         height: 500,
         backgroundColor: 'none',
         curveType: 'function',

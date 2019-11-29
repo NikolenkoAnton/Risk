@@ -34,7 +34,7 @@ const drawGrap = async (arr) => {
     ]);
 
     const options = {
-        width: 1500,
+        width: $(window).width(),
         height: 400,
 
         legend: {

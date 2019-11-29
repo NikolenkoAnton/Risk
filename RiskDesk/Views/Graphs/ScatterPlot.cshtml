@@ -137,6 +137,7 @@
             try {
                 //tableInit();
                 AddHeader();
+                DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
                 fillScatterPlotDropdowns();
@@ -312,19 +313,6 @@
             <!-- Top Nav End -->
             <!-- Sub Nav End -->
             <div class="sub-nav hidden-sm hidden-xs">
-                <div id="navCont">
-                    <div>Graphs</div>
-                    <div id="selected"><a href="aggregates">  Aggregates</a></div>
-                    <div><a href="monthly">  Standart Graphs</a></div>
-                    <div><a href="WeatherMonthly">  Weather Monthly</a></div>
-                    <div><a href="WeatherHourly">  Weather Hourly</a></div>
-                    <div><a href="HourlyScalar">  Hourly Scalar</a></div>
-                    <div><a href="Risk">  Risk</a></div>
-                    <div><a href="Peak">  Peak Model</a></div>
-                    <div><a href="Mape">  MAPE</a></div>
-                    <div><a href="Deal">  Deal Entry Chart</a></div>
-                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
-                </div>
                 <div class="custom-search hidden-sm hidden-xs">
                     <input type="text" class="search-query" placeholder="Search here ...">
                     <i class="fa fa-search"></i>
@@ -343,10 +331,11 @@
                             <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
                             </select>
                         </div>
-
-                         <div class="filterCell">
-                            <div class="filterTitle">Select Weather Scenario</div>
-                            <select id="FilterScenario" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
+                        
+                            <div class="filterCell">
+                            <div class="filterTitle">Select Congestion Zone</div>
+                            <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
+                                
                             </select>
                         </div>
 
