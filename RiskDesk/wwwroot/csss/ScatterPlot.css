@@ -1,0 +1,16 @@
+.filterContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.filterCell {
+    width: 17%;
+}
+
+.filterCell.lastFilterCell {
+    margin-right: 0;
+}
+
+.graphsContainer {
+    overflow: hidden;
+}

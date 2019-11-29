@@ -117,6 +117,7 @@ const changeDropdowns = dropdown => {
 }
 
 const getMonth = async () => {
+    const urls = window.location.origin;
     const url = `/api/graphs/Month`;
     return getRequestData(url);
 }

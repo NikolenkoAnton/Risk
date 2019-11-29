@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using RiskDesk.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
@@ -219,5 +220,18 @@ namespace RiskDeskDev.Controllers
             List<WholeSalesGraphDTO> list = d.GetWholeSalesGraphs(Zone, WholeSales, AccNumbers);
             return list;
         }
+
+        [HttpGet]
+        [Route("ScatterPlot")]
+        public List<ScatterPlotDTO> GetScatterPlot(string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
+        {
+            var data = scatterService.ScatterPlotData(Hours, Month, Scenario, WholeSales, AccNumbers);
+            return data;
+        }
+        //WholeSale Block -
+        //Weather Scenario
+        //ID - 
+        //Months
+        //Hours
     }
 }

@@ -532,6 +532,10 @@ const getAggregatesHTML = () => {
                 <li>
                 <a href="${window.location.origin}/graphs/Mem">Mem</a>
                 </li>
+ </li>
+                <li>
+                <a href="${window.location.origin}/graphs/ScatterPlot">ScatterPlot</a>
+                </li>
                `;
 
     //�Deal Entry Chart�

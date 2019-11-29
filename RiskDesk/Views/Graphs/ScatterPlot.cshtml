@@ -51,12 +51,28 @@
     <script src="@Url.Content("~/Azure/AzureGeneral.js")"></script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link href="@Url.Content("~/csss/ScatterPlot.css")" rel="stylesheet">
+
 
     <script type="text/javascript" src="@Url.Content("~/Scripts/Graphs/Main.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/ScatterPlot/ScatterUpdateService.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/ScatterPlot/ScatterAPI.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/ScatterPlot/ScatterMain.js")"></script>
-   
+
     <!--<![endif]-->-->
     <style>
+         .dashboard-wrapper {
+            background-image:url("@Url.Content("~/Background.jpg")");
+        }
+        .filterTitle {
+            font-weight:bold;
+            color:white;
+        }
+        #graph1 {
+            border:5px solid black;
+             background-image:url("@Url.Content("~/Background.jpg")");  
+              background:rgba(255,255,255,0.5);
+        }
         .loader {
             border: 16px solid #f3f3f3;
             border-radius: 50%;
@@ -108,9 +124,9 @@
         }
 
         /* Safari */
-#ms-list-1,#ms-list-2,#ms-list-3 {
-    position:relative;
-}
+        #ms-list-1, #ms-list-2, #ms-list-3 {
+            position: relative;
+        }
     </style>
     <script>
 
@@ -123,6 +139,7 @@
                 AddHeader();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
+                fillScatterPlotDropdowns();
 
             }
             catch (e) {
@@ -156,9 +173,9 @@
             width: 100%;
         }
     </style>
-    
-<link href="@Url.Content("~/jquery.multiselect.css")" rel="stylesheet" />
-<script src="@Url.Content("~/jquery.multiselect.js")"></script>
+
+    <link href="@Url.Content("~/jquery.multiselect.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/jquery.multiselect.js")"></script>
 </head>
 
 <body onload="Initialize()">
@@ -306,7 +323,7 @@
                     <div><a href="Peak">  Peak Model</a></div>
                     <div><a href="Mape">  MAPE</a></div>
                     <div><a href="Deal">  Deal Entry Chart</a></div>
-                    <div><a href="ScatterPlot">  Deal Entry Chart</a></div>
+                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
                 </div>
                 <div class="custom-search hidden-sm hidden-xs">
                     <input type="text" class="search-query" placeholder="Search here ...">
@@ -321,27 +338,40 @@
                     <!-- Row Start -->
                     <div class="filterContainer">
 
-                        <div class="filterCell">
-                            <div class="filterTitle">Select Wholesale Blocks</div>
-                            <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" onchange="changeFilter()">
-                                
-                                
+                        <div class="filterCell firstCell">
+                            <div class="filterTitle">Select Month</div>
+                            <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
                             </select>
-                            </div>
+                        </div>
+
+                         <div class="filterCell">
+                            <div class="filterTitle">Select Weather Scenario</div>
+                            <select id="FilterScenario" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
+                            </select>
+                        </div>
+
 
                         <div class="filterCell">
-                            <div class="filterTitle">Select Congestion Zone</div>
-                            <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" onchange="changeFilter()">
-                                
+                            <div class="filterTitle">Select Wholesale Block</div>
+                            <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
                             </select>
                         </div>
 
                         <div class="filterCell">
                             <div class="filterTitle">Select AccountID</div>
-                            <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeFilter()">
-                               
+                            <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
                             </select>
                         </div>
+
+                        <div class="filterCell lastFilterCell">
+                            <div class="filterTitle">Select Hours</div>
+                            <select id="FilterHours" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
+                            </select>
+                        </div>
+
+
+
+
 
                     </div>
                     <div class="graphsContainer">
@@ -349,33 +379,10 @@
                         <div class="graphCell">
                             <div class="graphs" id="graph1"></div>
 
-                            <div class="table" id="table1"></div>
 
                         </div>
 
-                        <div class="graphCell">
-                            <div class="graphs" id="graph2"></div>
-
-                            <div class="table" id="table2"></div>
-
-                        </div>
-
-                        <div class="graphCell">
-                            <div class="graphs" id="graph3"></div>
-
-                            <div class="table" id="table3"></div>
-
-                        </div>
-
-                        <div class="graphCell">
-                            <div class="graphs" id="graph4"></div>
-
-                            <div class="table" id="table4"></div>
-
-                        </div>
-                        <!-- Left Sidebar End -->
-                        <!-- Right Sidebar Start -->
-                        <!-- Right Sidebar End -->
+                      
                     </div>
 
                     <!-- Dashboard Wrapper End -->
