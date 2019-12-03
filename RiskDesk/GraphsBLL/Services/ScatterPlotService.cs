@@ -155,11 +155,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
             }
             return param == "" ? null : param;
         }
-        private string ConvertAndConcatParamsToXmls(string Hours, string Month, string Scenario, string WholeSales, string AccNumbers)
-        {
-            var result = GetXMLHours(Hours) + GetXMLMonths(Month) + GetXMLScenario(Scenario) + GetXMLWholeSales(WholeSales) + GetXMLAccNumbers(AccNumbers);
-            return result;
-        }
+
         #region ParseToXML
 
 

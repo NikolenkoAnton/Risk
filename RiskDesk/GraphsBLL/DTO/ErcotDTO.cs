@@ -1,0 +1,18 @@
+using System;
+
+namespace RiskDesk.GraphsBLL.DTO
+{
+    public class ErcotDTO
+    {
+        //public int WholeSaleBlocksID { get; set; }
+        public string WholeSaleBlocks { get; set; }
+        //public string UtilityAccountNumber { get; set; }
+        //public DateTime XDATE { get; set; }
+        //public int XMONTH { get; set; }
+        // public double HE { get; set; }
+        public double TempF { get; set; }
+        // public double RealTimePrice { get; set; }
+        public double ErcotLoad { get; set; }
+        public double LoadKW { get; set; }
+    }
+}

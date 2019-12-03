@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.GraphsBLL.Interfaces;
+using RiskDesk.GraphsBLL.QueryDTO;
 using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
@@ -48,10 +50,12 @@ namespace RiskDeskDev.Controllers
         private readonly IMapePeakService peakServ;
         private readonly IDealService dealServ;
         private readonly IScatterPlotService scatterService;
+        private readonly IErcotService _ercotService;
         //private readonly DealService service;
         public GraphsApiController(IDB d, IMapePeakService peakServ,
             IHourlyScalarService hourlyServ, IRiskService riskServ,
-            IDealService dealServ, IScatterPlotService scatterService)
+            IDealService dealServ, IScatterPlotService scatterService,
+            IErcotService ercotService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
@@ -59,6 +63,7 @@ namespace RiskDeskDev.Controllers
             this.peakServ = peakServ;
             this.dealServ = dealServ;
             this.scatterService = scatterService;
+            _ercotService = ercotService;
             // d = new DB();
         }
 
@@ -228,10 +233,14 @@ namespace RiskDeskDev.Controllers
             var data = scatterService.ScatterPlotData(Hours, Month, Zone, WholeSales, AccNumbers);
             return data;
         }
-        //WholeSale Block -
-        //Weather Scenario
-        //ID - 
-        //Months
-        //Hours
+
+        [HttpGet]
+        [Route("Ercot")]
+        public List<ErcotDTO> GetErcotData([FromQuery]ErcotQueryDTO query) //string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
+        {
+            var data = _ercotService.Ercot(query);
+            return data;
+        }
+
     }
 }
