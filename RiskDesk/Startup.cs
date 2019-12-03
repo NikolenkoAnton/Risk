@@ -17,10 +17,14 @@ using Newtonsoft.Json;
 using T;
 using RiskDeskDev.Web.GraphsBLL.Interfaces;
 using RiskDeskDev.Web.GraphsBLL.Services;
+using RiskDesk.GraphsBLL.Interfaces;
+using RiskDesk.GraphsBLL.Services;
+using RiskDesk.Dao;
+using RiskDesk.GraphsBLL.DTO;
 
 namespace RiskDeskDev
 {
-    public class Startup
+    public partial class Startup
     {
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
@@ -29,7 +33,21 @@ namespace RiskDeskDev
         }
 
         public IConfiguration Configuration { get; }
+        public void RegisterServices(IServiceCollection services)
+        {
+            services.AddTransient<IHourlyScalarService, HourlyScalarService>();
+            services.AddTransient<IRiskService, RiskService>();
+            services.AddTransient<IMapePeakService, MapePeakService>();
+            services.AddSingleton<IDealService, DealService>();
+            services.AddTransient<IMapePeakService, MapePeakService>();
+            services.AddTransient<IDealEntryServiceSecond, DealEntryServiceSecond>();
+            services.AddTransient<IScatterPlotService, ScatterPlotService>();
+            services.AddTransient<IXMLService, XMLService>();
+            services.AddTransient<IErcotService, ErcotService>();
+            services.AddTransient<IErcotRepository, ErcotRepository>();
+            // services.AddTransient<IGraphsRepository<T>, GraphsRepository<ErcotDTO>>();
 
+        }
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -39,16 +57,9 @@ namespace RiskDeskDev
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            RegisterServices(services);
 
             services.AddTransient<IDB, DB>();
-            services.AddTransient<IHourlyScalarService, HourlyScalarService>();
-            services.AddTransient<IRiskService, RiskService>();
-            services.AddTransient<IMapePeakService, MapePeakService>();
-            services.AddSingleton<IDealService, DealService>();
-            services.AddTransient<IMapePeakService, MapePeakService>();
-            services.AddTransient<IDealEntryServiceSecond, DealEntryServiceSecond>();
-            services.AddTransient<IScatterPlotService, ScatterPlotService>();
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
