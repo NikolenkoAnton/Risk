@@ -9,5 +9,7 @@ namespace RiskDesk.GraphsBLL.Interfaces
     {
         List<ErcotDTO> Ercot(ErcotQueryDTO queryParam);
 
+        List<ErcotMonthDTO> Ercot1(ErcotQueryDTO queryParam);
+
     }
 }

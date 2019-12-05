@@ -36,9 +36,46 @@ namespace RiskDesk.GraphsBLL.Services
         public List<ErcotDTO> Ercot(ErcotQueryDTO queryParam)
         {
             var xmlModel = queryParam.GetXmlModel();
+            var months = queryParam.GetMonths();
             var procedureName = "[WebSite].[ErcotLoadAnimateFilteredGetInfo]";
             //var a = GetDataForAllMonths(xmlModel);
-            return _ercotRep.GetGraphData<ErcotXMLDTO>(xmlModel, procedureName);
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
+                var data = conn.Query<ErcotDTO>(procedureName,
+                xmlModel,
+                    commandType: CommandType.StoredProcedure).AsList();
+                return data;
+            }
+            //return _ercotRep.GetGraphData<ErcotXMLDTO>(xmlModel, procedureName);
+        }
+        public List<ErcotMonthDTO> Ercot1(ErcotQueryDTO queryParam)
+        {
+            List<ErcotMonthDTO> datas = new List<ErcotMonthDTO>();
+            var xmlModel = queryParam.GetXmlModel();
+            // var months = queryParam.Month;
+            var procedureName = "[WebSite].[ErcotLoadAnimateFilteredGetInfo]";
+            //var a = GetDataForAllMonths(xmlModel);
+
+            var months = queryParam.GetMonths();
+            var order = 1;
+
+            foreach (var m in months)
+            {
+                var monthData = new ErcotMonthDTO { order = order };
+
+                using (IDbConnection conn = new SqlConnection(_connectionString))
+                {
+                    var xml = queryParam.GetXmlModel();
+                    xml.MonthsString = $"<Row><MN>{m}</MN></Row>";
+                    var data = conn.Query<ErcotDTO>(procedureName,
+                    xml,
+                        commandType: CommandType.StoredProcedure).AsList();
+                    monthData.data = data;
+                }
+                datas.Add(monthData);
+                order++;
+            }
+            return datas;
         }
         private string[] ParseMonthsNumbers(ErcotQueryDTO queryParam)
         {

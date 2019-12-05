@@ -36,6 +36,10 @@
 
 
     <script src="@Url.Content("~/js/jquery.js")"></script>
+    <script src="@Url.Content("~/js/jquery-ui-v1.10.3.js")"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
     <!-- <script src="@Url.Content("~/js/jquery.datatables.js")"></script>
     <script src="@Url.Content("~/js/jquery.scrollUp.js")"></script>
     AutoComplete New-- -->
@@ -49,12 +53,22 @@
     <!--Links to Azure-->
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Ercot/ErcotMain.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Ercot/ErcotAPI.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Ercot/ErcotDrops.js")"></script>
 
 
     <script type="text/javascript" src="@Url.Content("~/Scripts/Graphs/Main.js")"></script>
 
     <!--<![endif]-->-->
     <style>
+        .graphsWrapper {
+            position: relative;
+        }
+        #play { 
+            width:25px;
+            height:25px;
+        }
          .dashboard-wrapper {
             background-image:url("@Url.Content("~/Background.jpg")");
         }
@@ -92,8 +106,17 @@
     </style>
     <script>
 
+
             function Initialize() {
+                $( "#polzunok" ).slider({
+    animate: "slow",
+    range: "min",    
+    value: 1,
+    
+    max:12
+});
                 AddHeader();
+                fillDropdowns();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
         }
@@ -109,7 +132,16 @@
             text-align: center;
         }
 
-
+#currMonth{
+    position: absolute;
+    width:150px;
+    height: 150px;
+    top: 0;
+    right: 0;
+    font-size: 25px;
+    text-align: center;
+    padding: 38px;
+}
        /* .graphsContainer {
             display: flex;
             flex-wrap: nowrap;
@@ -272,9 +304,9 @@
                     <!-- Row Start -->
                     <div class="row">
 
-                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" onmouseout="ChangeMonths(event)">
                             <div class="filterTitle">Select Month</div>
-                            <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops()">
+                            <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
                         
@@ -311,8 +343,11 @@
                     </div>
 
                     <div class="row graphsWrapper">
-
+ <div class="graphs" id="graph1"></div>
+ <div id="currMonth"></div>
                     </div>
+                    <div class="row"><img id="play"  src="~/Play.png" alt="Logo" /><div id="polzunok"></div></div>
+                    <!-- <img src="~/Play.png" alt="Logo" />"@Url.Content("~/Background.jpg")" -->
                     <!-- <div class="graphsContainer">
 
                         <div class="graphCell">

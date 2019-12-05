@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RiskDesk.GraphsBLL.DTO
 {
@@ -14,5 +15,12 @@ namespace RiskDesk.GraphsBLL.DTO
         // public double RealTimePrice { get; set; }
         public double ErcotLoad { get; set; }
         public double LoadKW { get; set; }
+    }
+
+    public class ErcotMonthDTO
+    {
+        public List<ErcotDTO> data { get; set; }
+
+        public int order { get; set; }
     }
 }

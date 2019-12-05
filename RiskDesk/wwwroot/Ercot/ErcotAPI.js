@@ -12,9 +12,9 @@ const getGraphData = () => {
 const getQueryParam = () => {
     const arr = [...document.querySelectorAll('.dropdownFilter')]; // month scenario wholeSales AccNumber Hours
 
-    const hours = `Hours=${getSelectedHours(arr[4])}`;
+    const hours = `Hours=${getSelectedFields(arr[4])}`;
     const month = `Month=${getSelectedMonths(arr[0])}`;
-    const scenario = `Zone=${getSelectedFields(arr[1])}`;
+    const zones = `Zone=${getSelectedFields(arr[1])}`;
     const wholesale = `WholeSales=${getSelectedFields(arr[2])}`;
     const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
     return `?${hours}&${month}&${zones}&${wholesale}&${accNumbers}`;

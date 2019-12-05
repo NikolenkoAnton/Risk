@@ -1,3 +1,25 @@
+const getSelectedMonthsValue = () => {
+    const str = getSelectedMonths($('#FilterMonth')[0]);
+    return str.length;
+
+
+}
+
+const getSelectedMonths = (dropdown) => {
+    let indexes = '';
+    const options = [...dropdown.selectedOptions];
+    for (const opt of options) {
+        if (opt.value.length > 1) {
+            if (opt.value == '10') indexes += 'O';
+
+            if (opt.value == '11') indexes += 'N';
+
+            if (opt.value == '12') indexes += 'D';
+        } else indexes += opt.value;
+    }
+    if (indexes === "0" || indexes === "") return "D";
+    return (indexes.length || indexes !== '0') ? indexes : 'D';
+}
 async function fillHours() {
     const hoursDropdown = document.querySelector('#FilterHours');
     for (let i = 0; i < 24; i++) {
@@ -11,9 +33,8 @@ async function fillHours() {
 async function fillMonth() {
     const monthes = (await getMonth()).slice(1);
     const monthDropdown = document.querySelector('#FilterMonth');
-    console.log(monthes);
     for (const month of monthes) {
-        const index = monthes.indexOf(month);
+        const index = monthes.indexOf(month) + 1;
         monthDropdown.innerHTML += getSelectOption(month.name, index);
 
     }
