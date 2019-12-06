@@ -6,6 +6,7 @@ const getSelectedMonthsValue = () => {
 }
 
 const getSelectedMonths = (dropdown) => {
+
     let indexes = '';
     const options = [...dropdown.selectedOptions];
     for (const opt of options) {

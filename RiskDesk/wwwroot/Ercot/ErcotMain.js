@@ -1,19 +1,13 @@
 var ArrayOfDataMonths = [];
+
 google.charts.load('current', {
     'packages': ['corechart', 'scatter']
 });
 google.charts.setOnLoadCallback(changeDrops);
-//animation:{
-//     duration: 1000,
-//     easing: 'out',
-//   },
 
-isMonthsDataLoad = false;
 
 const blocksNames = ['2x16', '5x16', '7x8'];
 
-// var data = google.visualization.arrayToDataTable(
-//     ['Temperature (F)', '2x16', '5x16', '7x8']);
 const procesGraphsDataBeforeDrawc = (data) => {
     const tempsArr = new Set(data.map(el => el.tempF));
     const mapData = data.map(el => ({
@@ -56,122 +50,121 @@ function processListOfDatas(arrObj) {
     return arrDatas;
 }
 async function changeDrops() {
-    isMonthsDataLoad = true;
     const data = await getGraphData();
-    isMonthsDataLoad = false;
     const graphRows = await processListOfDatas(data);
     //drawStuffAnimate(graphRows);
     ArrayOfDataMonths = graphRows;
-    $("#polzunok").slider("option", {
-        min: 1,
-        max: getSelectedMonthsValue()
-    });
 
-    function draw() {
-        var chartDiv = document.getElementById('graph1');
-        var chart = new google.visualization.ScatterChart(chartDiv);
+}
+var f;
 
-        var options = {
-            title: `Load \\ Temperature Scatter Plot`,
-            width: $(window).width(),
-            height: 650,
-            hAxis: {
-                title: 'Temperature (F)',
+async function draw(rows) {
+    var chartDiv = document.getElementById('graph1');
 
-            },
-            vAxis: {
-                title: 'Load KWt',
+    var chart = new google.visualization.ScatterChart(chartDiv);
 
-            },
-            legend: {
-                position: 'top',
-                // textStyle: {
-                //     color: 'blue',
-                //     fontSize: 16
-                // }
-            },
-            'backgroundColor': 'none',
-            colors: ['#118DFF', '#E8D166', '#573B92'],
-            animation: {
-                duration: 4000,
-                easing: 'inAndOut',
-                //startup: true
-            },
+    var options = {
+        title: `Load \\ Temperature Scatter Plot`,
+        width: $(window).width(),
+        height: 650,
+        hAxis: {
+            title: 'Temperature (F)',
 
-        };
+        },
+        vAxis: {
+            title: 'Load KWt',
 
-        function handleNewDraw(data, count) {
-            const months = getSelectedMonths();
-            options['title'] = `Load \\ Temperature Scatter Plot   Current month - ' + ${months[count]}`;
-            setTimeout(function () {
-                chart.draw(data, options)
-            }, 2000);
+        },
+        legend: {
+            position: 'top',
+        },
+        'backgroundColor': 'none',
+        colors: ['#118DFF', '#E8D166', '#573B92'],
+        animation: {
+            duration: 1000,
+            easing: 'inAndOut',
+            //startup: true
+        },
+    };
 
+    async function animateDraw() {
+        const dropdown = $('#FilterMonth')[0];
+        const arrOfMonth = getSelectedMonths(dropdown).split('');
+        let a = await recurse(arrOfMonth);
+        do {
+            a = await recurse(a);
+        } while (a);
 
+        async function recurse(arr) {
+            const m = arr[0];
+            if (!m || !arr) return;
+            const params = "?Month=" + m + "&" + getQueryParamButMonth();
+            const data = await getGraphData(params);
+            const mappedData = (await processListOfDatas(data))[0];
+            chart.draw(google.visualization.arrayToDataTable([
+                ['Temperature (F)', '2x16', '5x16', '7x8'],
+                ...mappedData
+            ]), options);
+            return arr.slice(1);
         }
-
-        function changeCurrMonth(index, dt) {
-            chart.draw(dt, options);
-            google.visualization.events.addListener(chart, 'animationfinish',
-                function () {
-                    $("#polzunok").slider("value", index);
-                    $('#currMonth').text(index);
-                });
-
-        }
-
-        function animateGraph() {
-            for (let i = 0; i < ArrayOfDataMonths.length; i++) {
-                let dt = google.visualization.arrayToDataTable([
-                    ['Temperature (F)', '2x16', '5x16', '7x8'],
-                    ...ArrayOfDataMonths[i]
-                ]);
-                const c = i + 1;
-                changeCurrMonth(c, dt);
-                // setTimeout(function () {
-                //     const c = i + 1;
-                //     chart.draw(dt, options);
-                //     $("#polzunok").slider("value", c);
-                //     $('#currMonth').text(c);
-
-                // }, 2000);
-
-            }
-        }
-        const img = document.getElementById('play');
-        img.onclick = animateGraph;
-        let countMonth = graphRows.length;
-        let row = graphRows[countMonth - 1];
-        const currData = google.visualization.arrayToDataTable([
-            ['Temperature (F)', '2x16', '5x16', '7x8'],
-            ...row
-        ]);
-        chart.draw(currData, options);
-        $('#currMonth').text(countMonth);
-        // for (const row of graphRows) {
-        //     let count = 0;
-        //     const currData = google.visualization.arrayToDataTable([
-        //         ['Temperature (F)', '2x16', '5x16', '7x8'],
-        //         ...row
-        //     ]);
-
-        //     if (count === 0) {
-        //         chart.draw(currData, options);
-        //     } else {
-        //         handleNewDraw(currData, count)
-        //     };
-        //     count++;
-        //     //setTimeout(materialChart.draw(currData, google.charts.Scatter.convertOptions(materialOptions)));
-        // }
-
 
     }
-    draw();
+
+
+    // for (let i = 0; i < functionsArray.length - 1; i++) {
+    //     const curr = functionsArray[i];
+    //     const next = functionsArray[i + 1];
+    //     curr();
+    //     google.visualization.events.addOneTimeListener(chart, 'animationfinish', randomWalk);
+
+    // }
+    //  google.visualization.events.addOneTimeListener(chart, 'animationfinish', randomWalk);
+
+    f = animateDraw;
+    const params = "?Month=D";
+    const data = await getGraphData(params);
+    const mappedData = (await processListOfDatas(data))[0];
+    chart.draw(google.visualization.arrayToDataTable([
+        ['Temperature (F)', '2x16', '5x16', '7x8'],
+        ...mappedData
+    ]), options);
 }
 
 
-const ChangeMonths = (event) => {
 
-    if (isMonthsDataLoad) return;
-    changeDrops();
-}
+
+
+
+
+
+// async function animateDraw() {
+//     const data = await getGraphData();
+//     const mappedData = await processListOfDatas(data);
+//     let functionsArray = [];
+//     for (let i = 0; i < mappedData.length; i++) {
+//         function funcItem() {
+//             let dt = google.visualization.arrayToDataTable([
+//                 ['Temperature (F)', '2x16', '5x16', '7x8'],
+//                 ...mappedData[i]
+//             ]);
+//             console.log("cycle")
+//             chart.draw(dt, options);
+//         }
+//         functionsArray.push(funcItem);
+//     }
+
+//     function recurse() {
+//         if (!functionsArray) return;
+//         console.log(functionsArray);
+//         const ff = functionsArray[0];
+//         ff();
+//         functionsArray = functionsArray.slice(1);
+//     }
+//     let timerId = setInterval(recurse, 1000);
+
+//     // остановить вывод через 5 секунд
+//     setTimeout(() => {
+//         clearInterval(timerId);
+//     }, 1000 * mappedData.length);
+
+// }

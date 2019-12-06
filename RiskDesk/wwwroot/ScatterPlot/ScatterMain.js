@@ -7,7 +7,6 @@ const blocksNames = ['2x16', '5x16', '7x8'];
 function drawStuff(dataRows) {
     // var button = document.getElementById('change-chart');
     var chartDiv = document.getElementById('graph1');
-    debugger;
     // var data = new google.visualization.DataTable();
     // data.addColumn('number', 'Temperature (F)');
     // // data.addColumn('number', 'Load (KW)');

@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Template</title>
+    <title>Ercot</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
@@ -48,7 +48,7 @@
     <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/Customer.js")"></script> -->
     <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/AutoComplete.js")"></script> -->
     <!-- <script type="text/javascript" src="Scripts/DealEntry.js"></script> -->
-    <!-- <script type="text/javascript" src="Scripts/Facility.js"></script>--> 
+    <!-- <script type="text/javascript" src="Scripts/Facility.js"></script>-->
     <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script> -->
     <!--Links to Azure-->
 
@@ -62,10 +62,14 @@
 
     <!--<![endif]-->-->
     <style>
+        .buttWrapp {
+            display: flex;
+            justify-content:center;
+        }
         .graphsWrapper {
             position: relative;
         }
-        #play { 
+        #play {
             width:25px;
             height:25px;
         }
@@ -78,7 +82,7 @@
         }
         #graph1 {
             border:5px solid black;
-             background-image:url("@Url.Content("~/Background.jpg")");  
+             background-image:url("@Url.Content("~/Background.jpg")");
               background:rgba(255,255,255,0.5);
         }
         /* .loader {
@@ -87,11 +91,11 @@
             border-top: 16px solid #3498db;
             width: 120px;
             height: 120px;
-            -webkit-animation: spin 2s linear infinite; 
+            -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
 */
-    
+
       /*  .container {
             overflow-x: auto;
             overflow-y: auto;
@@ -102,19 +106,13 @@
         }
         */
 
-       
+
     </style>
     <script>
 
 
             function Initialize() {
-                $( "#polzunok" ).slider({
-    animate: "slow",
-    range: "min",    
-    value: 1,
-    
-    max:12
-});
+draw();
                 AddHeader();
                 fillDropdowns();
                 document.querySelector('#FirstColumn').classList = '';
@@ -304,36 +302,40 @@
                     <!-- Row Start -->
                     <div class="row">
 
-                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" onmouseout="ChangeMonths(event)">
+                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <div class="filterTitle">Select Month</div>
                             <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
-                        
+
                             <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <div class="filterTitle">Select Congestion Zone</div>
-                            <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops()">
-                                
+                            <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" >
+
                             </select>
                         </div>
 
 
                         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <div class="filterTitle">Select Wholesale Block</div>
-                            <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops()">
+                            <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
 
                         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <div class="filterTitle">Select AccountID</div>
-                            <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops()">
+                            <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
 
+
                         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <div class="filterTitle">Select Hours</div>
-                            <select id="FilterHours" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops()">
+                            <select id="FilterHours" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
+                        </div>
+                         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                <div class="btn btn-lg btn-primary" style="width:200px;" onclick="f()">  Draw graph</div>
                         </div>
 
 
@@ -344,19 +346,17 @@
 
                     <div class="row graphsWrapper">
  <div class="graphs" id="graph1"></div>
- <div id="currMonth"></div>
                     </div>
-                    <div class="row"><img id="play"  src="~/Play.png" alt="Logo" /><div id="polzunok"></div></div>
+                                    <!-- <button type="button" class="col-md-4" id="Draw" class="btn btn-lg btn-primary" data-original-title="" title=""  onclick="f()" >Draw graph</button> -->
                     <!-- <img src="~/Play.png" alt="Logo" />"@Url.Content("~/Background.jpg")" -->
                     <!-- <div class="graphsContainer">
-
                         <div class="graphCell">
                             <div class="graphs" id="graph1"></div>
 
 
                         </div>
 
-                      
+
                     </div> -->
 
                     <!-- Dashboard Wrapper End -->

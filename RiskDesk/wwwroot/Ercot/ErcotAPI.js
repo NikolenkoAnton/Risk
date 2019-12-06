@@ -4,8 +4,9 @@ async function getRequestData(url) {
     return response.json();
 }
 
-const getGraphData = () => {
-    const url = `/api/graphs/Ercot` + getQueryParam(); //hours ,Month,  Scenario, WholeSales, AccNumbers
+const getGraphData = (params) => {
+    params = params ? params : getQueryParam();
+    const url = `/api/graphs/Ercot` + params; //hours ,Month,  Scenario, WholeSales, AccNumbers
     return getRequestData(url);
 }
 
@@ -18,4 +19,13 @@ const getQueryParam = () => {
     const wholesale = `WholeSales=${getSelectedFields(arr[2])}`;
     const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
     return `?${hours}&${month}&${zones}&${wholesale}&${accNumbers}`;
+}
+const getQueryParamButMonth = () => {
+    const arr = [...document.querySelectorAll('.dropdownFilter')]; // month scenario wholeSales AccNumber Hours
+
+    const hours = `Hours=${getSelectedFields(arr[4])}`;
+    const zones = `Zone=${getSelectedFields(arr[1])}`;
+    const wholesale = `WholeSales=${getSelectedFields(arr[2])}`;
+    const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
+    return `${hours}&${zones}&${wholesale}&${accNumbers}`;
 }
