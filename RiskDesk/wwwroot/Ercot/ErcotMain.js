@@ -5,9 +5,14 @@ google.charts.load('current', {
 });
 google.charts.setOnLoadCallback(changeDrops);
 
+const blocksColors = ['#118DFF', '#E8D166', '#573B92', '#233cde'];
+const blocksNames = ['2x16', '5x16', '7x8', '7x24'];
 
-const blocksNames = ['2x16', '5x16', '7x8'];
-
+const addSelectedBlocksToGraph = (temp, blocksCount) => {
+    const row = [temp];
+    for (let i = 0; i < blocksCount; i++) row.push(0);
+    return row;
+}
 const procesGraphsDataBeforeDrawc = (data) => {
     const tempsArr = new Set(data.map(el => el.tempF));
     const mapData = data.map(el => ({
@@ -17,13 +22,16 @@ const procesGraphsDataBeforeDrawc = (data) => {
     }));
 
     const graphRows = [];
+    const selectedWholeSales = getSelectedWholeBlocks();
+    const whlblckCount = selectedWholeSales.length;
 
+    //2x16
     for (const t of tempsArr) {
-        const row = [t, 0, 0, 0];
+        const row = addSelectedBlocksToGraph(t, whlblckCount);
         for (const blocks of mapData) {
 
             if (blocks.temp === t) {
-                const blockIndex = blocksNames.indexOf(blocks.block) + 1;
+                const blockIndex = selectedWholeSales.indexOf(blocks.block) + 1;
                 row[blockIndex] = blocks.KW;
             }
 
@@ -79,7 +87,7 @@ async function draw(rows) {
             position: 'top',
         },
         'backgroundColor': 'none',
-        colors: ['#118DFF', '#E8D166', '#573B92'],
+        colors: blocksColors,
         animation: {
             duration: 1000,
             easing: 'inAndOut',
@@ -101,8 +109,11 @@ async function draw(rows) {
             const params = "?Month=" + m + "&" + getQueryParamButMonth();
             const data = await getGraphData(params);
             const mappedData = (await processListOfDatas(data))[0];
+
+            const graphHeader = ['Temperature (F)', ...getSelectedWholeBlocks()];
+            options['colors'] = getBlocksColors();
             chart.draw(google.visualization.arrayToDataTable([
-                ['Temperature (F)', '2x16', '5x16', '7x8'],
+                graphHeader,
                 ...mappedData
             ]), options);
             return arr.slice(1);
@@ -125,7 +136,7 @@ async function draw(rows) {
     const data = await getGraphData(params);
     const mappedData = (await processListOfDatas(data))[0];
     chart.draw(google.visualization.arrayToDataTable([
-        ['Temperature (F)', '2x16', '5x16', '7x8'],
+        ['Temperature (F)', '2x16', '5x16', '7x8', '7x24'],
         ...mappedData
     ]), options);
 }

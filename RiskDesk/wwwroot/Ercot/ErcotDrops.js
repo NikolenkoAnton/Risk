@@ -4,7 +4,19 @@ const getSelectedMonthsValue = () => {
 
 
 }
+const getSelectedWholeBlocks = () => {
+    let selectedIndexes = $('#FilterWholeSales').val();
+    selectedIndexes = selectedIndexes ? selectedIndexes.map(el => Number(el)) : [1, 2, 3, 4];
+    const selectedNames = selectedIndexes.map((el) => blocksNames[el - 1]);
+    return selectedNames;
 
+}
+const getBlocksColors = () => {
+    let selectedIndexes = $('#FilterWholeSales').val();
+    selectedIndexes = selectedIndexes ? selectedIndexes.map(el => Number(el)) : [1, 2, 3, 4];
+    const colors = selectedIndexes.map(el => blocksColors[el - 1]);
+    return colors;
+}
 const getSelectedMonths = (dropdown) => {
 
     let indexes = '';

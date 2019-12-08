@@ -5,7 +5,7 @@ let FilterMonth = ['0'];
 let FilterWholeSales = ['0'];
 let FilterCounterparty = ['0'];
 let currentGraphs = '';
-const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'peak'];
+const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'ercot', 'peak', ];
 
 let filtersKeys = {
     FilterMonth,
@@ -42,11 +42,6 @@ const getFilteringStringMontly = () => {
     const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
     return `?${month}&${scenario}&${wholesale}&${accNumbers}`;
 }
-//const getRequestData = async (url) => {
-
-//    const response = await fetch(url);
-//    return response.json();
-//}
 
 const setStartedDropdownValue = dropdowns => {
     for (const drop of dropdowns) {
