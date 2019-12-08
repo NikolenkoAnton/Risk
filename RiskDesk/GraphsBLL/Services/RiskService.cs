@@ -10,7 +10,8 @@ using System.Data;
 
 namespace RiskDeskDev.GraphsBLL.Services
 {
-    public class RiskService : IRiskService {
+    public class RiskService : IRiskService
+    {
 
         private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
 
@@ -138,10 +139,10 @@ namespace RiskDeskDev.GraphsBLL.Services
     }
     public class RiskDropDTO
     {
-       public IEnumerable<MonthDTO> months { get; set; }
+        public IEnumerable<MonthDTO> months { get; set; }
 
-       public IEnumerable<CongestionZoneDTO> zones {get;set;}
-       public IEnumerable<AccNumberDTO> numbers { get; set; }
+        public IEnumerable<CongestionZoneDTO> zones { get; set; }
+        public IEnumerable<AccNumberDTO> numbers { get; set; }
 
     }
 }

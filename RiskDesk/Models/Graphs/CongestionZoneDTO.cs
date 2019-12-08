@@ -7,7 +7,7 @@ namespace RiskDeskDev.Models.Graphs
 {
     public class CongestionZoneDTO
     {
-        public  string Zone { get; set; }
+        public string Zone { get; set; }
 
     }
 }

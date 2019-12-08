@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RiskDesk.GraphsBLL;
 using Microsoft.Extensions.Configuration;
 using RiskDesk.GraphsBLL.DTO;
 using RiskDesk.GraphsBLL.Interfaces;
@@ -51,11 +52,12 @@ namespace RiskDeskDev.Controllers
         private readonly IDealService dealServ;
         private readonly IScatterPlotService scatterService;
         private readonly IErcotService _ercotService;
+        private readonly IDropdownService _dropService;
         //private readonly DealService service;
         public GraphsApiController(IDB d, IMapePeakService peakServ,
             IHourlyScalarService hourlyServ, IRiskService riskServ,
             IDealService dealServ, IScatterPlotService scatterService,
-            IErcotService ercotService)
+            IErcotService ercotService, IDropdownService dropService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
@@ -64,6 +66,7 @@ namespace RiskDeskDev.Controllers
             this.dealServ = dealServ;
             this.scatterService = scatterService;
             _ercotService = ercotService;
+            _dropService = dropService;
             // d = new DB();
         }
 
@@ -137,14 +140,18 @@ namespace RiskDeskDev.Controllers
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
-            return d.GetAllCongestionZone();
+            var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
+            var a = d.GetAllCongestionZone();
+            return a;
         }
 
         [HttpGet]
         [Route("AccNumbers")]
         public List<AccNumberDTO> GetAccNumbers()
         {
-            return d.GetAllAccNumber();
+            var a1 = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber }).ToList();
+            var a = d.GetAllAccNumber();
+            return a;
         }
 
         [HttpGet]
@@ -172,14 +179,18 @@ namespace RiskDeskDev.Controllers
         [Route("Month")]
         public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
         {
-            return d.getAllMonth();
+            var a = _dropService.GetData<Month>(new Month());
+            var a1 = d.getAllMonth();
+            return a1;
         }
 
         [HttpGet]
         [Route("Scenario")]
         public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
         {
-            return d.getAllScenario();
+            var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
+            var a1 = d.getAllScenario();
+            return a1;
         }
 
         [HttpGet]
