@@ -21,6 +21,7 @@ using RiskDesk.GraphsBLL.Interfaces;
 using RiskDesk.GraphsBLL.Services;
 using RiskDesk.Dao;
 using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.GraphsBLL;
 
 namespace RiskDeskDev
 {
@@ -35,6 +36,7 @@ namespace RiskDeskDev
         public IConfiguration Configuration { get; }
         public void RegisterServices(IServiceCollection services)
         {
+
             services.AddTransient<IHourlyScalarService, HourlyScalarService>();
             services.AddTransient<IRiskService, RiskService>();
             services.AddTransient<IMapePeakService, MapePeakService>();
@@ -45,6 +47,9 @@ namespace RiskDeskDev
             services.AddTransient<IXMLService, XMLService>();
             services.AddTransient<IErcotService, ErcotService>();
             services.AddTransient<IErcotRepository, ErcotRepository>();
+
+            services.AddTransient<IDropdownService, DropdownService>();
+
             // services.AddTransient<IGraphsRepository<T>, GraphsRepository<ErcotDTO>>();
 
         }
@@ -66,6 +71,7 @@ namespace RiskDeskDev
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
