@@ -158,7 +158,11 @@ namespace RiskDeskDev.Controllers
         [Route("WholeSales")]
         public List<WholeSalesDTO> GetWholeSales()
         {
-            return d.GetAllWholeSalesBlock();
+            var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
+            .OrderBy(wh => wh.WholeSaleBlocksId)
+            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks }).ToList();
+            return blocks;
+            //return d.GetAllWholeSalesBlock();
         }
 
         [HttpGet]

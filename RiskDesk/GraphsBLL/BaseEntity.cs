@@ -48,6 +48,8 @@ namespace RiskDesk.GraphsBLL
 
         public string WholeSaleBlocks { get; set; }
 
+        public int WholeSaleBlocksId { get; set; }
+
         // public override WholeSalesDTO MapToViewModel<WholeSalesDTO>()
         // {
         //     return new WholeSalesDTO { Block = WholeSaleBlocks };
