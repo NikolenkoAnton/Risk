@@ -1,4 +1,8 @@
-﻿.dashboard-wrapper {
+﻿.graphsWrapper {
+    height: 700px;
+}
+
+.dashboard-wrapper {
     /* background-image: url("@Url.Content("~/Background.jpg")"); */
 }
 

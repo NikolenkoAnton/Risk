@@ -8,7 +8,10 @@ namespace RiskDeskDev.Controllers
 {
     public class GraphsController : Controller
     {
-       
+        public IActionResult Ercot()
+        {
+            return View();
+        }
         public IActionResult Deal()
         {
             return View();
@@ -45,7 +48,7 @@ namespace RiskDeskDev.Controllers
             return View();
         }
 
-        public  IActionResult ScatterPlot()
+        public IActionResult ScatterPlot()
         {
             return View();
         }

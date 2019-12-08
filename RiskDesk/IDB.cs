@@ -29,6 +29,6 @@ namespace RiskDeskDev
         List<CongestionZoneDTO> GetAllCongestionZone();
 
         List<WholeSalesDTO> GetAllWholeSalesBlock();
-        
+
     }
 }

@@ -19,7 +19,7 @@ function UploadFile() {
     try {
         fileData = document.getElementById("fileUpload").files[0];
         var data = new FormData($("#fileinfo"));
-        //var data = new FormData();    
+        //var data = new FormData();
         $.ajax({
             url: '/Services/WCFWebService.svc/UploadFile?fileName=' + fileData.name,
             type: 'POST',
@@ -28,7 +28,7 @@ function UploadFile() {
             dataType: 'json',
             //async: false,
             processData: false, // Don't process the files
-            contentType: "application/octet-stream", // Set content type to false as jQuery 
+            contentType: "application/octet-stream", // Set content type to false as jQuery
             // will tell the server its a query string request
             success: function (data) {
                 alert('successful..');
@@ -68,7 +68,7 @@ function PostFileToService() {
 function CityList_Reset(ControlToSet) {
     // Retrieves the list of cities and places them into the proper place
     try {
-        // Empty the list box        
+        // Empty the list box
         $('#' + ControlToSet).empty();
         // Set up the list call
         var urlMain = '/Services/WCFWebService.svc/CitiesForStateGetInfo';
@@ -107,7 +107,7 @@ function CityList_Reset(ControlToSet) {
 function StateList_Reset(ControlToSet) {
     // Retrieves the list of cities and places them into the proper place
     try {
-        // Empty the list box        
+        // Empty the list box
         $('#' + ControlToSet).empty();
         // Set up the list call
         var urlMain = '/Services/WCFWebService.svc/StatesGetInfo';
@@ -145,7 +145,7 @@ function StateList_Reset(ControlToSet) {
 function CustomerList_Reset(ControlToSet) {
     // Retrieves the list of cities and places them into the proper place
     try {
-        // Empty the list box        
+        // Empty the list box
         $('#' + ControlToSet).empty();
         $('#' + ControlToSet).append('<option value="' + 0 + '">' + '-Customer-' + '</option>')
         // Set up the list call
@@ -183,7 +183,7 @@ function CustomerList_Reset(ControlToSet) {
 function CityAuto_Reset(ControlToSet) {
     // Retrieves the list of cities and places them into the proper place
     try {
-        // Empty the list box        
+        // Empty the list box
         //$('#' + ControlToSet).empty();
         // Set up the list call
         var Test = [];
@@ -415,7 +415,7 @@ function ImportFile(FileType) {
                     var ResultData = ReturnDataFromService(urlMain);
                     var j = 0;
                     var FileID = LogFileUploadStatus(0, FileNameUpload, 'IMTBL', FileType, UserName);
-                    // Update the Deal Table 
+                    // Update the Deal Table
                     DealIndividualClearAndRefillTable();
                     DealIndividualClearValidation();
                     CustomerList_Reset('CustomerInfoList_Deal');
@@ -515,11 +515,11 @@ const getAggregatesHTML = () => {
                 </li>
                  */
     const html =
-        `       
+        `
                 <li>
                     <a href="${window.location.origin}/graphs/Monthly">Standart Graphs</a>
                 </li>
-               
+
                 <li>
                 <a href="${window.location.origin}/graphs/Deal">Deal Entry Chart</a>
                 </li>
@@ -535,6 +535,9 @@ const getAggregatesHTML = () => {
  </li>
                 <li>
                 <a href="${window.location.origin}/graphs/ScatterPlot">ScatterPlot</a>
+                </li>
+                 <li>
+                <a href="${window.location.origin}/graphs/Ercot">Ercot</a>
                 </li>
                `;
 

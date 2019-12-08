@@ -11,7 +11,7 @@ using RiskDeskDev.Models;
 
 namespace RiskDeskDev.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     public class DealController : ControllerBase
@@ -32,7 +32,7 @@ namespace RiskDeskDev.Controllers
             {
                 var key = arr[a];
                 var value = arr[count + a];
-                lists.Add(new KeyValue { key =key, value = value });
+                lists.Add(new KeyValue { key = key, value = value });
             }
             service.Save(new SaveDTO1 { values = lists });
             return Ok(lists);
@@ -59,7 +59,7 @@ namespace RiskDeskDev.Controllers
             var save = new SaveDTO1();
             save.values = new List<KeyValue>();
             for (var i = 0; i < values.Keys.Length; i++)
-            {   
+            {
                 save.values.Add(new KeyValue { key = values.Keys[i], value = values.Values[i] });
             }
             await Task.Run(() => service.Save(save));
@@ -78,5 +78,5 @@ namespace RiskDeskDev.Controllers
         }
 
     }
-    
+
 }
