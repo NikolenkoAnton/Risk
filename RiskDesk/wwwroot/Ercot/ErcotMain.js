@@ -10,7 +10,7 @@ const blocksNames = ['2x16', '5x16', '7x8', '7x24'];
 
 const addSelectedBlocksToGraph = (temp, blocksCount) => {
     const row = [temp];
-    for (let i = 0; i < blocksCount; i++) row.push(0);
+    for (let i = 0; i < blocksCount; i++) row.push(null);
     return row;
 }
 const procesGraphsDataBeforeDrawc = (data) => {
@@ -62,7 +62,7 @@ async function changeDrops() {
     const graphRows = await processListOfDatas(data);
     //drawStuffAnimate(graphRows);
     ArrayOfDataMonths = graphRows;
-
+    debugger;
 }
 var f;
 
@@ -109,7 +109,7 @@ async function draw(rows) {
             const params = "?Month=" + m + "&" + getQueryParamButMonth();
             const data = await getGraphData(params);
             const mappedData = (await processListOfDatas(data))[0];
-
+            debugger;
             const graphHeader = ['Temperature (F)', ...getSelectedWholeBlocks()];
             options['colors'] = getBlocksColors();
             chart.draw(google.visualization.arrayToDataTable([

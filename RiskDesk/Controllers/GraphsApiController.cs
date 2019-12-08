@@ -253,7 +253,7 @@ namespace RiskDeskDev.Controllers
         [Route("Ercot")]
         public List<ErcotMonthDTO> GetErcotData([FromQuery]ErcotQueryDTO query) //string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
         {
-            // var data = _ercotService.Ercot(query);
+            var data = _ercotService.Ercot(query);
             var data1 = _ercotService.Ercot1(query);
             // return data;
             return data1;

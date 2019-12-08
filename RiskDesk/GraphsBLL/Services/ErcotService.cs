@@ -44,9 +44,16 @@ namespace RiskDesk.GraphsBLL.Services
                 var data = conn.Query<ErcotDTO>(procedureName,
                 xmlModel,
                     commandType: CommandType.StoredProcedure).AsList();
+                data.ForEach(x => RoundTempAndErcotLoad(x));
                 return data;
             }
             //return _ercotRep.GetGraphData<ErcotXMLDTO>(xmlModel, procedureName);
+        }
+
+        private void RoundTempAndErcotLoad(ErcotDTO ercot)
+        {
+            ercot.TempF = Math.Round(ercot.TempF, 1);
+            ercot.ErcotLoad = Math.Round(ercot.ErcotLoad);
         }
         public List<ErcotMonthDTO> Ercot1(ErcotQueryDTO queryParam)
         {
@@ -70,6 +77,7 @@ namespace RiskDesk.GraphsBLL.Services
                     var data = conn.Query<ErcotDTO>(procedureName,
                     xml,
                         commandType: CommandType.StoredProcedure).AsList();
+                    data.ForEach(x => RoundTempAndErcotLoad(x));
                     monthData.data = data;
                 }
                 datas.Add(monthData);
@@ -81,44 +89,6 @@ namespace RiskDesk.GraphsBLL.Services
         {
             return queryParam.GetMonths();
         }
-        private List<ErcotDTO>[] GetDataForAnimation(ErcotXMLDTO xmlModel)
-        {
-            var procedureName = "[WebSite].[ErcotLoadAnimateFilteredGetInfo]";
-            List<ErcotDTO>[] listOfdata = new List<ErcotDTO>[12];
-            for (int i = 0; i < 2; i++)
-            {
 
-                var model = new ErcotXMLDTO
-                {
-                    UtilityAccountNumberString = xmlModel.UtilityAccountNumberString,
-                    HoursString = xmlModel.HoursString,
-                    CongestionZoneString = xmlModel.CongestionZoneString,
-                    WholeBlockString = xmlModel.WholeBlockString,
-                    MonthsString = $"<Row><MN>{i}</MN></Row>",
-                    //TODO
-                    //MonthsString = xmlModel.MonthsString + $"<Row><MN>{i}</MN></Row>" 
-                };
-                var newData = _ercotRep.GetGraphData<ErcotXMLDTO>(xmlModel, procedureName);
-                listOfdata[i] = newData;
-            };
-
-            //     await Task.Run(() =>
-            //    {
-            //        var model = new ErcotXMLDTO
-            //        {
-            //            UtilityAccountNumberString = xmlModel.UtilityAccountNumberString,
-            //            HoursString = xmlModel.HoursString,
-            //            CongestionZoneString = xmlModel.CongestionZoneString,
-            //            WholeBlockString = xmlModel.WholeBlockString,
-            //            MonthsString = $"<Row><MN>{i}</MN></Row>",
-            //            //TODO
-            //            //MonthsString = xmlModel.MonthsString + $"<Row><MN>{i}</MN></Row>" 
-            //        };
-            //        var newData = _ercotRep.GetGraphData<ErcotXMLDTO>(xmlModel, procedureName);
-            //        listOfdata[i] = newData;
-            //    });
-            // foreach (var t in tasks) t.Start();
-            return listOfdata;
-        }
     }
 }
