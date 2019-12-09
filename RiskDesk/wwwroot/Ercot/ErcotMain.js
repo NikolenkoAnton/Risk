@@ -10,7 +10,7 @@ const blocksNames = ['2x16', '5x16', '7x8', '7x24'];
 
 const addSelectedBlocksToGraph = (temp, blocksCount) => {
     const row = [temp];
-    for (let i = 0; i < blocksCount; i++) row.push(null);
+    for (let i = 0; i < blocksCount; i++) row.push(0);
     return row;
 }
 const procesGraphsDataBeforeDrawc = (data) => {
