@@ -146,7 +146,7 @@
             display: flex;
         }
         .containerItem .ButtonItem {
-            
+
         }
         .containerItem > .containerChild {
             margin-right:5px;
@@ -217,7 +217,7 @@
 
     </style>
     <script src="@Url.Content("~/Scripts/Deal/DealEntryScreen.js")"></script>
-    
+
     <script>
 
         function Initialize() {
@@ -322,6 +322,12 @@
         .notesContainer{
             flex: 1;
     height: 150px;
+        }
+        .screenTitle {
+            font-size:16px;
+            font-weight:bold;
+                        margin-left:20px;
+
         }
     </style>
 
@@ -461,10 +467,9 @@
             <!-- Top Nav End -->
             <!-- Sub Nav End -->
             <div class="sub-nav hidden-sm hidden-xs">
-
-                <div class="custom-search hidden-sm hidden-xs">
-
-                </div>
+<div class="screenTitle">
+Retail Deal Entry Screen
+</div>
             </div>
             <!-- Sub Nav End -->
             <!-- Dashboard Wrapper Start -->
@@ -603,7 +608,7 @@
                                 <div>Committment Date</div><input type="text" id="CommitmentDate" disabled>
                             </div>
                             <div class="containerChild notesContainer">
-                                <div>Notes </div><textarea cols="40" rows="5" style="height: 200px;" id="Notes"></textarea>   
+                                <div>Notes </div><textarea cols="40" rows="5" style="height: 200px;" id="Notes"></textarea>
                             </div>
                         </div>
                         <div class="containerItem ButtonItem">

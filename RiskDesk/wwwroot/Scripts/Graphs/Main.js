@@ -236,12 +236,12 @@ async function DrawHorizontalGraphsNav() {
     let html = `
                     <div id="navCont">
                     <div>Graphs</div>
-                    <div><a href="HourlyScalar">  Standart Graphs</a></div>
+                    <div><a href="HourlyScalar">  Standard Graphs</a></div>
                     <div><a href="HourlyScalar">  Hourly Shapes</a></div>
                     <div><a href="Risk">  Volumetric Risk</a></div>
                     <div><a href="WeatherHourly">  Weather Scenario</a></div>
-                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
-                    <div><a href="Ercot">  Ercot</a></div>
+                    <div><a href="ScatterPlot">  Scatter Plot</a></div>
+                    <div><a href="Ercot">  Ercot Load Animation</a></div>
                     <div><a href="Peak">  Peak Model</a></div>`;
     wrapper.innerHTML = html;
     SetCurrentGraph();
