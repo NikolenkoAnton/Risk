@@ -149,9 +149,9 @@ namespace RiskDeskDev.Controllers
         [Route("AccNumbers")]
         public List<AccNumberDTO> GetAccNumbers()
         {
-            var a1 = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber }).ToList();
-            var a = d.GetAllAccNumber();
-            return a;
+            var a1 = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList();
+            //var a = d.GetAllAccNumber();
+            return a1;
         }
 
         [HttpGet]

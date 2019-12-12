@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using RiskDesk.GraphsBLL;
+using RiskDesk.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.Models.Graphs;
@@ -16,9 +18,12 @@ namespace RiskDeskDev.GraphsBLL.Services
         private readonly string ConnectionString;// = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
         private readonly IDB db;
 
-        public MapePeakService(IDB db, IConfiguration configuration)
+        private readonly IDropdownService _dropService;
+
+        public MapePeakService(IDB db, IConfiguration configuration, IDropdownService dropdownService)
         {
             this.db = db;
+            _dropService = dropdownService;
             ConnectionString = configuration.GetConnectionString("Develop");
         }
 
@@ -26,7 +31,7 @@ namespace RiskDeskDev.GraphsBLL.Services
         {
             return new DropsMape
             {
-                numbers = db.GetAllAccNumber(),
+                numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
                 months = db.getAllMonth(),
                 blocks = db.GetAllWholeSalesBlock(),
             };
@@ -38,7 +43,7 @@ namespace RiskDeskDev.GraphsBLL.Services
 
             return new DropsPeak
             {
-                numbers = db.GetAllAccNumber(),
+                numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
                 months = db.getAllMonth(),
                 scenarios = db.getAllScenario()
             };

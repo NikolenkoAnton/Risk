@@ -15,7 +15,7 @@ function drawStuff(dataRows) {
     // data.addColumn('number', '7x8');
     //'#118DFF'  '#E8D166'  '#573B92'
     //data.addColumn('string', '{ role: "style" }');
-    // 
+    //
 
     // data.addColumn('number', '7X24');
     // data.addColumn('number', '7X8');
@@ -181,9 +181,7 @@ async function fillAccNumbers() {
     const accNumberDropdown = document.querySelector('#FilterAccNumber');
     for (const number of accNumbers) {
 
-        const index = accNumbers.indexOf(number) + 1;
-
-        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, index);
+        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, number.accNumberId);
 
     }
     $(accNumberDropdown).multiselect({
@@ -242,4 +240,4 @@ async function changeScatterPlotDropdowns() {
 
 //wholeSaleBlocks
 //tempF
-//loadKW 
+//loadKW

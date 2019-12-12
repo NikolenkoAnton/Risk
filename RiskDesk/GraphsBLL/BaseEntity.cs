@@ -72,6 +72,7 @@ namespace RiskDesk.GraphsBLL
         public override string Procedure { get; set; } = "[WebSite].[UtilityAccountNumbersAllGetInfo]";
 
         public string UtilityAccountNumber { get; set; }
+        public int UtilityAccountNumberId { get; set; }
 
 
         // public override AccNumberDTO MapToViewModel<AccNumberDTO>()

@@ -117,7 +117,7 @@ const fillDrops = async () => {
     const [monthsDrop, zonesDrop, numbersDrop] = [...document.querySelectorAll('.dropdownFilter')];
 
     months.slice(1).map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => monthsDrop.innerHTML += el);
-    numbers.map((el, ind) => getSelectOption(el.accNumber, ind + 1)).forEach(el => numbersDrop.innerHTML += el);
+    numbers.map((el, ind) => getSelectOption(el.accNumber, el.accNumberId)).forEach(el => numbersDrop.innerHTML += el);
     zones.map((el, ind) => getSelectOption(el.zone, ind + 1)).forEach(el => zonesDrop.innerHTML += el);
 
     $(monthsDrop).multiselect({

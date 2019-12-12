@@ -192,7 +192,7 @@ async function fillMonth() {
     console.log(monthes);
     for (const month of monthes) {
         const index = monthes.indexOf(month);
-        monthDropdown.innerHTML += getSelectOption(month.name, index);
+        monthDropdown.innerHTML += getSelectOption(month.name, index + 1);
 
     }
     $(monthDropdown).multiselect({

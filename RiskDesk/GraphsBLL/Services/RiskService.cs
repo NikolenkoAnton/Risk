@@ -7,6 +7,9 @@ using System.Data.SqlClient;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using RiskDesk.GraphsBLL.Interfaces;
+using RiskDesk.GraphsBLL;
+using System.Linq;
 
 namespace RiskDeskDev.GraphsBLL.Services
 {
@@ -14,12 +17,12 @@ namespace RiskDeskDev.GraphsBLL.Services
     {
 
         private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
-
+        private readonly IDropdownService _dropService;
         private readonly IDB db;
-        public RiskService(IDB db, IConfiguration conf)
+        public RiskService(IDB db, IConfiguration conf, IDropdownService dropService)
         {
 
-
+            _dropService = dropService;
             this.db = db;
         }
         public List<RiskDataDTO> RiskData(string Month, string Zone, string AccNumbers)
@@ -65,8 +68,8 @@ namespace RiskDeskDev.GraphsBLL.Services
             return new RiskDropDTO
             {
                 months = db.getAllMonth(),
-                numbers = db.GetAllAccNumber(),
-                zones = db.GetAllCongestionZone()
+                numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
+                zones = db.GetAllCongestionZone(),
             };
         }
 

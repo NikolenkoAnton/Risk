@@ -95,9 +95,8 @@ async function fillAccNumbers() {
     const accNumberDropdown = document.querySelector('#FilterAccNumber');
     for (const number of accNumbers) {
 
-        const index = accNumbers.indexOf(number) + 1;
 
-        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, index);
+        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, number.accNumberId);
 
     }
     $(accNumberDropdown).multiselect({
