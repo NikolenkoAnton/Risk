@@ -33,7 +33,7 @@ namespace RiskDesk.GraphsBLL.Services
                 WholeBlockString = _xmlService.GetFilterXMLRows("WH", filters.BlocksID),
                 CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
                 UtilityAccountNumberString = _xmlService.GetFilterXMLRows("UA", filters.AccNumbersID),
-                MonthsString = _xmlService.GetFilterXMLRows("MW", filters.MonthsID),
+                MonthsString = _xmlService.GetFilterXMLRows("MN", filters.MonthsID),
 
             };
 

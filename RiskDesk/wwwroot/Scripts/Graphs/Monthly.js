@@ -8,6 +8,8 @@ google.charts.load('current', {
     'packages': ['bar']
 });
 google.charts.setOnLoadCallback(drawMonthlyGraph);
+const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
 const getRequestData = async (url) => {
 
     const response = await fetch(url);
@@ -65,7 +67,7 @@ const drawChartMonthlyChart = async (data, blocks, months) => {
         // },
         backgroundColor: 'none',
         bar: {
-            groupWidth: '61.8%'
+            groupWidth: '90%'
         },
         isStacked: true,
         vAxis: {
@@ -127,46 +129,70 @@ const mapRpws = data => {
         [asd[3], ...totalValues]
     ]
 }
-const addStyleToTableCell = data => {
-    data.setProperties(0, 13, {
-        style: 'font-weight:bold;'
-    });
-    data.setProperties(1, 13, {
-        style: 'font-weight:bold;'
-    });
-    data.setProperties(2, 13, {
-        style: 'font-weight:bold;'
-    });
+const addStyleToTableCell = (data, blocks) => {
+
+    for (let i = 0; i < blocks.length; i++) {
+        data.setProperties(i, 13, {
+            style: 'font-weight:bold;'
+        });
+    }
+
     for (let i = 1; i < 14; i++) {
-        data.setProperties(3, i, {
+        data.setProperties(blocks.length, i, {
             style: 'font-weight:bold;'
         });
     }
 }
-const drawTableMonthlyChart = (tableData) => {
+
+//row.slice(1,-1).reduce((acc,el)=>acc+el)
+const getTotalRow = (row) => {
+    return row.slice(1, -1).reduce((acc, el) => acc + el);
+}
+const getHorizontalTotalRow = (rows) => {
+
+    const totalRow = (new Array(14)).fill(0, 1);
+    totalRow[0] = "Total";
+    for (let i = 0; i < 13; i++) {
+        let sum = 0;
+        for (const r of rows) {
+            sum += r[i + 1];
+        }
+        totalRow[i + 1] = sum;
+    }
+    return totalRow;
+
+
+}
+// const getTotalColumn
+const drawTableMonthlyChart = (tableData, blocks, months) => {
 
     const data = new google.visualization.DataTable();
     addColumns(data);
-    const arr = ['2x16', '5x16', '7x8', 'Total'];
-    const asd = ['firstBlock', 'secondBlock', 'thirdBlock'];
-    const totalValues = [];
-    const firstValues = tableData.map(el => el.firstBlock);
-    const secondVaues = tableData.map(el => el.secondBlock);
-    const thirdValues = tableData.map(el => el.thirdBlock);
-    firstValues.push(firstValues.reduce((gen, el) => gen + el, 0));
-    secondVaues.push(secondVaues.reduce((gen, el) => gen + el, 0));
-    thirdValues.push(thirdValues.reduce((gen, el) => gen + el, 0));
-    for (const i in firstValues) {
-        let a = firstValues[i] + secondVaues[i] + thirdValues[i];
-        totalValues.push(a)
+    const arr = [...blocks, 'Total'];
+    const rows = [];
+    for (const b of blocks) {
+        const row = (new Array(14)).fill(0, 1);
+        row[0] = b;
+
+        for (const m of shortMonths) {
+            for (const rec of tableData) {
+                if (rec.monthsShortName === m && rec.wholeSaleBlocks === b) {
+                    const index = shortMonths.indexOf(m) + 1;
+                    row[index] = rec.ubarmwh;
+                }
+            }
+        }
+        // row.slice(1).reduce()
+        row[row.length - 1] = getTotalRow(row);
+        rows.push(row);
+
     }
-    data.addRows([
-        [arr[0], ...firstValues],
-        [arr[1], ...secondVaues],
-        [arr[2], ...thirdValues],
-        [arr[3], ...totalValues]
-    ]);
-    addStyleToTableCell(data);
+    const totalRow = getHorizontalTotalRow(rows);
+
+    rows.push(totalRow);
+
+    data.addRows(rows);
+    addStyleToTableCell(data, blocks);
     // addFontStyleToTableCell(data);
 
     const table = new google.visualization.Table(document.getElementById('table1'));
@@ -225,6 +251,6 @@ async function drawMonthlyGraph() {
     drawChartMonthlyChart(data, selectedBlocks, selectedMonths);
 
 
-    drawTableMonthlyChart(data);
+    drawTableMonthlyChart(data, selectedBlocks, selectedMonths);
 
 }

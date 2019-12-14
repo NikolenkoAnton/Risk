@@ -289,7 +289,7 @@ async function DrawHorizontalGraphsNav() {
     let html = `
                     <div id="navCont">
                     <div>Graphs</div>
-                    <div><a href="HourlyScalar">  Standard Graphs</a></div>
+                    <div><a href="Monthly">  Standard Graphs</a></div>
                     <div><a href="HourlyScalar">  Hourly Shapes</a></div>
                     <div><a href="Risk">  Volumetric Risk</a></div>
                     <div><a href="WeatherHourly">  Weather Scenario</a></div>
