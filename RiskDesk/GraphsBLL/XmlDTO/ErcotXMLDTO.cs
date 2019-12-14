@@ -23,4 +23,19 @@ namespace RiskDesk.GraphsBLL.XmlDTO
 
 
     }
+
+    public class HourlyScalarXML
+    {
+
+        public string WholeBlockString { get; set; }
+
+        public string CongestionZoneString { get; set; }
+
+        public string UtilityAccountNumberString { get; set; }
+
+
+        public string MonthsString { get; set; }
+
+
+    }
 }

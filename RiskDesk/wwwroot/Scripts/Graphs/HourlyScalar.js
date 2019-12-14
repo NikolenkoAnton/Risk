@@ -45,8 +45,12 @@ const getFiltering = () => {
 }
 
 const getGraphicData = async () => {
-    const url = `/api/graphs/HourlyScalar` + getFiltering();
-    return getRequestData(url);
+
+    const filters = genericChangeDropdowbs();
+    const url = `/api/graphs/HourlyScalar`;
+    const f = Object.keys(filters).includes('undefined') ? {} : filters;
+    return postData(url, f);
+
 }
 
 const mapDataToChart = (data) => {

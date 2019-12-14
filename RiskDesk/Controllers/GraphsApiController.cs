@@ -119,36 +119,14 @@ namespace RiskDeskDev.Controllers
             return riskServ.RiskData(Month, Zone, AccNumbers);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("HourlyScalar")]
-        public IEnumerable<HourlyScalarDTO> HourlyScalarData(string Month, string Zone, string WholeSales, string AccNumbers)
+        public List<HourlyScalarDBModel> GetHourlyScalar(HourlyScalarGraphFilters filters)
         {
-            return hourlyServ.HourlyScalarData(Month, Zone, WholeSales, AccNumbers);
+            var list = hourlyServ.HourlyData(filters);
+
+            return list;
         }
-
-
-
-
-
-
-        [HttpGet]
-        [Route("HourlyAggregates")]
-        public HourlyGraphsDataDTO getHourlyAggregatesGraphs(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers)//List<WholeSalesDTO> GetWholeSales()
-        {
-            IEnumerable<HourlyDTO> list = d.getHourlyGraph(StartDate, EndDate, Month, Scenario, WholeSales, AccNumbers);
-            if (StartDate == "0" && EndDate == "0" && list.Count() > 0)
-            {
-                DateTime max = list.Max(el => el.date);
-                DateTime min = list.Min(el => el.date);
-                return new HourlyGraphsDataDTO { data = list, maxDate = max, minDate = min };
-            }
-            return new HourlyGraphsDataDTO { data = list, maxDate = null, minDate = null };
-        }
-
-
-
-
-
 
 
         [HttpPost]
