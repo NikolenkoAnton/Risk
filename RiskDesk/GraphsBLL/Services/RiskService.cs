@@ -67,9 +67,18 @@ namespace RiskDeskDev.GraphsBLL.Services
         {
             return new RiskDropDTO
             {
-                months = db.getAllMonth(),
+                months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList(),
                 numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
-                zones = db.GetAllCongestionZone(),
+                zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList()
             };
         }
 

@@ -10,10 +10,6 @@ namespace RiskDeskDev
     {
         IEnumerable<HourlyDTO> getHourlyGraph(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers);
 
-        List<MonthDTO> getAllMonth();
-
-        List<ScenarioDTO> getAllScenario();
-
         List<MonthlyDTO> GetMontlyGraphs(string Month, string Scenario, string WholeSales, string AccNumbers);
 
         List<MontlyGraphDTO> GetWeatherMontlyGraphs(string Month, string Scenario, string WholeSales, string AccNumbers);
@@ -23,12 +19,6 @@ namespace RiskDeskDev
         List<CongestZoneGraphDTO> GetCongestZoneGraphs(string Zone, string WholeSales, string AccNumbers);
 
         List<WholeSalesGraphDTO> GetWholeSalesGraphs(string Zone, string WholeSales, string AccNumbers);
-
-        List<AccNumberDTO> GetAllAccNumber();
-
-        List<CongestionZoneDTO> GetAllCongestionZone();
-
-        List<WholeSalesDTO> GetAllWholeSalesBlock();
 
     }
 }

@@ -97,12 +97,6 @@ namespace RiskDeskDev.Controllers
         }
         //return new { dealMax, dealMin, max, min, graph1, graph2, graph3, graph4 };
 
-        [HttpGet]
-        [Route("DealDrops")]
-        public async Task<DealDrops> DealDrops()
-        {
-            return await Task.Run(() => dealServ.DealDrops());
-        }
 
         [HttpGet]
         [Route("Mape")]
@@ -116,29 +110,6 @@ namespace RiskDeskDev.Controllers
         public async Task<Peak> Peak(string Month, string Scenario, string AccNumbers)
         {
             return await peakServ.DataPeak(Month, Scenario, AccNumbers);
-        }
-
-
-        [HttpGet]
-        [Route("PeakDrops")]
-        public async Task<DropsPeak> PeakDrops()
-        {
-            return await Task.Run(() => peakServ.DropsPeak());
-        }
-
-        [HttpGet]
-        [Route("MapeDrops")]
-        public DropsMape MapeDrops()
-        {
-            return peakServ.DropsMape();
-        }
-
-
-        [HttpGet]
-        [Route("RiskDrops")]
-        public RiskDropDTO RiskDrops()
-        {
-            return riskServ.RiskDropsData();
         }
 
         [HttpGet]
@@ -253,16 +224,6 @@ namespace RiskDeskDev.Controllers
             return response;
 
         }
-
-        // [HttpGet]
-        // [Route("MontlyGraphs")]
-        // public List<MonthlyDTO> GetMontlyGraphs(string Month, string Zone, string WholeSales, string AccNumbers)
-        // {
-
-        //     List<MonthlyDTO> list = d.GetMontlyGraphs(Month, Zone, WholeSales, AccNumbers);
-        //     return list;
-
-        // }
 
         [HttpGet]
         [Route("WeatherMontlyGraphs")]

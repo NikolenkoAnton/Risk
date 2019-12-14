@@ -32,8 +32,19 @@ namespace RiskDeskDev.GraphsBLL.Services
             return new DropsMape
             {
                 numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
-                months = db.getAllMonth(),
-                blocks = db.GetAllWholeSalesBlock(),
+                months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList(),
+                blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
+            .OrderBy(wh => wh.WholeSaleBlocksId)
+            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList()
             };
         }
 
@@ -44,8 +55,17 @@ namespace RiskDeskDev.GraphsBLL.Services
             return new DropsPeak
             {
                 numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
-                months = db.getAllMonth(),
-                scenarios = db.getAllScenario()
+                months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList(),
+                scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList()
             };
         }
 
