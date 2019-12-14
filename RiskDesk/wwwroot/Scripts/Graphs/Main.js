@@ -8,15 +8,27 @@ let currentGraphs = '';
 const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'ercot', 'peak', ];
 
 let filtersKeys = {
-    FilterMonth,
-    FilterScenario,
-    FilterCongestionZone,
-    FilterWholeSales,
-    FilterAccNumber,
-    FilterCounterparty,
+    FilterMonth: "monthsID",
+    FilterScenario: "scenarionsID",
+    FilterCongestionZone: "zonesID",
+    FilterWholeSales: "blocksID",
+    FilterAccNumber: "accNumbersID",
+    FilterCounterparty: "counterpartyID",
 }
 
 
+const addDataAttributesToFilters = () => {
+
+    $('.dropdownFilter').each(function () {
+        const id = $(this).attr("id");
+
+        const attrValue = filtersKeys[id];
+
+        $(this).data("filter", attrValue);
+    });
+
+
+}
 const getSelectedFields = (dropdown) => {
     let indexes = '';
     if (dropdown) {
@@ -49,6 +61,28 @@ const setStartedDropdownValue = dropdowns => {
     }
 
 };
+
+
+
+
+//dropdownItems - list dropdown items  example:   [{ AccNumber: 1, AccNumberId : 25},{ AccNumber: 1, AccNumberId : 25}]
+// itemValueName - item = { AccNumber: 1, AccNumberId : 25} == itemValueName = "AccNumber"; item = { Zone = "2x5" , Id = 22} == itemValueName = "Zo
+const fillCurrentDropdown = (dropdownItems, itemValueName, dropdownID, itemIdName = "id") => {
+
+    const dropdown = document.querySelector(dropdownID);
+
+    if (!dropdown) {
+        return;
+    }
+    for (const item of dropdownItems) {
+        dropdown.innerHTML += getSelectOption(item[itemValueName], item[itemIdName]);
+    }
+
+    $(dropdown).multiselect({
+        selectAll: true
+    });
+
+}
 
 const getSelectOption = (value, index) => {
     return ` <option value="${index}">
@@ -112,6 +146,23 @@ const changeDropdowns = dropdown => {
 
 }
 
+const genericChangeDropdowbs = () => {
+
+    const filterObj = {};
+    $('.dropdownFilter').each(function () {
+
+        const filterField = $(this).data('filter');
+        filterObj[filterField] = [];
+        let opt = $(this.selectedOptions);
+        opt.each(function () {
+            filterObj[filterField].push(this.value);
+        });
+    });
+    console.log(filterObj);
+    return filterObj;
+
+}
+
 const getMonth = async () => {
     const urls = window.location.origin;
     const url = `/api/graphs/Month`;
@@ -129,40 +180,42 @@ async function fillDropdownsAggregates() {
     const congestionZones = await getCongestionZones();
 
     const wholeSales = await getWholeSales();
+    // const fillCurrentDropdown = (dropdownItems, itemValueName, dropdownID, itemIdName = "id") => {
 
-    const accNumberDropdown = document.querySelector('#FilterAccNumber');
+    fillCurrentDropdown(accNumbers, 'accNumber', '#FilterAccNumber');
+    fillCurrentDropdown(congestionZones, 'zone', '#FilterCongestionZone');
+    fillCurrentDropdown(wholeSales, 'block', '#FilterWholeSales');
 
-    const wholeSalesDropdown = document.querySelector('#FilterWholeSales');
+}
 
-    const congestionZonesDropdown = document.querySelector('#FilterCongestionZone');
+async function genericFillDropdowns() {
+    const accNumbers = await getAccNumbers();
 
-    for (const number of accNumbers) {
-        const index = accNumbers.indexOf(number) + 1;
-        accNumberDropdown.innerHTML += getSelectOption(number.accNumber, number.accNumberId);
-    }
+    const congestionZones = await getCongestionZones();
 
-    for (const block of wholeSales) {
-        const index = wholeSales.indexOf(block) + 1;
-        wholeSalesDropdown.innerHTML += getSelectOption(block.block, index);
-    }
+    const wholeSales = await getWholeSales();
+    // const fillCurrentDropdown = (dropdownItems, itemValueName, dropdownID, itemIdName = "id") => {
 
-    for (const zone of congestionZones) {
-        const index = congestionZones.indexOf(zone) + 1;
-        congestionZonesDropdown.innerHTML += getSelectOption(zone.zone, index);
-    }
+    const scenarios = await getScenario();
 
-    //setStartedDropdownValue([accNumberDropdown, wholeSalesDropdown, congestionZonesDropdown]);
+    const monthes = await getMonth();
 
-    $(wholeSalesDropdown).multiselect({
-        selectAll: true
-    });
-    $(congestionZonesDropdown).multiselect({
-        selectAll: true
-    });
 
-    $(accNumberDropdown).multiselect({
-        selectAll: true
-    });
+    const hours = await (new Array(25)).fill(0).map((el, ind) => ({
+        value: ind,
+        id: ind
+    }));
+
+
+    fillCurrentDropdown(accNumbers, 'accNumber', '#FilterAccNumber');
+    fillCurrentDropdown(monthes, 'name', '#FilterMonth');
+    fillCurrentDropdown(congestionZones, 'zone', '#FilterCongestionZone');
+    fillCurrentDropdown(wholeSales, 'block', '#FilterWholeSales');
+    fillCurrentDropdown(scenarios, 'name', '#FilterScenario');
+    fillCurrentDropdown(hours, 'value', '#FilterHours');
+
+    addDataAttributesToFilters();
+
 }
 
 async function fillDropdownsMonthly() {
@@ -271,3 +324,32 @@ async function DrawHorizontalGraphsNav() {
                      <div><a href="Deal">  Deal Entry Chart</a></div>
                 </div>
 */
+
+
+async function postData(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, *same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(data), // тип данных в body должен соответвовать значению заголовка "Content-Type"
+    });
+    return response.json();
+    //.then(response => response.json()); // парсит JSON ответ в Javascript объект
+}
+
+
+async function getFilters(d) {
+
+}
+// const getRequestData = async (url) => {
+
+//     const response = await fetch(url);
+//     return response.json();
+// }

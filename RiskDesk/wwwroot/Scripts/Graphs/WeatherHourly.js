@@ -13,7 +13,6 @@
         'packages': ['bar']
     });
     google.charts.setOnLoadCallback(drawHourly);
-    fillDropdownsWeatherHourly();
     const getDataHourlyGraphs = async () => {
         const filtStr = getFilteringStringMontly();
         const dateValue = getHourlyDateValue();

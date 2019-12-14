@@ -167,7 +167,7 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
             foreach(var p in Parts)
             {
                 var row = $"<Row><Term>{ConvertDouble(p.Term)}</Term><BrokerFee>{ConvertDouble(p.BrokerFee)}</BrokerFee><DealMargin>{ConvertDouble(p.DealMargin)}</DealMargin><RiskPremium>{ConvertDouble(p.RiskPremium)}</RiskPremium></Row>";
-                            
+
                 rows += row;
             }
             return rows;
@@ -182,9 +182,9 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
                 conn.Execute("[WebSite].[WholesaleDealPartsUpsert]",new { DealID = id, UpsertString = rows}, commandType: CommandType.StoredProcedure);
             }
             object a = "asdas";
-        
+
             return DealInfo(id);
-            
+
         }
        */
         //Month

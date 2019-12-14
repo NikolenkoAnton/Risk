@@ -14,6 +14,8 @@ using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
 using RiskDeskDev.Models.Graphs;
 using RiskDeskDev.Web.GraphsBLL.Interfaces;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
+using RiskDesk.Models.Graphs.DropdownsEntityResponse;
 
 namespace RiskDeskDev.Controllers
 {
@@ -53,11 +55,14 @@ namespace RiskDeskDev.Controllers
         private readonly IScatterPlotService scatterService;
         private readonly IErcotService _ercotService;
         private readonly IDropdownService _dropService;
+        private readonly IMonthlyService _monthlyService;
         //private readonly DealService service;
+
         public GraphsApiController(IDB d, IMapePeakService peakServ,
             IHourlyScalarService hourlyServ, IRiskService riskServ,
             IDealService dealServ, IScatterPlotService scatterService,
-            IErcotService ercotService, IDropdownService dropService)
+            IErcotService ercotService, IDropdownService dropService,
+            IMonthlyService monthlyService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
@@ -67,10 +72,23 @@ namespace RiskDeskDev.Controllers
             this.scatterService = scatterService;
             _ercotService = ercotService;
             _dropService = dropService;
+            _monthlyService = monthlyService;
+            // DropsTest();
+
             // d = new DB();
         }
 
 
+        private void DropsTest()
+        {
+
+            var months = _dropService.GetData<Month>(new Month()).Select(z => new MonthDTO { Name = z.MonthsLongName, Id = z.EntityId() }).ToList();
+            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
+            var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock()).Select(z => new WholeSalesDTO { Block = z.WholeSaleBlocks, Id = z.EntityId() }).ToList();
+            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
+            var accnumbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(z => new AccNumberDTO { AccNumber = z.UtilityAccountNumber, Id = z.EntityId() }).ToList();
+
+        }
         [HttpGet]
         [Route("Deal")]
         public async Task<Deal> Deal([FromQuery]string Zone, [FromQuery]string Counter, [FromQuery] string WholeSales, [FromQuery] string StartDate, [FromQuery] string EndDate, [FromQuery] string StartDeal, [FromQuery] string EndDeal)
@@ -140,18 +158,19 @@ namespace RiskDeskDev.Controllers
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
-            var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
-            var a = d.GetAllCongestionZone();
-            return a;
+            // var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
+            // var a = d.GetAllCongestionZone();
+            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
+            return zones;
         }
 
         [HttpGet]
         [Route("AccNumbers")]
         public List<AccNumberDTO> GetAccNumbers()
         {
-            var a1 = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList();
+            var numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString(), Id = acc.EntityId() }).ToList();
             //var a = d.GetAllAccNumber();
-            return a1;
+            return numbers;
         }
 
         [HttpGet]
@@ -160,7 +179,7 @@ namespace RiskDeskDev.Controllers
         {
             var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
             .OrderBy(wh => wh.WholeSaleBlocksId)
-            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks }).ToList();
+            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList();
             return blocks;
             //return d.GetAllWholeSalesBlock();
         }
@@ -183,29 +202,67 @@ namespace RiskDeskDev.Controllers
         [Route("Month")]
         public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
         {
-            var a = _dropService.GetData<Month>(new Month());
-            var a1 = d.getAllMonth();
-            return a1;
+            // var a = _dropService.GetData<Month>(new Month());
+            // var a1 = d.getAllMonth();
+            var months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList();
+
+            return months;
         }
 
         [HttpGet]
         [Route("Scenario")]
         public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
         {
-            var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
-            var a1 = d.getAllScenario();
-            return a1;
+            // var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
+            // var a1 = d.getAllScenario();
+            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
+
+            return scenarios;
         }
 
-        [HttpGet]
-        [Route("MontlyGraphs")]
-        public List<MonthlyDTO> GetMontlyGraphs(string Month, string Zone, string WholeSales, string AccNumbers)
+        [HttpPost]
+        [Route("MonthlyGraphs")]
+        public MonthlyGraphResponse GetMontlyGraphs([FromBody] MonthlyGraphFilters filters)
         {
 
-            List<MonthlyDTO> list = d.GetMontlyGraphs(Month, Zone, WholeSales, AccNumbers);
-            return list;
+            var response = new MonthlyGraphResponse();
+            response.SelectedBlocks = GetWholeSales().Select(x => x.Block).ToArray();
+            response.SelectedMonths = getMonth().Select(x => x.ShortName).ToArray();
+            response.Data = _monthlyService.MonthlyData(filters);
+
+            // if (filters.BlocksID != null)
+            // {
+            //     response.SelectedBlocks = _dropService.GetSelectedBlocks(filters.BlocksID)
+            //                                 .Select(x => x.WholeSaleBlocks).ToArray();
+            // }
+            // if (filters.MonthsID != null)
+            // {
+            //     response.SelectedMonths = _dropService.GetSelectedMonths(filters.MonthsID)
+            //                                 .Select(x => x.MonthsShortName).ToArray();
+            // }
+
+            return response;
 
         }
+
+        // [HttpGet]
+        // [Route("MontlyGraphs")]
+        // public List<MonthlyDTO> GetMontlyGraphs(string Month, string Zone, string WholeSales, string AccNumbers)
+        // {
+
+        //     List<MonthlyDTO> list = d.GetMontlyGraphs(Month, Zone, WholeSales, AccNumbers);
+        //     return list;
+
+        // }
 
         [HttpGet]
         [Route("WeatherMontlyGraphs")]

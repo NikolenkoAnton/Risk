@@ -281,19 +281,7 @@ const drawTable = arr => {
 
 
 
-async function fillHourthlyScalar() {
-    const monthes = (await getMonth()).slice(1);
-    const monthDropdown = document.querySelector('#FilterMonth');
 
-    for (const month of monthes) {
-        const index = monthes.indexOf(month);
-        monthDropdown.innerHTML += getSelectOption(month.name, index);
-    }
-    $(monthDropdown).multiselect({
-        selectAll: true
-    })
-    fillDropdownsAggregates();
-}
 
 async function drawHourlyScalar() {
     const data = await getGraphicData();

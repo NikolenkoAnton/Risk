@@ -139,7 +139,6 @@ const fillDrops = async () => {
         selectAll: true
     });
 }
-fillDrops();
 
 function drawChart1(arr) {
 

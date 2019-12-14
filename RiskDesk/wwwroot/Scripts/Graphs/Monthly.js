@@ -13,17 +13,36 @@ const getRequestData = async (url) => {
     const response = await fetch(url);
     return response.json();
 }
-const changeMontlyChartDropdowns = dropdown => {
-    changeDropdowns(dropdown);
+const changeMontlyChartDropdowns = async dropdown => {
+    // const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
+    const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
+
+    const data1 = await postData(`/api/graphs/MonthlyGraphs`, obj);
+
     drawMonthlyGraph();
 }
+const processDataRows = async (data, blocks, months) => {
+    const rows = [];
+    for (const m of months) {
+        const row = (new Array(blocks.length + 1)).fill(0, 1);
+        row[0] = m;
+        for (const b of data) {
+            if (b.monthsShortName === m) {
+                const index = blocks.indexOf(b.wholeSaleBlocks);
+                row[index + 1] = b.ubarmwh;
+            }
+        }
+        rows.push(row);
+    }
+    return rows;
+}
 
-const drawChartMonthlyChart = async (arr) => {
-    const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const mapArr = arr.map((el, i) => [shortMonths[i], el.firstBlock, el.secondBlock, el.thirdBlock]);
+const drawChartMonthlyChart = async (data, blocks, months) => {
+
+    const rows = await processDataRows(data, blocks, months);
     var data = google.visualization.arrayToDataTable([
-        ['WholeSale Blocks', '2x16', '5x16', '7x8'],
-        ...mapArr
+        ['WholeSale Blocks', ...blocks],
+        ...rows
     ]);
 
     var options = {
@@ -186,28 +205,26 @@ const getFiltering = () => {
     return `?${month}&${zone}&${wholesale}&${accNumbers}`;
 }
 
-async function fillMonth() {
-    const monthes = (await getMonth()).slice(1);
-    const monthDropdown = document.querySelector('#FilterMonth');
-    console.log(monthes);
-    for (const month of monthes) {
-        const index = monthes.indexOf(month);
-        monthDropdown.innerHTML += getSelectOption(month.name, index + 1);
 
-    }
-    $(monthDropdown).multiselect({
-        selectAll: true
-    });
-    fillDropdownsAggregates();
-}
 
 const getGraphAndTableData = () => {
-    const url = `/api/graphs/MontlyGraphs` + getFiltering();
-    return getRequestData(url);
+    const filters = genericChangeDropdowbs();
+    const url = `/api/graphs/MonthlyGraphs`;
+    const f = Object.keys(filters).includes('undefined') ? {} : filters;
+    return postData(url, f);
 }
 async function drawMonthlyGraph() {
-    const data = await getGraphAndTableData();
-    drawChartMonthlyChart(data);
+
+
+    const {
+        data,
+        selectedBlocks,
+        selectedMonths
+    } = await getGraphAndTableData();
+
+    drawChartMonthlyChart(data, selectedBlocks, selectedMonths);
+
+
     drawTableMonthlyChart(data);
 
 }

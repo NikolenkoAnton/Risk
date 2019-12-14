@@ -266,4 +266,3 @@ async function draw() {
     drawGrap(graphs);
     drawTable(tables)
 }
-fillDrops();

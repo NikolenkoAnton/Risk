@@ -9,7 +9,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web;
-//Blob Storage 
+//Blob Storage
 using System.Globalization;
 using RiskDeskDev.Models;
 using Microsoft.Extensions.Configuration;

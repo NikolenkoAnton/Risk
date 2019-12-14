@@ -64,7 +64,7 @@
 
     <!--<![endif]-->-->
     <style>
-      
+
         .loader {
             border: 16px solid #f3f3f3;
             border-radius: 50%;
@@ -133,6 +133,7 @@
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
+                genericFillDropdowns();
 
             }
             catch (e) {
@@ -182,7 +183,7 @@
             display: block;
         }
 
-       
+
     </style>
 <link href="@Url.Content("~/jquery.multiselect.css")" rel="stylesheet" />
 <script src="@Url.Content("~/jquery.multiselect.js")"></script>
@@ -322,7 +323,7 @@
             <!-- Top Nav End -->
             <!-- Sub Nav End -->
             <div class="sub-nav hidden-sm hidden-xs">
-              
+
                 <div class="custom-search hidden-sm hidden-xs">
                     <input type="text" class="search-query" placeholder="Search here ...">
                     <i class="fa fa-search"></i>
@@ -345,20 +346,20 @@
                         <div class="filterCell">
                             <div class="filterTitle">Select Weather Scenario</div>
                             <select id="FilterScenario" multiple="multiple" class="form-control dropdownFilter" onchange="changeHourlyDropdowns(this)">
-                                
+
                             </select>
                         </div>
 
                         <div class="filterCell">
                             <div class="filterTitle">Select Wholesale Block</div>
                             <select id="FilterWholeSales" multiple="multiple" class="form-control dropdownFilter" onchange="changeHourlyDropdowns(this)">
-                                
+
                             </select>
                         </div>
                         <div class="filterCell">
                             <div class="filterTitle">Select AccountID</div>
                             <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeHourlyDropdowns(this)">
-                                
+
                             </select>
                         </div>
 

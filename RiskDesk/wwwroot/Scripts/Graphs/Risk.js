@@ -160,4 +160,3 @@ async function draw() {
     drawChart(data);
     drawTable(data)
 }
-fillDrops();

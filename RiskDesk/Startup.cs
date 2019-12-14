@@ -47,6 +47,9 @@ namespace RiskDeskDev
             services.AddTransient<IXMLService, XMLService>();
             services.AddTransient<IErcotService, ErcotService>();
             services.AddTransient<IErcotRepository, ErcotRepository>();
+            services.AddTransient<IMonthlyService, MonthlyService>();
+
+
 
             services.AddTransient<IDropdownService, DropdownService>();
 

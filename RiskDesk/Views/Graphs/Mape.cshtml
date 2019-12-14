@@ -118,6 +118,8 @@
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
+                                genericFillDropdowns();
+
 
             }
             catch (e) {
@@ -290,7 +292,7 @@
             <!-- Top Nav End -->
             <!-- Sub Nav End -->
             <div class="sub-nav hidden-sm hidden-xs">
-              
+
                 <div class="custom-search hidden-sm hidden-xs">
                     <input type="text" class="search-query" placeholder="Search here ...">
                     <i class="fa fa-search"></i>
