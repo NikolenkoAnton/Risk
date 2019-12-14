@@ -1,0 +1,8 @@
+Standart (monthly)
+Deal Entry Chart(deal)
+Hourly Shapes(Hourly Scalar) - HourlyScalar
+Volumetric Risk - RiskDrops, Risk
+Weather Scenario(Weather Hourly) - HourlyAggregates
+Scatter Plot - ScatterPlot
+Ercot - Ercot
+Peak - PeakDrops, Peak

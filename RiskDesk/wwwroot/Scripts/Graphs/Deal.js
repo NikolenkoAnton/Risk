@@ -114,31 +114,6 @@ const getFilteringStringDeal = () => {
 
     return `?${zone}${counter}${wholesale}`;
 }
-const fillDrops = async () => {
-
-    const url = '/api/graphs/DealDrops';
-    const {
-        zones,
-        blocks,
-        counters
-    } = await getRequestData(url);
-
-    const [zonesDrop, countersDrop, blocksDrop] = [...document.querySelectorAll('.dropdownFilter')];
-
-    zones.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => zonesDrop.innerHTML += el);
-    counters.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => countersDrop.innerHTML += el);
-    blocks.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => blocksDrop.innerHTML += el);
-
-    $(zonesDrop).multiselect({
-        selectAll: true
-    });
-    $(countersDrop).multiselect({
-        selectAll: true
-    });
-    $(blocksDrop).multiselect({
-        selectAll: true
-    });
-}
 
 function drawChart1(arr) {
 

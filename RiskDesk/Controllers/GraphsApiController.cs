@@ -125,42 +125,18 @@ namespace RiskDeskDev.Controllers
         {
             return hourlyServ.HourlyScalarData(Month, Zone, WholeSales, AccNumbers);
         }
-        [HttpGet]
-        [Route("CongestionZones")]
-        public List<CongestionZoneDTO> GetCongestionZones()
-        {
-            // var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
-            // var a = d.GetAllCongestionZone();
-            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
-            return zones;
-        }
 
-        [HttpGet]
-        [Route("AccNumbers")]
-        public List<AccNumberDTO> GetAccNumbers()
-        {
-            var numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString(), Id = acc.EntityId() }).ToList();
-            //var a = d.GetAllAccNumber();
-            return numbers;
-        }
 
-        [HttpGet]
-        [Route("WholeSales")]
-        public List<WholeSalesDTO> GetWholeSales()
-        {
-            var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
-            .OrderBy(wh => wh.WholeSaleBlocksId)
-            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList();
-            return blocks;
-            //return d.GetAllWholeSalesBlock();
-        }
+
+
+
 
         [HttpGet]
         [Route("HourlyAggregates")]
         public HourlyGraphsDataDTO getHourlyAggregatesGraphs(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers)//List<WholeSalesDTO> GetWholeSales()
         {
             IEnumerable<HourlyDTO> list = d.getHourlyGraph(StartDate, EndDate, Month, Scenario, WholeSales, AccNumbers);
-            if (StartDate == "0" && EndDate == "0")
+            if (StartDate == "0" && EndDate == "0" && list.Count() > 0)
             {
                 DateTime max = list.Max(el => el.date);
                 DateTime min = list.Min(el => el.date);
@@ -169,36 +145,11 @@ namespace RiskDeskDev.Controllers
             return new HourlyGraphsDataDTO { data = list, maxDate = null, minDate = null };
         }
 
-        [HttpGet]
-        [Route("Month")]
-        public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
-        {
-            // var a = _dropService.GetData<Month>(new Month());
-            // var a1 = d.getAllMonth();
-            var months = _dropService.GetData<Month>(new Month())
-                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
-                                                .Select(z =>
-                                                            new MonthDTO
-                                                            {
-                                                                Name = z.MonthsLongName,
-                                                                ShortName = z.MonthsShortName,
-                                                                Id = z.EntityId()
-                                                            })
-                                                .ToList();
 
-            return months;
-        }
 
-        [HttpGet]
-        [Route("Scenario")]
-        public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
-        {
-            // var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
-            // var a1 = d.getAllScenario();
-            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
 
-            return scenarios;
-        }
+
+
 
         [HttpPost]
         [Route("MonthlyGraphs")]
@@ -277,5 +228,77 @@ namespace RiskDeskDev.Controllers
             return data1;
         }
 
+        #region  Dropdowns
+        [HttpGet]
+        [Route("CongestionZones")]
+        public List<CongestionZoneDTO> GetCongestionZones()
+        {
+            // var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
+            // var a = d.GetAllCongestionZone();
+            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
+            return zones;
+        }
+        [HttpGet]
+        [Route("AccNumbers")]
+        public List<AccNumberDTO> GetAccNumbers()
+        {
+            var numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString(), Id = acc.EntityId() }).ToList();
+            //var a = d.GetAllAccNumber();
+            return numbers;
+        }
+        [HttpGet]
+        [Route("WholeSales")]
+        public List<WholeSalesDTO> GetWholeSales()
+        {
+            var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
+            .OrderBy(wh => wh.WholeSaleBlocksId)
+            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList();
+            return blocks;
+            //return d.GetAllWholeSalesBlock();
+        }
+        [HttpGet]
+        [Route("Counterparties")]
+        public List<CounterpartyDTO> GetCounterparties()
+        {
+            var counterparties = _dropService.GetData<Counterparty>(new Counterparty()).Select(party =>
+                                                           new CounterpartyDTO
+                                                           {
+                                                               Counterparty = party.CounterParty,
+                                                               Id = party.EntityId()
+                                                           }).ToList();
+
+
+            return counterparties;
+        }
+        [HttpGet]
+        [Route("Month")]
+        public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
+        {
+            // var a = _dropService.GetData<Month>(new Month());
+            // var a1 = d.getAllMonth();
+            var months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList();
+
+            return months;
+        }
+        [HttpGet]
+        [Route("Scenario")]
+        public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
+        {
+            // var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
+            // var a1 = d.getAllScenario();
+            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
+
+            return scenarios;
+        }
+        #endregion
     }
 }

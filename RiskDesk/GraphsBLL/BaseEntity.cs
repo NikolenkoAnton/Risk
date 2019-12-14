@@ -10,12 +10,9 @@ namespace RiskDesk.GraphsBLL
     }
     public abstract class BaseEntity//<T> where T : class
     {
-        public virtual string Procedure { get; set; }
+        public abstract string Procedure { get; set; }
 
-        public virtual string EntityId()
-        {
-            return GetEntityId("0");
-        }
+        public abstract string EntityId();
 
         protected virtual string GetEntityId(string EntityId)
         {
@@ -94,4 +91,16 @@ namespace RiskDesk.GraphsBLL
 
     }
 
+    public class Counterparty : BaseEntity
+    {
+        public override string Procedure { get; set; } = "[WebSite].[CounterPartyGetInfoGetInfo]";
+
+        public string CounterPartyID { get; set; }
+        public string CounterParty { get; set; }
+
+        public override string EntityId()
+        {
+            return base.GetEntityId(CounterPartyID);
+        }
+    }
 }

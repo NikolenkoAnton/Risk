@@ -110,31 +110,7 @@ const changeDrops = drop => {
     changeDropdowns(drop);
     draw();
 }
-const fillDrops = async () => {
 
-    const url = '/api/graphs/PeakDrops';
-    const {
-        months,
-        scenarios,
-        numbers
-    } = await getRequestData(url);
-
-    const [monthsDrop, scenarioDrop, numbersDrop] = [...document.querySelectorAll('.dropdownFilter')];
-
-    months.slice(1).map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => monthsDrop.innerHTML += el);
-    numbers.map((el, ind) => getSelectOption(el.accNumber, el.accNumberId)).forEach(el => numbersDrop.innerHTML += el);
-    scenarios.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => scenarioDrop.innerHTML += el);
-
-    $(monthsDrop).multiselect({
-        selectAll: true
-    });
-    $(scenarioDrop).multiselect({
-        selectAll: true
-    });
-    $(numbersDrop).multiselect({
-        selectAll: true
-    });
-}
 const getSelectedMonths = (dropdown) => {
     let indexes = '';
     const options = [...dropdown.selectedOptions];

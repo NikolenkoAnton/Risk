@@ -89,6 +89,10 @@ const getSelectOption = (value, index) => {
                             ${value}
                             </option>`
 }
+const getCounterparties = async () => {
+    const url = `/api/graphs/Counterparties`;
+    return getRequestData(url);
+}
 
 const getCongestionZones = async () => {
     const url = `/api/graphs/CongestionZones`;
@@ -201,6 +205,8 @@ async function genericFillDropdowns() {
     const monthes = await getMonth();
 
 
+    const counterparties = await getCounterparties();
+
     const hours = await (new Array(25)).fill(0).map((el, ind) => ({
         value: ind,
         id: ind
@@ -213,6 +219,7 @@ async function genericFillDropdowns() {
     fillCurrentDropdown(wholeSales, 'block', '#FilterWholeSales');
     fillCurrentDropdown(scenarios, 'name', '#FilterScenario');
     fillCurrentDropdown(hours, 'value', '#FilterHours');
+    fillCurrentDropdown(counterparties, 'counterparty', "#FilterCounterparty");
 
     addDataAttributesToFilters();
 
