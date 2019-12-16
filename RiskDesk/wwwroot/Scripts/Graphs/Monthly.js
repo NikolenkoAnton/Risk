@@ -10,11 +10,6 @@ google.charts.load('current', {
 google.charts.setOnLoadCallback(drawMonthlyGraph);
 const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-const getRequestData = async (url) => {
-
-    const response = await fetch(url);
-    return response.json();
-}
 const changeMontlyChartDropdowns = async dropdown => {
     // const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
     const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
@@ -106,29 +101,7 @@ const addColumns = (data) => {
     data.addColumn('number', 'Total');
 }
 
-const mapRpws = data => {
 
-    const arr = ['2x16', '5x16', '7x8', 'Total'];
-    const asd = ['firstBlock', 'secondBlock', 'thirdBlock'];
-    const totalValues = [];
-    const firstValues = data.map(el => el.firstVal);
-    const secondVaues = data.map(el => el.secondVal);
-    const thirdValues = data.map(el => el.thirdVal);
-    firstValues.push(firstValues.reduce((gen, el) => gen + el, 0));
-    secondVaues.push(secondVaues.reduce((gen, el) => gen + el, 0));
-    thirdValues.push(thirdValues.reduce((gen, el) => gen + el, 0));
-    for (const i in firstValues) {
-        let a = firstValues[i] + secondVaues[i] + thirdValues[i];
-        totalValues.push(a)
-    }
-
-    return [
-        [asd[0], ...firstValues],
-        [asd[1], ...secondVaues],
-        [asd[2], ...thirdValues],
-        [asd[3], ...totalValues]
-    ]
-}
 const addStyleToTableCell = (data, blocks) => {
 
     for (let i = 0; i < blocks.length; i++) {
