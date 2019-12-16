@@ -25,7 +25,7 @@ namespace RiskDesk.Models.Graphs.DropdownFilterModels
     }
     public interface AccNumberFilter
     {
-        string[] AccNumbrsID { get; set; }
+        string[] AccNumbersID { get; set; }
     }
 
 }

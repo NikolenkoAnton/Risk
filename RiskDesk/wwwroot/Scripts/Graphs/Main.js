@@ -16,6 +16,11 @@ let filtersKeys = {
     FilterCounterparty: "counterpartyID",
 }
 
+const getRequestData = async (url) => {
+
+    const response = await fetch(url);
+    return response.json();
+}
 
 const addDataAttributesToFilters = () => {
 
@@ -355,8 +360,7 @@ async function postData(url = '', data = {}) {
 async function getFilters(d) {
 
 }
-// const getRequestData = async (url) => {
 
-//     const response = await fetch(url);
-//     return response.json();
-// }
+//wholeSaleBlocksID
+//he 
+//ubar

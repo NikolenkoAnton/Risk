@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using RiskDesk.GraphsBLL.Interfaces;
 using RiskDesk.GraphsBLL.Services;
 
 namespace RiskDesk.GraphsBLL

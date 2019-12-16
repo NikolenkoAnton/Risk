@@ -8,11 +8,7 @@ google.charts.load('current', {
     packages: ['table']
 });
 google.charts.setOnLoadCallback(drawHourlyScalar);
-const getRequestData = async (url) => {
 
-    const response = await fetch(url);
-    return response.json();
-}
 const getSelectedMonths = (dropdown) => {
     let indexes = '';
     const options = [...dropdown.selectedOptions];
@@ -54,16 +50,20 @@ const getGraphicData = async () => {
 }
 
 const mapDataToChart = (data) => {
+
+    //wholeSaleBlocksID
+    //he 
+    //ubar
     const rows = [];
     for (let i = 1; i < 25; i++) {
-        const row = [String(i), 0, 0, 0];
+        const row = [String(i), 0, 0, 0, 0];
         rows.push(row);
     }
     for (const rec of data) {
 
-        const hour = +rec.hour;
-        const block = +rec.wholeSaleID;
-        const ubar = rec.ubar;
+        const hour = rec.he;
+        const block = rec.wholeSaleBlocksID;
+        const ubar = Math.round(rec.ubar * 100) / 100;
 
         const curRow = rows[hour - 1];
         curRow[block] = ubar;
@@ -74,10 +74,13 @@ const mapDataToChart = (data) => {
 const mapDataToTable = (data) => {
 
 }
-const drawChart = data => {
+const drawChart = async data => {
+    const blocks = (await getWholeSales()).map(el => el.block);
+    const blocks1 = await blocks.map(el => el.block);
+    const rows = await mapDataToChart(data);
     var data = google.visualization.arrayToDataTable([
-        ['WholeSales Blocks', '2x16', '5x16', '7x8'],
-        ...mapDataToChart(data)
+        ['WholeSale Blocks', ...blocks],
+        ...rows
     ]);
 
     var options = {
