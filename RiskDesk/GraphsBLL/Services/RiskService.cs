@@ -45,11 +45,35 @@ namespace RiskDeskDev.GraphsBLL.Services
 
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
+
+                var data1 = conn.QueryMultiple("[WebSite].[DealEntryFilteredGetInfo]",
+
+               commandType: CommandType.StoredProcedure);
+
+                var deal = data1.Read<DealDBModel>().ToList();
+                var dealBlock = data1.Read<DealBlock>().ToList();
+                var dealCounterVolume = data1.Read<CounterpartyVolumeDeal>().ToList();
+                var dealCounterGrossMargin = data1.Read<CounterpartyGrossMarginDeal>().ToList();
+
+                var data = new DealEntryDBModel
+                {
+                    Deals = deal,
+                    Blocks = dealBlock,
+                    CounterVolumes = dealCounterVolume,
+                    CounterGrossMargins = dealCounterGrossMargin
+                };
+
+            }
+
+
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
                 var data = conn.Query<RiskDBModel>("[WebSite].[RiskFilteredGetInfo]",
                 model,
                     commandType: CommandType.StoredProcedure).ToList();
                 return data;
             }
+
         }
 
         public List<RiskDataDTO> RiskData(string Month, string Zone, string AccNumbers)

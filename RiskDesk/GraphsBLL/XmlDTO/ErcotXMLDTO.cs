@@ -1,3 +1,4 @@
+using System;
 namespace RiskDesk.GraphsBLL.XmlDTO
 {
     public class ErcotXMLDTO
@@ -47,6 +48,18 @@ namespace RiskDesk.GraphsBLL.XmlDTO
 
 
         public string MonthsString { get; set; }
+
+    }
+
+    public class DealXML
+    {
+        public string WholeBlockString { get; set; }
+        public string CongestionZoneString { get; set; }
+        public string CounterPartyString { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? DealStartDate { get; set; }
+        public DateTime? DealEndDate { get; set; }
 
     }
 

@@ -1,4 +1,6 @@
-﻿using RiskDeskDev.Controllers;
+﻿using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
+using RiskDeskDev.Controllers;
 using RiskDeskDev.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ namespace RiskDeskDev.GraphsBLL.Interfaces
 {
     public interface IDealService
     {
+        List<DealEntryDBModel> GetDealEntry(DealGraphFilters filters);
         Task<dynamic> DropDownsInfo();
 
         dynamic Commit(int id);

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
 using RiskDeskDev.Controllers;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.Models;
@@ -593,6 +595,12 @@ namespace RiskDeskDev.GraphsBLL.Services
             return info;
 
         }
+
+        public List<DealEntryDBModel> GetDealEntry(DealGraphFilters filters)
+        {
+            throw new NotImplementedException();
+        }
+
         static string[] SaveInt = new string[] { "DealID", "CounterPartyID", "SecondCounterPartyID", "SetPointID", "CongestionZonesID", " WholeSaleBlocksID" };
         static string[] SaveFloat = new string[] { "VolumeMW", "VolumeMWh", "Price", "Fee" };
         static string[] SaveDate = new string[] { "DealDate", "StartDate", "EndDate" };
@@ -600,4 +608,25 @@ namespace RiskDeskDev.GraphsBLL.Services
         //        static string[] DealSaveKeys = new string []{ "CongestionZonesID", "CounterPartyID", "DealDate", "DealID", "DealName", "EndDate", "Fee", "Notes", "Price", "SecondCounterPartyID", "SetPointID", "StartDate", "VolumeMW", "VolumeMWh", "WholeSaleBlocksID" };
     }
 
+    // using (IDbConnection conn = new SqlConnection(_connectionString))
+    //             {
+
+    //                 var data1 = conn.QueryMultiple("[WebSite].[DealEntryFilteredGetInfo]",
+
+    //                commandType: CommandType.StoredProcedure);
+
+    //                 var deal = data1.Read<DealDBModel>().ToList();
+    //                 var dealBlock = data1.Read<DealBlock>().ToList();
+    //                 var dealCounterVolume = data1.Read<CounterpartyVolumeDeal>().ToList();
+    //                 var dealCounterGrossMargin = data1.Read<CounterpartyGrossMarginDeal>().ToList();
+
+    //                 var data = new DealEntryDBModel
+    //                 {
+    //                     Deals = deal,
+    //                     Blocks = dealBlock,
+    //                     CounterVolumes = dealCounterVolume,
+    //                     CounterGrossMargins = dealCounterGrossMargin
+    //                 };
+
+    //             }
 }

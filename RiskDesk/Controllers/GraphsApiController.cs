@@ -74,6 +74,9 @@ namespace RiskDeskDev.Controllers
             _dropService = dropService;
             _monthlyService = monthlyService;
 
+            var list = riskServ.GetRisk(new RiskGraphFilters());
+
+
         }
 
 
@@ -113,6 +116,14 @@ namespace RiskDeskDev.Controllers
         {
             var list = hourlyServ.HourlyData(filters);
 
+            return list;
+        }
+
+        [HttpPost]
+        [Route("Deal")]
+        public List<DealEntryDBModel> GetRisk(DealGraphFilters filters)
+        {
+            var list = dealServ.GetDealEntry(filters);
             return list;
         }
 
