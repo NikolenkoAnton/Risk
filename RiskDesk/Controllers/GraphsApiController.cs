@@ -154,39 +154,6 @@ namespace RiskDeskDev.Controllers
 
         }
 
-        [HttpGet]
-        [Route("WeatherMontlyGraphs")]
-        public List<MontlyGraphDTO> GetWeatherMontlyGraphs(string Month, string Scenario, string WholeSales, string AccNumbers)
-        {
-
-            List<MontlyGraphDTO> list = d.GetWeatherMontlyGraphs(Month, Scenario, WholeSales, AccNumbers);
-            return list;
-
-        }
-
-        [HttpGet]
-        [Route("CongestionZonesGraphs")]
-        public List<CongestZoneGraphDTO> GetCongestionZonesGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<CongestZoneGraphDTO> list = d.GetCongestZoneGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
-
-        [HttpGet]
-        [Route("AccNumbersGraphs")]
-        public List<AccIdGraphDTO> GetAccNumbersGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<AccIdGraphDTO> list = d.GetAccIdGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
-
-        [HttpGet]
-        [Route("WholeSalesGraphs")]
-        public List<WholeSalesGraphDTO> GetWholeSalesGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<WholeSalesGraphDTO> list = d.GetWholeSalesGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
 
         [HttpGet]
         [Route("ScatterPlot")]

@@ -36,6 +36,7 @@ namespace RiskDesk.GraphsBLL.XmlDTO
 
         public string MonthsString { get; set; }
 
-
     }
+
+
 }
