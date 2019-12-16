@@ -6,3 +6,16 @@ Weather Scenario(Weather Hourly) - HourlyAggregates
 Scatter Plot - ScatterPlot
 Ercot - Ercot
 Peak - PeakDrops, Peak
+
+
+    "window.menuBarVisibility": "toggle",
+
+    "files.autoSaveDelay": 500,
+
+    "editor.fontFamily": "Fira Code",
+
+    "editor.fontLigatures": true,
+
+    "editor.fontSize": 16,
+
+    "editor.cursorStyle": "underline",

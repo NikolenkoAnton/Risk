@@ -8,7 +8,6 @@ namespace RiskDeskDev
 {
     public interface IDB
     {
-        IEnumerable<HourlyDTO> getHourlyGraph(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers);
 
     }
 }

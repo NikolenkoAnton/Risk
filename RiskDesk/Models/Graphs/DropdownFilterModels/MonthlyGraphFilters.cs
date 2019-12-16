@@ -1,6 +1,6 @@
 namespace RiskDesk.Models.Graphs.DropdownFilterModels
 {
-    public class MonthlyGraphFilters
+    public class MonthlyGraphFilters : MonthFilter, CongestionZoneFilter, WholeSaleBlockFilter, AccNumberFilter
     {
         //string Month, string Zone, string WholeSales, string AccNumbers)
         public string[] MonthsID { get; set; }

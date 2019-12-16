@@ -73,29 +73,17 @@ namespace RiskDeskDev.Controllers
             _ercotService = ercotService;
             _dropService = dropService;
             _monthlyService = monthlyService;
-            // DropsTest();
-
-            // d = new DB();
-        }
-
-
-        private void DropsTest()
-        {
-
-            var months = _dropService.GetData<Month>(new Month()).Select(z => new MonthDTO { Name = z.MonthsLongName, Id = z.EntityId() }).ToList();
-            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
-            var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock()).Select(z => new WholeSalesDTO { Block = z.WholeSaleBlocks, Id = z.EntityId() }).ToList();
-            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
-            var accnumbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(z => new AccNumberDTO { AccNumber = z.UtilityAccountNumber, Id = z.EntityId() }).ToList();
 
         }
+
+
+
         [HttpGet]
         [Route("Deal")]
         public async Task<Deal> Deal([FromQuery]string Zone, [FromQuery]string Counter, [FromQuery] string WholeSales, [FromQuery] string StartDate, [FromQuery] string EndDate, [FromQuery] string StartDeal, [FromQuery] string EndDeal)
         {
             return await Task.Run(() => dealServ.Deal(Zone, Counter, WholeSales, StartDate, EndDate, StartDeal, EndDeal));
         }
-        //return new { dealMax, dealMin, max, min, graph1, graph2, graph3, graph4 };
 
 
         [HttpGet]
@@ -139,17 +127,6 @@ namespace RiskDeskDev.Controllers
             response.SelectedMonths = getMonth().Select(x => x.ShortName).ToArray();
             response.Data = _monthlyService.MonthlyData(filters);
 
-            // if (filters.BlocksID != null)
-            // {
-            //     response.SelectedBlocks = _dropService.GetSelectedBlocks(filters.BlocksID)
-            //                                 .Select(x => x.WholeSaleBlocks).ToArray();
-            // }
-            // if (filters.MonthsID != null)
-            // {
-            //     response.SelectedMonths = _dropService.GetSelectedMonths(filters.MonthsID)
-            //                                 .Select(x => x.MonthsShortName).ToArray();
-            // }
-
             return response;
 
         }
@@ -169,7 +146,6 @@ namespace RiskDeskDev.Controllers
         {
             var data = _ercotService.Ercot(query);
             var data1 = _ercotService.Ercot1(query);
-            // return data;
             return data1;
         }
 
@@ -178,8 +154,6 @@ namespace RiskDeskDev.Controllers
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
-            // var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
-            // var a = d.GetAllCongestionZone();
             var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
             return zones;
         }
@@ -188,7 +162,6 @@ namespace RiskDeskDev.Controllers
         public List<AccNumberDTO> GetAccNumbers()
         {
             var numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString(), Id = acc.EntityId() }).ToList();
-            //var a = d.GetAllAccNumber();
             return numbers;
         }
         [HttpGet]
@@ -219,8 +192,6 @@ namespace RiskDeskDev.Controllers
         [Route("Month")]
         public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
         {
-            // var a = _dropService.GetData<Month>(new Month());
-            // var a1 = d.getAllMonth();
             var months = _dropService.GetData<Month>(new Month())
                                                 .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
                                                 .Select(z =>
@@ -236,10 +207,8 @@ namespace RiskDeskDev.Controllers
         }
         [HttpGet]
         [Route("Scenario")]
-        public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
+        public List<ScenarioDTO> getScenario()
         {
-            // var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
-            // var a1 = d.getAllScenario();
             var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
 
             return scenarios;

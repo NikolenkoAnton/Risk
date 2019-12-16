@@ -1,31 +1,31 @@
 namespace RiskDesk.Models.Graphs.DropdownFilterModels
 {
 
-    public class MonthFilter
+    public interface MonthFilter
     {
-        public string[] MonthsID { get; set; }
+        string[] MonthsID { get; set; }
     }
-    public class WeatherScenarioFilter
+    public interface WeatherScenarioFilter
     {
-        public string[] ScenariosID { get; set; }
-    }
-
-    public class HoursFilter
-    {
-        public string[] HoursID { get; set; }
+        string[] ScenariosID { get; set; }
     }
 
-    public class CongestionZoneFilter
+    public interface HoursFilter
     {
-        public string[] ZonesID { get; set; }
+        string[] HoursID { get; set; }
     }
-    public class WholeSaleBlockFilter
+
+    public interface CongestionZoneFilter
     {
-        public string[] BlocksID { get; set; }
+        string[] ZonesID { get; set; }
     }
-    public class AccNumberFilter
+    public interface WholeSaleBlockFilter
     {
-        public string[] AccNumbrsID { get; set; }
+        string[] BlocksID { get; set; }
+    }
+    public interface AccNumberFilter
+    {
+        string[] AccNumbrsID { get; set; }
     }
 
 }
