@@ -116,6 +116,13 @@ namespace RiskDeskDev.Controllers
             return list;
         }
 
+        [HttpPost]
+        [Route("Risk")]
+        public List<RiskDBModel> GetRisk(RiskGraphFilters filters)
+        {
+            var list = riskServ.GetRisk(filters);
+            return list;
+        }
 
         [HttpPost]
         [Route("MonthlyGraphs")]

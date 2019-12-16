@@ -39,4 +39,16 @@ namespace RiskDesk.GraphsBLL.XmlDTO
     }
 
 
+    public class RiskXML
+    {
+        public string CongestionZoneString { get; set; }
+
+        public string UtilityAccountNumberString { get; set; }
+
+
+        public string MonthsString { get; set; }
+
+    }
+
+
 }

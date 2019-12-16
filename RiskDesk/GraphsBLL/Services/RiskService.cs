@@ -10,28 +10,55 @@ using System.Data;
 using RiskDesk.GraphsBLL.Interfaces;
 using RiskDesk.GraphsBLL;
 using System.Linq;
+using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
+using RiskDesk.GraphsBLL.XmlDTO;
+using Dapper;
 
 namespace RiskDeskDev.GraphsBLL.Services
 {
     public class RiskService : IRiskService
     {
 
-        private readonly string ConnectionString = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
+        private readonly string _connectionString;
         private readonly IDropdownService _dropService;
         private readonly IDB db;
-        public RiskService(IDB db, IConfiguration conf, IDropdownService dropService)
+        private readonly IXMLService _xmlService;
+        public RiskService(IDB db, IConfiguration configuration, IDropdownService dropService, IXMLService xmlService)
         {
 
             _dropService = dropService;
+            _xmlService = xmlService;
+            _connectionString = configuration.GetConnectionString("Develop");
             this.db = db;
         }
+
+        public List<RiskDBModel> GetRisk(RiskGraphFilters filters)
+        {
+            var model = new RiskXML
+            {
+                CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
+                UtilityAccountNumberString = _xmlService.GetFilterXMLRows("UA", filters.AccNumbersID),
+                MonthsString = _xmlService.GetFilterXMLRows("MN", filters.MonthsID),
+
+            };
+
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
+                var data = conn.Query<RiskDBModel>("[WebSite].[RiskFilteredGetInfo]",
+                model,
+                    commandType: CommandType.StoredProcedure).ToList();
+                return data;
+            }
+        }
+
         public List<RiskDataDTO> RiskData(string Month, string Zone, string AccNumbers)
         {
 
             DataTable table = new DataTable();
             List<RiskDataDTO> records = new List<RiskDataDTO>();
             List<object[]> SelectionItems = new List<object[]>();
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+            using (SqlConnection con = new SqlConnection(_connectionString))
             {
 
                 using (SqlCommand cmd = new SqlCommand())
