@@ -55,6 +55,8 @@ namespace RiskDeskDev.Controllers
         private readonly IScatterPlotService scatterService;
         private readonly IErcotService _ercotService;
         private readonly IDropdownService _dropService;
+
+        private readonly IGraphService _graphService;
         private readonly IMonthlyService _monthlyService;
         //private readonly DealService service;
 
@@ -62,7 +64,7 @@ namespace RiskDeskDev.Controllers
             IHourlyScalarService hourlyServ, IRiskService riskServ,
             IDealService dealServ, IScatterPlotService scatterService,
             IErcotService ercotService, IDropdownService dropService,
-            IMonthlyService monthlyService)
+            IMonthlyService monthlyService, IGraphService graphService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
@@ -73,9 +75,17 @@ namespace RiskDeskDev.Controllers
             _ercotService = ercotService;
             _dropService = dropService;
             _monthlyService = monthlyService;
+            _graphService = graphService;
+            //var list = riskServ.GetRisk(new RiskGraphFilters());
 
-            var list = riskServ.GetRisk(new RiskGraphFilters());
-
+            var monthly = _monthlyService.MonthlyData(new MonthlyGraphFilters());
+            var deals = _graphService.GetDealEntry(new DealGraphFilters());
+            var slcalars = _graphService.GetHourlyScalar(new HourlyScalarGraphFilters());
+            var risks = _graphService.GetRisk(new RiskGraphFilters());
+            var scatters = _graphService.GetScatterPlot(new ScatterPlotGraphFilters());
+           // var ercots = _graphService.GetErcot(new ErcotGraphFilters());
+            var peaks = _graphService.GetPeak(new PeakGraphFilters());
+            var scenarios = _graphService.GetWeatherScenario(new WeatherScenarioGraphFilters());
 
         }
 

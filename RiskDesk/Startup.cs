@@ -48,7 +48,7 @@ namespace RiskDeskDev
             services.AddTransient<IErcotService, ErcotService>();
             services.AddTransient<IErcotRepository, ErcotRepository>();
             services.AddTransient<IMonthlyService, MonthlyService>();
-
+            services.AddTransient<IGraphService, GraphService>();
 
 
             services.AddTransient<IDropdownService, DropdownService>();

@@ -1,6 +1,33 @@
 using System;
 namespace RiskDesk.GraphsBLL.XmlDTO
 {
+    public class PeakXML
+    {
+        public string WeatherScenarioString { get; set; }
+        public string UtilityAccountNumberString { get; set; }
+        public string MonthsString { get; set; }
+
+    }
+
+    public class WeatherScenarioXML
+    {
+        public string MonthsString { get; set; }
+
+        public string WholeBlockString { get; set; }
+
+        public string UtilityAccountNumberString { get; set; }
+
+
+    }
+    public class ScatterXML
+    {
+        public string WholeBlockString { get; set; }
+        public string CongestionZoneString { get; set; }
+        public string UtilityAccountNumberString { get; set; }
+        public string MonthsString { get; set; }
+        public string HoursString { get; set; }
+    }
+
     public class ErcotXMLDTO
     {
         public string WholeBlockString { get; set; }

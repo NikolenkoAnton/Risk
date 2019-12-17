@@ -34,6 +34,7 @@ namespace RiskDesk.GraphsBLL.Services
         //     return model;
 
         // }
+        
 
         public ErcotXMLDTO ErcotXML(ErcotQueryDTO query)
         {
