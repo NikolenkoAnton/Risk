@@ -24,11 +24,21 @@ namespace RiskDesk.GraphsBLL.Services
         }
         public DealEntryDBModel GetDealEntry(DealGraphFilters filters)
         {
+            var model = new DealXML
+            {
+                WholeBlockString = _xmlService.GetFilterXMLRows("WH", filters.BlocksID),
+                CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
+                CounterPartyString = _xmlService.GetFilterXMLRows("CT", filters.CounterpartyID),
+                StartDate = filters.StartDate,
+                EndDate = filters.EndDate,
+                DealStartDate = filters.DealStartDate,
+                DealEndDate = filters.DealEndDate,
+            };
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
 
                 var data1 = conn.QueryMultiple("[WebSite].[DealEntryFilteredGetInfo]",
-
+                model,
                commandType: CommandType.StoredProcedure);
 
                 var deal = data1.Read<DealDBModel>().ToList();
@@ -89,7 +99,7 @@ namespace RiskDesk.GraphsBLL.Services
         }
 
         //
-        public List<PeakDBModel> GetPeak(PeakGraphFilters filters)
+        public PeakDBModel GetPeak(PeakGraphFilters filters)
         {
             var model = new PeakXML
             {
@@ -100,9 +110,18 @@ namespace RiskDesk.GraphsBLL.Services
 
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
-                var data = conn.Query<PeakDBModel>("[WebSite].[CoincidencePeakGetInfo]",
+                var data1 = conn.QueryMultiple("[WebSite].[CoincidencePeakGetInfo]",
                 model,
-                    commandType: CommandType.StoredProcedure).ToList();
+                    commandType: CommandType.StoredProcedure);
+
+                var peakMonths = data1.Read<PeakMonthsDBModel>().ToList();
+                var peakAccNumbers = data1.Read<PeakAccNumbersDBModel>().ToList();
+
+                var data = new PeakDBModel
+                {
+                    PeakMonths = peakMonths,
+                    PeakAccNumbers = peakAccNumbers
+                };
                 return data;
             }
         }

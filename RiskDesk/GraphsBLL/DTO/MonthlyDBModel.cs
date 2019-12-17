@@ -5,9 +5,9 @@ namespace RiskDesk.GraphsBLL.DTO
     public class MonthlyDBModel
     {
 
-        public Int32 WholeSaleBlocksID { get; set; }
+        public Int64 WholeSaleBlocksID { get; set; }
         public string WholeSaleBlocks { get; set; }
-        public Int32 MonthsNamesID { get; set; }
+        public Int64 MonthsNamesID { get; set; }
         public string MonthsShortName { get; set; }
         public string MonthsLongName { get; set; }
         public double ubarmwh { get; set; }

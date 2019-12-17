@@ -4,7 +4,7 @@ namespace RiskDesk.GraphsBLL.DTO
 {
     public class HourlyScalarDBModel
     {
-        public Int32 WholeSaleBlocksID { get; set; }
+        public Int64 WholeSaleBlocksID { get; set; }
 
         public string WholeSaleBlocks { get; set; }
 

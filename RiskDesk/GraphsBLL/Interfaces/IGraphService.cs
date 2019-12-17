@@ -12,7 +12,7 @@ namespace RiskDesk.GraphsBLL.Interfaces
         List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters);
         List<ScatterPlotDBModel> GetScatterPlot(ScatterPlotGraphFilters filters);
         List<ErcotDBModel> GetErcot(ErcotGraphFilters filters);
-        List<PeakDBModel> GetPeak(PeakGraphFilters filters);
+        PeakDBModel GetPeak(PeakGraphFilters filters);
 
     }
 }

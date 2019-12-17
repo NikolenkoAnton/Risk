@@ -78,14 +78,14 @@ namespace RiskDeskDev.Controllers
             _graphService = graphService;
             //var list = riskServ.GetRisk(new RiskGraphFilters());
 
-            var monthly = _monthlyService.MonthlyData(new MonthlyGraphFilters());
-            var deals = _graphService.GetDealEntry(new DealGraphFilters());
-            var slcalars = _graphService.GetHourlyScalar(new HourlyScalarGraphFilters());
-            var risks = _graphService.GetRisk(new RiskGraphFilters());
-            var scatters = _graphService.GetScatterPlot(new ScatterPlotGraphFilters());
-            // var ercots = _graphService.GetErcot(new ErcotGraphFilters());
-            var peaks = _graphService.GetPeak(new PeakGraphFilters());
-            var scenarios = _graphService.GetWeatherScenario(new WeatherScenarioGraphFilters());
+            // var monthly = _monthlyService.MonthlyData(new MonthlyGraphFilters());
+            // var deals = _graphService.GetDealEntry(new DealGraphFilters());
+            // var slcalars = _graphService.GetHourlyScalar(new HourlyScalarGraphFilters());
+            // var risks = _graphService.GetRisk(new RiskGraphFilters());
+            // var scatters = _graphService.GetScatterPlot(new ScatterPlotGraphFilters());
+            // var ercots = _graphService.GetErcot(new ErcotGraphFilters { MonthsID = new string[] { "1" } });
+            // var peaks = _graphService.GetPeak(new PeakGraphFilters());
+            // var scenarios = _graphService.GetWeatherScenario(new WeatherScenarioGraphFilters());
 
         }
 
@@ -122,7 +122,7 @@ namespace RiskDeskDev.Controllers
 
         [HttpPost]
         [Route("Peak")]
-        public List<PeakDBModel> GetPeak(PeakGraphFilters filters)
+        public PeakDBModel GetPeak(PeakGraphFilters filters)
         {
             var list = _graphService.GetPeak(filters);
             return list;
