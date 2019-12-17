@@ -83,7 +83,7 @@ namespace RiskDeskDev.Controllers
             var slcalars = _graphService.GetHourlyScalar(new HourlyScalarGraphFilters());
             var risks = _graphService.GetRisk(new RiskGraphFilters());
             var scatters = _graphService.GetScatterPlot(new ScatterPlotGraphFilters());
-           // var ercots = _graphService.GetErcot(new ErcotGraphFilters());
+            // var ercots = _graphService.GetErcot(new ErcotGraphFilters());
             var peaks = _graphService.GetPeak(new PeakGraphFilters());
             var scenarios = _graphService.GetWeatherScenario(new WeatherScenarioGraphFilters());
 
@@ -121,6 +121,30 @@ namespace RiskDeskDev.Controllers
         }
 
         [HttpPost]
+        [Route("Peak")]
+        public List<PeakDBModel> GetPeak(PeakGraphFilters filters)
+        {
+            var list = _graphService.GetPeak(filters);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("Ercot")]
+        public List<ErcotDBModel> GetErcot(ErcotGraphFilters filters)
+        {
+            var list = _graphService.GetErcot(filters);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("ScatterPlot")]
+        public List<ScatterPlotDBModel> GetScatterPlot(ScatterPlotGraphFilters filters)
+        {
+            var list = _graphService.GetScatterPlot(filters);
+            return list;
+        }
+
+        [HttpPost]
         [Route("HourlyScalar")]
         public List<HourlyScalarDBModel> GetHourlyScalar(HourlyScalarGraphFilters filters)
         {
@@ -130,8 +154,16 @@ namespace RiskDeskDev.Controllers
         }
 
         [HttpPost]
+        [Route("WeatherScenario")]
+        public List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters)
+        {
+            var list = _graphService.GetWeatherScenario(filters);
+            return null;
+        }
+
+        [HttpPost]
         [Route("Deal")]
-        public List<DealEntryDBModel> GetRisk(DealGraphFilters filters)
+        public List<DealEntryDBModel> GetDeal(DealGraphFilters filters)
         {
             var list = dealServ.GetDealEntry(filters);
             return list;
