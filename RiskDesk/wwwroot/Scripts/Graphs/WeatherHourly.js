@@ -1,8 +1,4 @@
-﻿    const getRequestData = async (url) => {
-
-        const response = await fetch(url);
-        return response.json();
-    }
+﻿ 
     google.charts.load('current', {
         'packages': ['corechart']
     });

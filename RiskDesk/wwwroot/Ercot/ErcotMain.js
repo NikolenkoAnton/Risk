@@ -62,7 +62,6 @@ async function changeDrops() {
     const graphRows = await processListOfDatas(data);
     //drawStuffAnimate(graphRows);
     ArrayOfDataMonths = graphRows;
-    debugger;
 }
 var f;
 
@@ -109,7 +108,6 @@ async function draw(rows) {
             const params = "?Month=" + m + "&" + getQueryParamButMonth();
             const data = await getGraphData(params);
             const mappedData = (await processListOfDatas(data))[0];
-            debugger;
             const graphHeader = ['Temperature (F)', ...getSelectedWholeBlocks()];
             options['colors'] = getBlocksColors();
             chart.draw(google.visualization.arrayToDataTable([

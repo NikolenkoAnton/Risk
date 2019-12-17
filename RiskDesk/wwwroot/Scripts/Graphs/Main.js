@@ -167,9 +167,14 @@ const genericChangeDropdowbs = () => {
             filterObj[filterField].push(this.value);
         });
     });
-    console.log(filterObj);
-    return filterObj;
+    const filters = Object.keys(filterObj).includes('undefined') ? {} : filterObj;
 
+    return filters;
+
+}
+const genericGetGraphData = async (url) => {
+    const filters = genericChangeDropdowbs();
+    return await postData(url, filters);
 }
 
 const getMonth = async () => {
@@ -196,7 +201,9 @@ async function fillDropdownsAggregates() {
     fillCurrentDropdown(wholeSales, 'block', '#FilterWholeSales');
 
 }
-
+var shortMonths;
+getMonth().then(resp =>
+    shortMonths = resp.map(m => m.shortName));
 async function genericFillDropdowns() {
     const accNumbers = await getAccNumbers();
 
@@ -208,7 +215,6 @@ async function genericFillDropdowns() {
     const scenarios = await getScenario();
 
     const monthes = await getMonth();
-
 
     const counterparties = await getCounterparties();
 

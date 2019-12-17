@@ -8,7 +8,6 @@ google.charts.load('current', {
     'packages': ['bar']
 });
 google.charts.setOnLoadCallback(drawMonthlyGraph);
-const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const changeMontlyChartDropdowns = async dropdown => {
     // const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
@@ -91,8 +90,6 @@ const mapTableData = data => {
 
 }
 const addColumns = (data) => {
-    //const monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
     data.addColumn('string', 'Wholesale Block');
     for (const month of shortMonths) {
@@ -209,8 +206,7 @@ const getFiltering = () => {
 const getGraphAndTableData = () => {
     const filters = genericChangeDropdowbs();
     const url = `/api/graphs/MonthlyGraphs`;
-    const f = Object.keys(filters).includes('undefined') ? {} : filters;
-    return postData(url, f);
+    return postData(url, filters);
 }
 async function drawMonthlyGraph() {
 

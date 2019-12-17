@@ -1,10 +1,4 @@
-﻿async function getRequestData(url) {
-
-    const response = await fetch(url);
-    return response.json();
-}
-
-//async function getCongestionZones() {
+﻿//async function getCongestionZones() {
 //    const url = `/api/graphs/CongestionZones`;
 //    return getRequestData(url);
 //}

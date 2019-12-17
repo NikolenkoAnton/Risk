@@ -8,12 +8,7 @@ google.charts.load('current', {
     'packages': ['bar']
 });
 google.charts.setOnLoadCallback(draw);
-const getRequestData = async (url) => {
 
-    const response = await fetch(url);
-    return response.json();
-}
-const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const drawGrap = async (arr) => {
 
     const arrMap = shortMonths.map(el => [el, 0, 0]);
