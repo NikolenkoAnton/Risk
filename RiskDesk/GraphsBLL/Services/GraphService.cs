@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -169,11 +170,15 @@ namespace RiskDesk.GraphsBLL.Services
         //[WebSite].[WeatherHourlyFilteredGetInfo]
         public List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters)
         {
+
             var model = new WeatherScenarioXML
             {
                 WholeBlockString = _xmlService.GetFilterXMLRows("WH", filters.BlocksID),
                 UtilityAccountNumberString = _xmlService.GetFilterXMLRows("UA", filters.AccNumbersID),
                 MonthsString = _xmlService.GetFilterXMLRows("MN", filters.MonthsID),
+                WeatherScenarioString = _xmlService.GetFilterXMLRows("WS", filters.ScenariosID),
+                StartDate = filters.StartDate,
+                EndDate = filters.EndDate,
             };
 
             using (IDbConnection conn = new SqlConnection(_connectionString))

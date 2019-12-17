@@ -158,7 +158,7 @@ namespace RiskDeskDev.Controllers
         public List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters)
         {
             var list = _graphService.GetWeatherScenario(filters);
-            return null;
+            return list;
         }
 
         [HttpPost]

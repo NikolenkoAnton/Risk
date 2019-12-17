@@ -16,6 +16,10 @@ namespace RiskDesk.GraphsBLL.XmlDTO
         public string WholeBlockString { get; set; }
 
         public string UtilityAccountNumberString { get; set; }
+        public string WeatherScenarioString { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
 
     }
@@ -69,7 +73,7 @@ namespace RiskDesk.GraphsBLL.XmlDTO
 
     public class RiskXML
     {
-    public string CongestionZoneString { get; set; }
+        public string CongestionZoneString { get; set; }
 
         public string UtilityAccountNumberString { get; set; }
 

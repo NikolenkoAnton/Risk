@@ -129,6 +129,9 @@
                // $("#start").datepicker();
                 //$("#end").datepicker();
             });
+                 $("#start").datepicker();
+     $("#end").datepicker();
+
                 AddHeader();
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
@@ -367,9 +370,11 @@
                     <div class="dateFilterContainer">
                         <div class="inputDateCell">
                             <label class="dateLabel" for="start">Start date</label>
+                            <input type="text"  id="start" onchange="changeHourlyDropdowns(this)">
                         </div>
                         <div class="inputDateCell">
                             <label class="dateLabel" for="end">End date</label>
+                            <input type="text"  id="end" onchange="changeHourlyDropdowns(this)">
 
                         </div>
                     </div>

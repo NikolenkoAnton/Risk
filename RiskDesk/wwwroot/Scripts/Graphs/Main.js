@@ -9,7 +9,7 @@ const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatte
 
 let filtersKeys = {
     FilterMonth: "monthsID",
-    FilterScenario: "scenarionsID",
+    FilterScenario: "scenariosID",
     FilterCongestionZone: "zonesID",
     FilterWholeSales: "blocksID",
     FilterAccNumber: "accNumbersID",
