@@ -20,7 +20,7 @@
 //}
 
 const getGraphData = () => {
-    const url = `/api/graphs/ScatterPlot` + getFilteringScatterPlot(); //hours ,Month,  Scenario, WholeSales, AccNumbers
+    const url = `/api/graphs/ScatterPlot`;
     return getRequestData(url);
 }
 // }

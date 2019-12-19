@@ -14,6 +14,7 @@ let filtersKeys = {
     FilterWholeSales: "blocksID",
     FilterAccNumber: "accNumbersID",
     FilterCounterparty: "counterpartyID",
+    FilterHours: "hoursID"
 }
 
 const getRequestData = async (url) => {
@@ -173,7 +174,7 @@ const genericChangeDropdowbs = () => {
 
 }
 const genericGetGraphData = async (url) => {
-    const filters = genericChangeDropdowbs();
+    const filters = await genericChangeDropdowbs();
     return await postData(url, filters);
 }
 

@@ -25,9 +25,8 @@ namespace RiskDeskDev.Web.GraphsBLL.Services
             using (IDbConnection conn = new SqlConnection(_connectionString))
 
             {
-                var xmlModel = GetXMLModelForProcedure(Hours, Month, Zone, WholeSales, AccNumbers);
+                //var xmlModel = GetXMLModelForProcedure(Hours, Month, Zone, WholeSales, AccNumbers);
                 var data = conn.Query<ScatterPlotDTO>("[WebSite].[ScatterPlotFilteredGetInfo]",
-                xmlModel,
                     commandType: CommandType.StoredProcedure).ToList();
                 return data;
             }
