@@ -13,7 +13,6 @@ using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
 using RiskDeskDev.Models.Graphs;
-using RiskDeskDev.Web.GraphsBLL.Interfaces;
 using RiskDesk.Models.Graphs.DropdownFilterModels;
 using RiskDesk.Models.Graphs.DropdownsEntityResponse;
 
@@ -49,11 +48,8 @@ namespace RiskDeskDev.Controllers
         //DB d;
         private readonly IDB d;
         private readonly IHourlyScalarService hourlyServ;
-        private readonly IRiskService riskServ;
         private readonly IMapePeakService peakServ;
         private readonly IDealService dealServ;
-        private readonly IScatterPlotService scatterService;
-        private readonly IErcotService _ercotService;
         private readonly IDropdownService _dropService;
 
         private readonly IGraphService _graphService;
@@ -61,31 +57,18 @@ namespace RiskDeskDev.Controllers
         //private readonly DealService service;
 
         public GraphsApiController(IDB d, IMapePeakService peakServ,
-            IHourlyScalarService hourlyServ, IRiskService riskServ,
-            IDealService dealServ, IScatterPlotService scatterService,
-            IErcotService ercotService, IDropdownService dropService,
-            IMonthlyService monthlyService, IGraphService graphService)
+            IHourlyScalarService hourlyServ, IDealService dealServ,
+            IDropdownService dropService, IMonthlyService monthlyService,
+            IGraphService graphService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
-            this.riskServ = riskServ;
             this.peakServ = peakServ;
             this.dealServ = dealServ;
-            this.scatterService = scatterService;
-            _ercotService = ercotService;
             _dropService = dropService;
             _monthlyService = monthlyService;
             _graphService = graphService;
-            //var list = riskServ.GetRisk(new RiskGraphFilters());
 
-            // var monthly = _monthlyService.MonthlyData(new MonthlyGraphFilters());
-            // var deals = _graphService.GetDealEntry(new DealGraphFilters());
-            // var slcalars = _graphService.GetHourlyScalar(new HourlyScalarGraphFilters());
-            // var risks = _graphService.GetRisk(new RiskGraphFilters());
-            // var scatters = _graphService.GetScatterPlot(new ScatterPlotGraphFilters());
-            // var ercots = _graphService.GetErcot(new ErcotGraphFilters { MonthsID = new string[] { "1" } });
-            // var peaks = _graphService.GetPeak(new PeakGraphFilters());
-            // var scenarios = _graphService.GetWeatherScenario(new WeatherScenarioGraphFilters());
 
         }
 
@@ -99,25 +82,12 @@ namespace RiskDeskDev.Controllers
         }
 
 
-        [HttpGet]
-        [Route("Mape")]
-        public async Task<Mape> Mape(string Month, string WholeSales, string AccNumbers)
-        {
-            return await peakServ.DataMape(Month, WholeSales, AccNumbers);
-        }
 
         [HttpGet]
         [Route("Peak")]
         public async Task<Peak> Peak(string Month, string Scenario, string AccNumbers)
         {
             return await peakServ.DataPeak(Month, Scenario, AccNumbers);
-        }
-
-        [HttpGet]
-        [Route("Risk")]
-        public List<RiskDataDTO> Risk(string Month, string Zone, string AccNumbers)
-        {
-            return riskServ.RiskData(Month, Zone, AccNumbers);
         }
 
         [HttpPost]
@@ -163,9 +133,9 @@ namespace RiskDeskDev.Controllers
 
         [HttpPost]
         [Route("Deal")]
-        public List<DealEntryDBModel> GetDeal(DealGraphFilters filters)
+        public DealEntryDBModel GetDeal(DealGraphFilters filters)
         {
-            var list = dealServ.GetDealEntry(filters);
+            var list = _graphService.GetDealEntry(filters);
             return list;
         }
 
@@ -173,7 +143,7 @@ namespace RiskDeskDev.Controllers
         [Route("Risk")]
         public List<RiskDBModel> GetRisk(RiskGraphFilters filters)
         {
-            var list = riskServ.GetRisk(filters);
+            var list = _graphService.GetRisk(filters);
             return list;
         }
 
@@ -191,23 +161,6 @@ namespace RiskDeskDev.Controllers
 
         }
 
-
-        [HttpGet]
-        [Route("ScatterPlot")]
-        public List<ScatterPlotDTO> GetScatterPlot(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
-        {
-            var data = scatterService.ScatterPlotData(Hours, Month, Zone, WholeSales, AccNumbers);
-            return data;
-        }
-
-        [HttpGet]
-        [Route("Ercot")]
-        public List<ErcotMonthDTO> GetErcotData([FromQuery]ErcotQueryDTO query) //string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
-        {
-            var data = _ercotService.Ercot(query);
-            var data1 = _ercotService.Ercot1(query);
-            return data1;
-        }
 
         #region  Dropdowns
         [HttpGet]

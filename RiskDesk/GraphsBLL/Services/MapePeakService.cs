@@ -16,41 +16,17 @@ namespace RiskDeskDev.GraphsBLL.Services
     public class MapePeakService : IMapePeakService
     {
         private readonly string ConnectionString;// = "Server=tcp:qkssriskserver.database.windows.net,1433;Database=dev2;User ID=KAI_SOFTWARE;Password=rY]A_dMMf8^E\\kEp;Trusted_Connection=False;Encrypt=True;Connection Timeout=45; ";
-        private readonly IDB db;
 
         private readonly IDropdownService _dropService;
 
-        public MapePeakService(IDB db, IConfiguration configuration, IDropdownService dropdownService)
+        public MapePeakService(IConfiguration configuration, IDropdownService dropdownService)
         {
-            this.db = db;
             _dropService = dropdownService;
             ConnectionString = configuration.GetConnectionString("Develop");
         }
 
-        public DropsMape DropsMape()
-        {
-            return new DropsMape
-            {
-                numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList(),//db.GetAllAccNumber(),
-                months = _dropService.GetData<Month>(new Month())
-                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
-                                                .Select(z =>
-                                                            new MonthDTO
-                                                            {
-                                                                Name = z.MonthsLongName,
-                                                                ShortName = z.MonthsShortName,
-                                                                Id = z.EntityId()
-                                                            })
-                                                .ToList(),
-                blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
-            .OrderBy(wh => wh.WholeSaleBlocksId)
-            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList()
-            };
-        }
-
         public DropsPeak DropsPeak()//month, scenario, accnumbers
         {
-
 
             return new DropsPeak
             {
@@ -130,63 +106,6 @@ namespace RiskDeskDev.GraphsBLL.Services
                 tables = tables
             };
         }
-        public async Task<Mape> DataMape(string Month, string WholeSales, string AccNumbers)
-        {
-            string[] arr = new string[] { Month, WholeSales, AccNumbers };
-            DataSet set = await Task.Run(() => DataBaseConnection("MAPEFilteredGetInfo", arr));
-            List<MapeGraph> graphs = new List<MapeGraph>();
-            List<MapeTable> tables = new List<MapeTable>();
-
-            DataRowCollection graphCol = set.Tables["SelectionItems"].Rows;
-            DataRowCollection tableCol = set.Tables["SelectionItems1"].Rows;
-
-            var query = from rec in graphCol.Cast<DataRow>()
-                        group rec by rec["MonthsNamesID"];
-
-            var query1 = from rec in tableCol.Cast<DataRow>()
-                         group rec by rec["UtilityAccountNumber"];
-
-            Task graphTask = new Task(() =>
-             {
-                 foreach (var rec in query)
-                 {
-                     int month = Convert.ToInt32(rec.Key);
-                     MapeGraph graph = new MapeGraph { month = month };
-
-                     foreach (var r in rec)
-                         graph.setLoad(r[0].ToString(), r["AVGMAPE"]);
-
-                     graphs.Add(graph);
-                 }
-             });
-
-            Task tableTask = new Task(() =>
-            {
-                foreach (var rec in query1)
-                {
-                    string acc = rec.Key.ToString();
-                    MapeTable table = new MapeTable { acc = acc };
-
-                    foreach (var r in rec)
-                        table.Set(r);
-
-                    tables.Add(table);
-                }
-            });
-
-            Task[] tasks = new Task[2]
-           {
-                graphTask,
-                tableTask
-           };
-            tasks[0].Start();
-            tasks[1].Start();
-            Task.WaitAll(tasks);
-
-            return new Mape { graphs = graphs, tables = tables };
-
-        }
-
         private DataSet DataBaseConnection(string procedureName, params string[] parametrs)
         {
             DataSet set = new DataSet();

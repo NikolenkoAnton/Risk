@@ -134,7 +134,6 @@ namespace RiskDesk.GraphsBLL.Services
                 CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
                 UtilityAccountNumberString = _xmlService.GetFilterXMLRows("UA", filters.AccNumbersID),
                 MonthsString = _xmlService.GetFilterXMLRows("MN", filters.MonthsID),
-
             };
 
             using (IDbConnection conn = new SqlConnection(_connectionString))
