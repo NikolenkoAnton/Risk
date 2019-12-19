@@ -13,7 +13,7 @@ namespace RiskDesk.GraphsBLL.DTO
         public Int32 XMONTH { get; set; }
 
         public Int32 HE { get; set; }
-        public Int32 TempF { get; set; }
+        public double TempF { get; set; }
 
         public double RealTimePrice { get; set; }
         public double ErcotLoad { get; set; }
