@@ -28,13 +28,32 @@
 
  }
 
- const mapDateForGraphs = date => String(date).split('T')[0];
+ const mapDataForGraph = (data) => {
+     const dates = new Set(data.map(el => el.xdate));
 
- function drawChartWeatherHourly(arr) {
-     const mapArr = arr.map(el => [mapDateForGraphs(el.date), el.avg, el.mild, el.xtreme]);
+     const rows = [];
+
+     for (const d of dates) {
+
+         const row = [new Date(d), ...'0'.repeat(shortScenarios.length).split('')];
+
+         for (const r of data) {
+             if (r.xdate === d) {
+
+                 row[r.weatherScenarioID] = (Math.round(r.totalLoad * 1000) / 1000);
+             }
+         }
+         rows.push(row);
+     }
+
+     return rows;
+ }
+
+ function drawChartWeatherHourly(data) {
+     const rows = mapDataForGraph(data);
      var data = google.visualization.arrayToDataTable([
-         ['Weather Scenario', 'avg', 'mild', 'xtreme'],
-         ...mapArr
+         ['Weather Scenario', ...shortScenarios],
+         ...rows
      ]);
 
      var options = {
@@ -109,12 +128,8 @@
      filters.EndDate = end;
      const data1 = await postData(url, filters);
 
-     const data = await genericGetGraphData(url);
-     console.log(data);
-     //  if (!document.querySelector('#start')) {
-     //      drawDateInputs(data.minDate, data.maxDate);
-     //  }
-     drawChartWeatherHourly(data.data);
+
+     drawChartWeatherHourly(data1);
  }
  async function fillDropdownsWeatherHourly() {
      const accNumbers = await getAccNumbers();

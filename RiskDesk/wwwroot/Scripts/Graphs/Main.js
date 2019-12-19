@@ -201,10 +201,17 @@ async function fillDropdownsAggregates() {
     fillCurrentDropdown(wholeSales, 'block', '#FilterWholeSales');
 
 }
+
+
 var shortMonths;
-getMonth().then(resp =>
-    shortMonths = resp.map(m => m.shortName));
+var shortScenarios;
+
+var shortBlocks;
 async function genericFillDropdowns() {
+    shortMonths = (await getMonth()).map(m => m.shortName);
+    shortScenarios = (await getScenario()).map(el => el.name);
+
+    shortBlocks = (await getWholeSales()).map(el => el.block);
     const accNumbers = await getAccNumbers();
 
     const congestionZones = await getCongestionZones();
