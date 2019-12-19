@@ -8,22 +8,37 @@ google.charts.load('current', {
     'packages': ['bar']
 });
 google.charts.setOnLoadCallback(drawMonthlyGraph);
-const getRequestData = async (url) => {
 
-    const response = await fetch(url);
-    return response.json();
-}
-const changeMontlyChartDropdowns = dropdown => {
-    changeDropdowns(dropdown);
+const changeMontlyChartDropdowns = async dropdown => {
+    // const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
+    const obj = genericChangeDropdowbs(); //changeDropdowns(dropdown);
+
+    const data1 = await postData(`/api/graphs/MonthlyGraphs`, obj);
+
     drawMonthlyGraph();
 }
+const processDataRows = async (data, blocks, months) => {
+    const rows = [];
+    for (const m of months) {
+        const row = (new Array(blocks.length + 1)).fill(0, 1);
+        row[0] = m;
+        for (const b of data) {
+            if (b.monthsShortName === m) {
+                const index = blocks.indexOf(b.wholeSaleBlocks);
+                row[index + 1] = b.ubarmwh;
+            }
+        }
+        rows.push(row);
+    }
+    return rows;
+}
 
-const drawChartMonthlyChart = async (arr) => {
-    const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    const mapArr = arr.map((el, i) => [shortMonths[i], el.firstBlock, el.secondBlock, el.thirdBlock]);
+const drawChartMonthlyChart = async (data, blocks, months) => {
+
+    const rows = await processDataRows(data, blocks, months);
     var data = google.visualization.arrayToDataTable([
-        ['WholeSale Blocks', '2x16', '5x16', '7x8'],
-        ...mapArr
+        ['WholeSale Blocks', ...blocks],
+        ...rows
     ]);
 
     var options = {
@@ -46,7 +61,7 @@ const drawChartMonthlyChart = async (arr) => {
         // },
         backgroundColor: 'none',
         bar: {
-            groupWidth: '61.8%'
+            groupWidth: '90%'
         },
         isStacked: true,
         vAxis: {
@@ -75,8 +90,6 @@ const mapTableData = data => {
 
 }
 const addColumns = (data) => {
-    //const monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
     data.addColumn('string', 'Wholesale Block');
     for (const month of shortMonths) {
@@ -85,69 +98,71 @@ const addColumns = (data) => {
     data.addColumn('number', 'Total');
 }
 
-const mapRpws = data => {
 
-    const arr = ['2x16', '5x16', '7x8', 'Total'];
-    const asd = ['firstBlock', 'secondBlock', 'thirdBlock'];
-    const totalValues = [];
-    const firstValues = data.map(el => el.firstVal);
-    const secondVaues = data.map(el => el.secondVal);
-    const thirdValues = data.map(el => el.thirdVal);
-    firstValues.push(firstValues.reduce((gen, el) => gen + el, 0));
-    secondVaues.push(secondVaues.reduce((gen, el) => gen + el, 0));
-    thirdValues.push(thirdValues.reduce((gen, el) => gen + el, 0));
-    for (const i in firstValues) {
-        let a = firstValues[i] + secondVaues[i] + thirdValues[i];
-        totalValues.push(a)
+const addStyleToTableCell = (data, blocks) => {
+
+    for (let i = 0; i < blocks.length; i++) {
+        data.setProperties(i, 13, {
+            style: 'font-weight:bold;'
+        });
     }
 
-    return [
-        [asd[0], ...firstValues],
-        [asd[1], ...secondVaues],
-        [asd[2], ...thirdValues],
-        [asd[3], ...totalValues]
-    ]
-}
-const addStyleToTableCell = data => {
-    data.setProperties(0, 13, {
-        style: 'font-weight:bold;'
-    });
-    data.setProperties(1, 13, {
-        style: 'font-weight:bold;'
-    });
-    data.setProperties(2, 13, {
-        style: 'font-weight:bold;'
-    });
     for (let i = 1; i < 14; i++) {
-        data.setProperties(3, i, {
+        data.setProperties(blocks.length, i, {
             style: 'font-weight:bold;'
         });
     }
 }
-const drawTableMonthlyChart = (tableData) => {
+
+//row.slice(1,-1).reduce((acc,el)=>acc+el)
+const getTotalRow = (row) => {
+    return row.slice(1, -1).reduce((acc, el) => acc + el);
+}
+const getHorizontalTotalRow = (rows) => {
+
+    const totalRow = (new Array(14)).fill(0, 1);
+    totalRow[0] = "Total";
+    for (let i = 0; i < 13; i++) {
+        let sum = 0;
+        for (const r of rows) {
+            sum += r[i + 1];
+        }
+        totalRow[i + 1] = sum;
+    }
+    return totalRow;
+
+
+}
+// const getTotalColumn
+const drawTableMonthlyChart = (tableData, blocks, months) => {
 
     const data = new google.visualization.DataTable();
     addColumns(data);
-    const arr = ['2x16', '5x16', '7x8', 'Total'];
-    const asd = ['firstBlock', 'secondBlock', 'thirdBlock'];
-    const totalValues = [];
-    const firstValues = tableData.map(el => el.firstBlock);
-    const secondVaues = tableData.map(el => el.secondBlock);
-    const thirdValues = tableData.map(el => el.thirdBlock);
-    firstValues.push(firstValues.reduce((gen, el) => gen + el, 0));
-    secondVaues.push(secondVaues.reduce((gen, el) => gen + el, 0));
-    thirdValues.push(thirdValues.reduce((gen, el) => gen + el, 0));
-    for (const i in firstValues) {
-        let a = firstValues[i] + secondVaues[i] + thirdValues[i];
-        totalValues.push(a)
+    const arr = [...blocks, 'Total'];
+    const rows = [];
+    for (const b of blocks) {
+        const row = (new Array(14)).fill(0, 1);
+        row[0] = b;
+
+        for (const m of shortMonths) {
+            for (const rec of tableData) {
+                if (rec.monthsShortName === m && rec.wholeSaleBlocks === b) {
+                    const index = shortMonths.indexOf(m) + 1;
+                    row[index] = rec.ubarmwh;
+                }
+            }
+        }
+        // row.slice(1).reduce()
+        row[row.length - 1] = getTotalRow(row);
+        rows.push(row);
+
     }
-    data.addRows([
-        [arr[0], ...firstValues],
-        [arr[1], ...secondVaues],
-        [arr[2], ...thirdValues],
-        [arr[3], ...totalValues]
-    ]);
-    addStyleToTableCell(data);
+    const totalRow = getHorizontalTotalRow(rows);
+
+    rows.push(totalRow);
+
+    data.addRows(rows);
+    addStyleToTableCell(data, blocks);
     // addFontStyleToTableCell(data);
 
     const table = new google.visualization.Table(document.getElementById('table1'));
@@ -186,28 +201,25 @@ const getFiltering = () => {
     return `?${month}&${zone}&${wholesale}&${accNumbers}`;
 }
 
-async function fillMonth() {
-    const monthes = (await getMonth()).slice(1);
-    const monthDropdown = document.querySelector('#FilterMonth');
-    console.log(monthes);
-    for (const month of monthes) {
-        const index = monthes.indexOf(month);
-        monthDropdown.innerHTML += getSelectOption(month.name, index + 1);
 
-    }
-    $(monthDropdown).multiselect({
-        selectAll: true
-    });
-    fillDropdownsAggregates();
-}
 
 const getGraphAndTableData = () => {
-    const url = `/api/graphs/MontlyGraphs` + getFiltering();
-    return getRequestData(url);
+    const filters = genericChangeDropdowbs();
+    const url = `/api/graphs/MonthlyGraphs`;
+    return postData(url, filters);
 }
 async function drawMonthlyGraph() {
-    const data = await getGraphAndTableData();
-    drawChartMonthlyChart(data);
-    drawTableMonthlyChart(data);
+
+
+    const {
+        data,
+        selectedBlocks,
+        selectedMonths
+    } = await getGraphAndTableData();
+
+    drawChartMonthlyChart(data, selectedBlocks, selectedMonths);
+
+
+    drawTableMonthlyChart(data, selectedBlocks, selectedMonths);
 
 }

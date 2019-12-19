@@ -13,7 +13,8 @@ using RiskDeskDev.GraphsBLL.DTO;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.GraphsBLL.Services;
 using RiskDeskDev.Models.Graphs;
-using RiskDeskDev.Web.GraphsBLL.Interfaces;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
+using RiskDesk.Models.Graphs.DropdownsEntityResponse;
 
 namespace RiskDeskDev.Controllers
 {
@@ -47,28 +48,30 @@ namespace RiskDeskDev.Controllers
         //DB d;
         private readonly IDB d;
         private readonly IHourlyScalarService hourlyServ;
-        private readonly IRiskService riskServ;
         private readonly IMapePeakService peakServ;
         private readonly IDealService dealServ;
-        private readonly IScatterPlotService scatterService;
-        private readonly IErcotService _ercotService;
         private readonly IDropdownService _dropService;
+
+        private readonly IGraphService _graphService;
+        private readonly IMonthlyService _monthlyService;
         //private readonly DealService service;
+
         public GraphsApiController(IDB d, IMapePeakService peakServ,
-            IHourlyScalarService hourlyServ, IRiskService riskServ,
-            IDealService dealServ, IScatterPlotService scatterService,
-            IErcotService ercotService, IDropdownService dropService)
+            IHourlyScalarService hourlyServ, IDealService dealServ,
+            IDropdownService dropService, IMonthlyService monthlyService,
+            IGraphService graphService)
         {
             this.d = d;
             this.hourlyServ = hourlyServ;
-            this.riskServ = riskServ;
             this.peakServ = peakServ;
             this.dealServ = dealServ;
-            this.scatterService = scatterService;
-            _ercotService = ercotService;
             _dropService = dropService;
-            // d = new DB();
+            _monthlyService = monthlyService;
+            _graphService = graphService;
+
+
         }
+
 
 
         [HttpGet]
@@ -77,21 +80,8 @@ namespace RiskDeskDev.Controllers
         {
             return await Task.Run(() => dealServ.Deal(Zone, Counter, WholeSales, StartDate, EndDate, StartDeal, EndDeal));
         }
-        //return new { dealMax, dealMin, max, min, graph1, graph2, graph3, graph4 };
 
-        [HttpGet]
-        [Route("DealDrops")]
-        public async Task<DealDrops> DealDrops()
-        {
-            return await Task.Run(() => dealServ.DealDrops());
-        }
 
-        [HttpGet]
-        [Route("Mape")]
-        public async Task<Mape> Mape(string Month, string WholeSales, string AccNumbers)
-        {
-            return await peakServ.DataMape(Month, WholeSales, AccNumbers);
-        }
 
         [HttpGet]
         [Route("Peak")]
@@ -100,164 +90,142 @@ namespace RiskDeskDev.Controllers
             return await peakServ.DataPeak(Month, Scenario, AccNumbers);
         }
 
-
-        [HttpGet]
-        [Route("PeakDrops")]
-        public async Task<DropsPeak> PeakDrops()
+        [HttpPost]
+        [Route("Peak")]
+        public PeakDBModel GetPeak(PeakGraphFilters filters)
         {
-            return await Task.Run(() => peakServ.DropsPeak());
+            var list = _graphService.GetPeak(filters);
+            return list;
         }
 
-        [HttpGet]
-        [Route("MapeDrops")]
-        public DropsMape MapeDrops()
+        [HttpPost]
+        [Route("Ercot")]
+        public List<ErcotDBModel> GetErcot(ErcotGraphFilters filters)
         {
-            return peakServ.DropsMape();
+            var list = _graphService.GetErcot(filters);
+            return list;
         }
 
-
-        [HttpGet]
-        [Route("RiskDrops")]
-        public RiskDropDTO RiskDrops()
+        [HttpPost]
+        [Route("ScatterPlot")]
+        public List<ScatterPlotDBModel> GetScatterPlot(ScatterPlotGraphFilters filters)
         {
-            return riskServ.RiskDropsData();
+            var list = _graphService.GetScatterPlot(filters);
+            return list;
         }
 
-        [HttpGet]
-        [Route("Risk")]
-        public List<RiskDataDTO> Risk(string Month, string Zone, string AccNumbers)
-        {
-            return riskServ.RiskData(Month, Zone, AccNumbers);
-        }
-
-        [HttpGet]
+        [HttpPost]
         [Route("HourlyScalar")]
-        public IEnumerable<HourlyScalarDTO> HourlyScalarData(string Month, string Zone, string WholeSales, string AccNumbers)
+        public List<HourlyScalarDBModel> GetHourlyScalar(HourlyScalarGraphFilters filters)
         {
-            return hourlyServ.HourlyScalarData(Month, Zone, WholeSales, AccNumbers);
+            var list = hourlyServ.HourlyData(filters);
+
+            return list;
         }
+
+        [HttpPost]
+        [Route("WeatherScenario")]
+        public List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters)
+        {
+            var list = _graphService.GetWeatherScenario(filters);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("Deal")]
+        public DealEntryDBModel GetDeal(DealGraphFilters filters)
+        {
+            var list = _graphService.GetDealEntry(filters);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("Risk")]
+        public List<RiskDBModel> GetRisk(RiskGraphFilters filters)
+        {
+            var list = _graphService.GetRisk(filters);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("MonthlyGraphs")]
+        public MonthlyGraphResponse GetMontlyGraphs([FromBody] MonthlyGraphFilters filters)
+        {
+
+            var response = new MonthlyGraphResponse();
+            response.SelectedBlocks = GetWholeSales().Select(x => x.Block).ToArray();
+            response.SelectedMonths = getMonth().Select(x => x.ShortName).ToArray();
+            response.Data = _monthlyService.MonthlyData(filters);
+
+            return response;
+
+        }
+
+
+        #region  Dropdowns
         [HttpGet]
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
-            var a1 = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones }).ToList();
-            var a = d.GetAllCongestionZone();
-            return a;
+            var zones = _dropService.GetData<CongestionZone>(new CongestionZone()).Select(z => new CongestionZoneDTO { Zone = z.CongestionZones, Id = z.EntityId() }).ToList();
+            return zones;
         }
-
         [HttpGet]
         [Route("AccNumbers")]
         public List<AccNumberDTO> GetAccNumbers()
         {
-            var a1 = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString() }).ToList();
-            //var a = d.GetAllAccNumber();
-            return a1;
+            var numbers = _dropService.GetData<AccountNumber>(new AccountNumber()).Select(acc => new AccNumberDTO { AccNumber = acc.UtilityAccountNumber, AccNumberId = acc.UtilityAccountNumberId.ToString(), Id = acc.EntityId() }).ToList();
+            return numbers;
         }
-
         [HttpGet]
         [Route("WholeSales")]
         public List<WholeSalesDTO> GetWholeSales()
         {
             var blocks = _dropService.GetData<WholesaleBlock>(new WholesaleBlock())
             .OrderBy(wh => wh.WholeSaleBlocksId)
-            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks }).ToList();
+            .Select(wh => new WholeSalesDTO { Block = wh.WholeSaleBlocks, Id = wh.EntityId() }).ToList();
             return blocks;
             //return d.GetAllWholeSalesBlock();
         }
-
         [HttpGet]
-        [Route("HourlyAggregates")]
-        public HourlyGraphsDataDTO getHourlyAggregatesGraphs(string StartDate, string EndDate, string Month, string Scenario, string WholeSales, string AccNumbers)//List<WholeSalesDTO> GetWholeSales()
+        [Route("Counterparties")]
+        public List<CounterpartyDTO> GetCounterparties()
         {
-            IEnumerable<HourlyDTO> list = d.getHourlyGraph(StartDate, EndDate, Month, Scenario, WholeSales, AccNumbers);
-            if (StartDate == "0" && EndDate == "0")
-            {
-                DateTime max = list.Max(el => el.date);
-                DateTime min = list.Min(el => el.date);
-                return new HourlyGraphsDataDTO { data = list, maxDate = max, minDate = min };
-            }
-            return new HourlyGraphsDataDTO { data = list, maxDate = null, minDate = null };
-        }
+            var counterparties = _dropService.GetData<Counterparty>(new Counterparty()).Select(party =>
+                                                           new CounterpartyDTO
+                                                           {
+                                                               Counterparty = party.CounterParty,
+                                                               Id = party.EntityId()
+                                                           }).ToList();
 
+
+            return counterparties;
+        }
         [HttpGet]
         [Route("Month")]
         public List<MonthDTO> getMonth()//List<WholeSalesDTO> GetWholeSales()
         {
-            var a = _dropService.GetData<Month>(new Month());
-            var a1 = d.getAllMonth();
-            return a1;
-        }
+            var months = _dropService.GetData<Month>(new Month())
+                                                .Where(month => month.MonthsLongName != "All" && month.MonthsNamesID != "0")
+                                                .Select(z =>
+                                                            new MonthDTO
+                                                            {
+                                                                Name = z.MonthsLongName,
+                                                                ShortName = z.MonthsShortName,
+                                                                Id = z.EntityId()
+                                                            })
+                                                .ToList();
 
+            return months;
+        }
         [HttpGet]
         [Route("Scenario")]
-        public List<ScenarioDTO> getScenario()//List<WholeSalesDTO> GetWholeSales()
+        public List<ScenarioDTO> getScenario()
         {
-            var a = _dropService.GetData<WeatherScenar>(new WeatherScenar());
-            var a1 = d.getAllScenario();
-            return a1;
+            var scenarios = _dropService.GetData<WeatherScenar>(new WeatherScenar()).Select(z => new ScenarioDTO { Name = z.WeatherScenario, Id = z.EntityId() }).ToList();
+
+            return scenarios;
         }
-
-        [HttpGet]
-        [Route("MontlyGraphs")]
-        public List<MonthlyDTO> GetMontlyGraphs(string Month, string Zone, string WholeSales, string AccNumbers)
-        {
-
-            List<MonthlyDTO> list = d.GetMontlyGraphs(Month, Zone, WholeSales, AccNumbers);
-            return list;
-
-        }
-
-        [HttpGet]
-        [Route("WeatherMontlyGraphs")]
-        public List<MontlyGraphDTO> GetWeatherMontlyGraphs(string Month, string Scenario, string WholeSales, string AccNumbers)
-        {
-
-            List<MontlyGraphDTO> list = d.GetWeatherMontlyGraphs(Month, Scenario, WholeSales, AccNumbers);
-            return list;
-
-        }
-
-        [HttpGet]
-        [Route("CongestionZonesGraphs")]
-        public List<CongestZoneGraphDTO> GetCongestionZonesGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<CongestZoneGraphDTO> list = d.GetCongestZoneGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
-
-        [HttpGet]
-        [Route("AccNumbersGraphs")]
-        public List<AccIdGraphDTO> GetAccNumbersGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<AccIdGraphDTO> list = d.GetAccIdGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
-
-        [HttpGet]
-        [Route("WholeSalesGraphs")]
-        public List<WholeSalesGraphDTO> GetWholeSalesGraphs(string Zone, string WholeSales, string AccNumbers)
-        {
-            List<WholeSalesGraphDTO> list = d.GetWholeSalesGraphs(Zone, WholeSales, AccNumbers);
-            return list;
-        }
-
-        [HttpGet]
-        [Route("ScatterPlot")]
-        public List<ScatterPlotDTO> GetScatterPlot(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
-        {
-            var data = scatterService.ScatterPlotData(Hours, Month, Zone, WholeSales, AccNumbers);
-            return data;
-        }
-
-        [HttpGet]
-        [Route("Ercot")]
-        public List<ErcotMonthDTO> GetErcotData([FromQuery]ErcotQueryDTO query) //string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
-        {
-            var data = _ercotService.Ercot(query);
-            var data1 = _ercotService.Ercot1(query);
-            // return data;
-            return data1;
-        }
-
+        #endregion
     }
 }

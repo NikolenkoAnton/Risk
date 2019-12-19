@@ -7,7 +7,7 @@ namespace RiskDesk.GraphsBLL.DTO
     {
         //public int WholeSaleBlocksID { get; set; }
         public string WholeSaleBlocks { get; set; }
-        //public string UtilityAccountNumber { get; set; }
+        //public Int64 UtilityAccountNumber { get; set; }
         //public DateTime XDATE { get; set; }
         //public int XMONTH { get; set; }
         // public double HE { get; set; }

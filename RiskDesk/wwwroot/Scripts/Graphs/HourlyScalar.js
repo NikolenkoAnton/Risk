@@ -8,58 +8,40 @@ google.charts.load('current', {
     packages: ['table']
 });
 google.charts.setOnLoadCallback(drawHourlyScalar);
-const getRequestData = async (url) => {
 
-    const response = await fetch(url);
-    return response.json();
-}
-const getSelectedMonths = (dropdown) => {
-    let indexes = '';
-    const options = [...dropdown.selectedOptions];
-    for (const opt of options) {
-        if (opt.value == '0') return '0';
-
-
-        if (opt.value.length > 1) {
-            if (opt.value == '10') indexes += 'O';
-
-            if (opt.value == '11') indexes += 'N';
-
-            if (opt.value == '11') indexes += 'D';
-        } else indexes += opt.value;
-    }
-    return indexes.length ? indexes : '0';
-}
+let wholesalesBlocks;
+getWholeSales().then(resp => wholesalesBlocks = resp.map(el => el.block));
 const changeMontlyChartDropdowns = dropdown => {
     changeDropdowns(dropdown);
     drawHourlyScalar();
 }
 
-const getFiltering = () => {
-    const arr = [...document.querySelectorAll('.dropdownFilter')];
-    const month = `Month=${getSelectedMonths(arr[0])}`;
-    const zone = `Zone=${getSelectedFields(arr[1])}`;
-    const wholesale = `WholeSales=${getSelectedFields(arr[2])}`;
-    const accNumbers = `AccNumbers=${getSelectedFields(arr[3])}`;
-    return `?${month}&${zone}&${wholesale}&${accNumbers}`;
-}
+
 
 const getGraphicData = async () => {
-    const url = `/api/graphs/HourlyScalar` + getFiltering();
-    return getRequestData(url);
+
+    const filters = genericChangeDropdowbs();
+    const url = `/api/graphs/HourlyScalar`;
+    const f = Object.keys(filters).includes('undefined') ? {} : filters;
+    return postData(url, f);
+
 }
 
 const mapDataToChart = (data) => {
+
+    //wholeSaleBlocksID
+    //he 
+    //ubar
     const rows = [];
     for (let i = 1; i < 25; i++) {
-        const row = [String(i), 0, 0, 0];
+        const row = [String(i), 0, 0, 0, 0];
         rows.push(row);
     }
     for (const rec of data) {
 
-        const hour = +rec.hour;
-        const block = +rec.wholeSaleID;
-        const ubar = rec.ubar;
+        const hour = rec.he;
+        const block = rec.wholeSaleBlocksID;
+        const ubar = Math.round(rec.ubar * 100) / 100;
 
         const curRow = rows[hour - 1];
         curRow[block] = ubar;
@@ -70,10 +52,13 @@ const mapDataToChart = (data) => {
 const mapDataToTable = (data) => {
 
 }
-const drawChart = data => {
+const drawChart = async data => {
+    const blocks = (await getWholeSales()).map(el => el.block);
+    const blocks1 = await blocks.map(el => el.block);
+    const rows = await mapDataToChart(data);
     var data = google.visualization.arrayToDataTable([
-        ['WholeSales Blocks', '2x16', '5x16', '7x8'],
-        ...mapDataToChart(data)
+        ['WholeSale Blocks', ...blocks],
+        ...rows
     ]);
 
     var options = {
@@ -126,98 +111,94 @@ const addTotal = (row) => {
 }
 const addTableRows = (values, data) => {
     console.log("THIS");
-    const frstRow = ['2x16'];
-    maps(frstRow);
 
-    const ubarRow = ['ubar'];
-    maps(ubarRow);
-    const sigmauRow = ['sigmau'];
-
-    maps(sigmauRow);
-
-    const ubarRow1 = ['ubar'];
-    maps(ubarRow1);
-    const sigmauRow1 = ['sigmau'];
-
-    maps(sigmauRow1);
-
-    const ubarRow2 = ['ubar'];
-    maps(ubarRow2);
-    const sigmauRow2 = ['sigmau'];
-
-    maps(sigmauRow2);
-
-    const sec = ['5x16'];
-
-    maps(sec);
-    const third = ['7x8'];
-    maps(third);
-
-    addTotal(ubarRow);
-    addTotal(sigmauRow);
-    addTotal(ubarRow1);
-    addTotal(sigmauRow1);
-    addTotal(ubarRow2);
-    addTotal(sigmauRow2);
-
-    const totalUbar = ['ubar'];
-    const totalsigmau = ['sigmau'];
-
+    const rows = [];
+    shortBlocks;
+    for (const b of wholesalesBlocks) {
+        const row = [b];
+        const ubarRow = ['ubar'];
+        const sgmRow = ['sigmau'];
+        maps(row);
+        maps(ubarRow);
+        maps(sgmRow);
+        rows.push(row);
+        rows.push(ubarRow);
+        rows.push(sgmRow);
+    }
+    console.log(rows);
+    //ind 0 - rows 0,1,2
+    //ind 1 - rows 3,4,5
+    //ind 2 - rows 6,7,8
     for (const rec of values) {
-
-        const hour = +rec.hour;
-        const block = +rec.wholeSaleID;
-        const ubar = rec.ubar;
-        const sigmau = rec.sigmau;
-
-        if (block === 1) {
-            ubarRow[hour] = ubar;
-            sigmauRow[hour] = sigmau;
-        }
-        if (block === 2) {
-            ubarRow1[hour] = ubar;
-            sigmauRow1[hour] = sigmau;
-        }
-        if (block === 3) {
-            ubarRow2[hour] = ubar;
-            sigmauRow2[hour] = sigmau;
-        }
+        const ind = rec.wholeSaleBlocksID - 1;
+        const ubar = Math.round(rec.ubar * 100) / 100;
+        const sigmau = Math.round(rec.sigmau * 100) / 100;
+        const h = rec.he;
+        const rowInd = ind * 3;
+        const ubInd = ind * 3 + 1;
+        const sgmInd = ind * 3 + 2;
+        rows[ubInd][h] = ubar;
+        rows[sgmInd][h] = sigmau;
     }
+    console.log(rows);
+    const totalUb = ['ubar'];
+    const totalSg = ['sigmau'];
+    maps(totalUb);
+    maps(totalSg);
+    rows.push(totalUb);
+    rows.push(totalSg);
+
     for (let i = 1; i < 26; i++) {
-        const ubar = ubarRow[i] + ubarRow1[i] + ubarRow2[i];
-        const sigmau = sigmauRow[i] + sigmauRow1[i] + sigmauRow2[i];
-        totalUbar[i] = ubar;
-        totalsigmau[i] = sigmau;
+        const totalUbarRow = rows[rows.length - 2];
+        const totalSigmauRow = rows[rows.length - 1];
+        let ubarSum = 0;
+        let sigmauSum = 0;
+        for (let j = 0; j < wholesalesBlocks.length; j++) {
+            const ubRow = rows[j * 3 + 1];
+            const sgRow = rows[j * 3 + 2];
+            ubarSum += ubRow[j + 1];
+            sigmauSum += sgRow[j + 1];
+        }
+        totalUbarRow[i] = ubarSum;
+        totalSigmauRow[i] = sigmauSum;
 
     }
+    for (const r of rows) {
+        addTotal(r);
+    }
 
-    console.log(frstRow);
-    addTotal(frstRow);
-    console.log(frstRow);
 
-    addTotal(ubarRow);
-    addTotal(sigmauRow);
-    addTotal(sec);
-    addTotal(ubarRow1);
-    addTotal(sigmauRow1);
-    addTotal(third);
-    addTotal(ubarRow2);
-    addTotal(sigmauRow2);
-    addTotal(totalUbar);
-    addTotal(totalsigmau);
+    //ubar 1 4 7 10
+    //sg 2 5 8 11
+
+    // for (let i = 1; i < 26; i++) {
+    //     const ubar = ubarRow[i] + ubarRow1[i] + ubarRow2[i];
+    //     const sigmau = sigmauRow[i] + sigmauRow1[i] + sigmauRow2[i];
+    //     totalUbar[i] = ubar;
+    //     totalsigmau[i] = sigmau;
+
+    // }
+
+
+
+
     data.addRows([
-        frstRow,
-        ubarRow,
-        sigmauRow,
-        sec,
-        ubarRow1,
-        sigmauRow1,
-        third,
-        ubarRow2,
-        sigmauRow2,
-        totalUbar,
-        totalsigmau
-    ])
+        ...rows
+    ]);
+    addStyleToTableCell(rows, data);
+    // data.addRows([
+    //     frstRow,
+    //     ubarRow,
+    //     sigmauRow,
+    //     sec,
+    //     ubarRow1,
+    //     sigmauRow1,
+    //     third,
+    //     ubarRow2,
+    //     sigmauRow2,
+    //     totalUbar,
+    //     totalsigmau
+    // ])
 
 
 }
@@ -226,32 +207,32 @@ const addTableRows = (values, data) => {
     color: white;
     text-align: right;*/
 
-const addStyleToTableCell = data => {
-    for (let i = 0; i < 26; i++) {
-        data.setProperties(0, i, {
-            style: 'background-color:black; color:white; text-align:center;'
-        });
-        data.setProperties(9, i, {
-            style: 'background-color:black; color:white; text-align:center;'
-        });
-        data.setProperties(10, i, {
-            style: 'background-color:black; color:white; text-align:center;'
-        });
-
-    }
-    for (let i = 1; i < 11; i++) {
+const addStyleToTableCell = (rows, data) => {
+    for (let i = 0; i < rows.length; i++) {
         data.setProperties(i, 0, {
             style: 'background-color:black; color:white; text-align:center;'
         });
-        data.setProperties(i, 25, {
-            style: 'background-color:black; color:white; text-align:center;'
-        });
-        if (i !== 0 && i !== 3 && i !== 6) {
-            data.setProperties(i, 0, {
-                style: 'background-color:black; color:white; text-align:right;'
-            });
-        }
+        // data.setProperties(9, i, {
+        //     style: 'background-color:black; color:white; text-align:center;'
+        // });
+        // data.setProperties(10, i, {
+        //     style: 'background-color:black; color:white; text-align:center;'
+        // });
+
     }
+    // for (let i = 1; i < 11; i++) {
+    //     data.setProperties(i, 0, {
+    //         style: 'background-color:black; color:white; text-align:center;'
+    //     });
+    //     data.setProperties(i, 25, {
+    //         style: 'background-color:black; color:white; text-align:center;'
+    //     });
+    //     if (i !== 0 && i !== 3 && i !== 6) {
+    //         data.setProperties(i, 0, {
+    //             style: 'background-color:black; color:white; text-align:right;'
+    //         });
+    //     }
+    // }
 
 
 }
@@ -266,8 +247,8 @@ const drawTable = arr => {
     data.addColumn('number', 'Total');
 
     addTableRows(arr, data);
-    addStyleToTableCell(data);
-    data.setProperty(1, 0, "font-weight", "bold");
+    // addStyleToTableCell(data);
+    // data.setProperty(1, 0, "font-weight", "bold");
 
     const table = new google.visualization.Table(document.getElementById('table1'));
 
@@ -281,19 +262,7 @@ const drawTable = arr => {
 
 
 
-async function fillHourthlyScalar() {
-    const monthes = (await getMonth()).slice(1);
-    const monthDropdown = document.querySelector('#FilterMonth');
 
-    for (const month of monthes) {
-        const index = monthes.indexOf(month);
-        monthDropdown.innerHTML += getSelectOption(month.name, index);
-    }
-    $(monthDropdown).multiselect({
-        selectAll: true
-    })
-    fillDropdownsAggregates();
-}
 
 async function drawHourlyScalar() {
     const data = await getGraphicData();

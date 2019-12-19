@@ -13,7 +13,6 @@ const getRequestData = async (url) => {
     const response = await fetch(url);
     return response.json();
 }
-const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const drawGrap = async (arr) => {
 
@@ -208,30 +207,7 @@ const drawTable = async (arr) => {
         height: '250px'
     });
 }
-const fillDrops = async () => {
 
-    const url = '/api/graphs/MapeDrops';
-    const {
-        months,
-        blocks,
-        numbers
-    } = await getRequestData(url);
-
-    const [monthsDrop, blocksDrop, numbersDrop] = [...document.querySelectorAll('.dropdownFilter')];
-
-    months.slice(1).map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => monthsDrop.innerHTML += el);
-    numbers.map((el, ind) => getSelectOption(el.accNumber, ind + 1)).forEach(el => numbersDrop.innerHTML += el);
-    blocks.map((el, ind) => getSelectOption(el.block, ind + 1)).forEach(el => blocksDrop.innerHTML += el);
-    $(monthsDrop).multiselect({
-        selectAll: true
-    });
-    $(blocksDrop).multiselect({
-        selectAll: true
-    });
-    $(numbersDrop).multiselect({
-        selectAll: true
-    });
-}
 const getSelectedMonths = (dropdown) => {
     let indexes = '';
     const options = [...dropdown.selectedOptions];
@@ -266,4 +242,3 @@ async function draw() {
     drawGrap(graphs);
     drawTable(tables)
 }
-fillDrops();

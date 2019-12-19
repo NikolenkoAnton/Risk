@@ -8,6 +8,18 @@ namespace RiskDesk.GraphsBLL.Services
 
     {
 
+
+        public string GetFilterXMLRows(string filterWords, string[] values)
+        {
+            if (values == null || values.Length == 0) return null;
+
+            var row = "";
+            foreach (var val in values)
+            {
+                row += $"<Row><{filterWords}>{val}</{filterWords}></Row>";
+            }
+            return row;
+        }
         // private ScatterPlotXMLModel GetXMLModelForProcedure(string Hours, string Month, string Zone, string WholeSales, string AccNumbers)
         // {
         //     var model = new ScatterPlotXMLModel
@@ -22,6 +34,7 @@ namespace RiskDesk.GraphsBLL.Services
         //     return model;
 
         // }
+        
 
         public ErcotXMLDTO ErcotXML(ErcotQueryDTO query)
         {

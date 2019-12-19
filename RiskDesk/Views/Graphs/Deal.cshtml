@@ -125,10 +125,15 @@
             // Initialize the city
             try {
                 //tableInit();
+                $("#start").datepicker();
+$("#end").datepicker();
+$("#startDeal").datepicker();
+$("#endDeal").datepicker();
                 DrawHorizontalGraphsNav();
                 AddHeader();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
+                genericFillDropdowns();
 
             }
             catch (e) {
@@ -379,18 +384,24 @@
                     <div class="dateFilterContainer">
                         <div class="inputDateCell">
                             <label class="dateLabel" for="start">Start date</label>
+<input type="text" id="start" onchange="changeDateInput(this)">
 
                         </div>
                         <div class="inputDateCell">
                             <label class="dateLabel" for="end">End date</label>
+                        <input type="text" id="end" onchange="changeDateInput(this)">
 
                         </div>
 
                         <div class="inputDateCell">
                             <label class="dateLabel" for="startDeal">Deal Start date</label>
+<input type="text" id="startDeal" onchange="changeDateInput(this)">
+
                         </div>
                         <div class="inputDateCell">
                             <label class="dateLabel" for="endDeal">Deal End date</label>
+<input type="text" id="endDeal" onchange="changeDateInput(this)">
+
 
                         </div>
                     </div>

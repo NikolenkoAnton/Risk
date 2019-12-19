@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using RiskDesk.GraphsBLL.DTO;
+using RiskDesk.Models.Graphs.DropdownFilterModels;
 using RiskDeskDev.Controllers;
 using RiskDeskDev.GraphsBLL.Interfaces;
 using RiskDeskDev.Models;
@@ -107,46 +109,6 @@ namespace RiskDeskDev.GraphsBLL.Services
                 }
             }
         }
-        private DataSet DataBaseConnection()
-        {
-            DataSet set = new DataSet();
-            using (SqlConnection con = new SqlConnection(ConnectionString))
-            {
-
-                using (SqlCommand cmd = new SqlCommand())
-                {
-
-                    string SqlCommandText = @"
-                    SELECT [CongestionZonesID] as ZoneID, [CongestionZones] as ZoneName
-                    FROM [BaseData].[CongestionZones]
-                    GROUP BY [CongestionZonesID], [CongestionZones]
-                    ORDER BY [CongestionZonesID]
-
-                     SELECT [WholeSaleBlocksID] as BlockID, [WholeSaleBlocks] as BlockName
-                    FROM [BaseData].[WholeSaleBlocks]
-                    GROUP BY [WholeSaleBlocksID], [WholeSaleBlocks]
-                    ORDER BY [WholeSaleBlocksID]
-
-
-                         SELECT [CounterPartyID] as CounterID, [CounterParty] as CounterName
-                    FROM [BaseData].[CounterParty]
-                    GROUP BY [CounterPartyID], [CounterParty]
-                    ORDER BY [CounterPartyID]
-                    ";
-
-                    cmd.CommandText = SqlCommandText;
-
-                    cmd.Connection = con;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(set);
-                    }
-                    return set;
-                }
-            }
-        }
-
         public Deal Deal(string Zone, string Counter, string WholeSales, string StartDate, string EndDate, string DealStart, string DealEnd)
         {
             DataSet set = DataBaseConnection1(Zone, Counter, WholeSales, StartDate, EndDate, DealStart, DealEnd);
@@ -190,208 +152,9 @@ namespace RiskDeskDev.GraphsBLL.Services
             return new Deal { dealMax = null, dealMin = null, max = null, min = null, graph1 = graph1, graph2 = graph2, graph3 = graph3, graph4 = graph4 };
 
         }
-        public DealDrops DealDrops()
-        {
-            DataSet set = DataBaseConnection();
-            List<object> zones = new List<object>();
-            List<object> blocks = new List<object>();
-            List<object> counters = new List<object>();
-
-            DataRowCollection t0 = set.Tables[0].Rows;
-            var t1 = set.Tables[1].Rows;
-            var t2 = set.Tables[2].Rows;
-
-            foreach (DataRow rec in t0)
-            {
-
-                zones.Add(new { name = rec[1].ToString() });
-            }
-
-            foreach (DataRow rec in t1)
-            {
-                blocks.Add(new { name = rec[1].ToString() });
-            }
-
-            foreach (DataRow rec in t2)
-            {
-                counters.Add(new { name = rec[1].ToString() });
-            }
-
-
-            return new DealDrops { zones = zones, blocks = blocks, counters = counters };
-        }
         #endregion
 
-        //public async Task<dynamic> Calculate(int id)
-        //{
-        //    DataSet set = new DataSet();
-        //    using (SqlConnection con = new SqlConnection(ConnectionString))
-        //    {
 
-        //        SqlCommand cmd = new SqlCommand();
-
-
-        //        string SqlCommandText = "[WebSite].[DealEntryCalculateUpsert]";
-
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        cmd.CommandText = SqlCommandText;
-        //        cmd.Parameters.AddWithValue("@DealID", id);
-
-        //        cmd.Connection = con;
-
-        //        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-        //        {
-        //            da.Fill(set);
-        //        }
-        //    }
-
-        //}
-
-        public async Task<dynamic> DropDownsInfo()
-        {
-            DataSet dealsSet = new DataSet();
-            DataSet counterSet = new DataSet();
-            DataSet pointSet = new DataSet();
-            DataSet locationSet = new DataSet();
-            DataSet wholesaleSet = new DataSet();
-
-
-            await Task.Run(() =>
-            {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
-                {
-
-                    SqlCommand cmd = new SqlCommand();
-
-
-                    string SqlCommandText = "[WebSite].[BaseDataDealsAllGetInfo]";
-
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = SqlCommandText;
-                    cmd.Connection = con;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(dealsSet);
-                    }
-
-                    SqlCommandText = "[WebSite].[CounterPartyGetInfoGetInfo]";
-                    cmd.CommandText = SqlCommandText;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(counterSet);
-                    }
-
-                    SqlCommandText = "[WebSite].[SetPointGetInfo]";
-                    cmd.CommandText = SqlCommandText;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(pointSet);
-                    }
-
-                    SqlCommandText = "[WebSite].[CongestionZonesAllGetInfo]";
-                    cmd.CommandText = SqlCommandText;
-
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(locationSet);
-                    }
-
-
-                    SqlCommandText = "[WebSite].[WholeSaleBlocksAllGetInfo]";
-                    cmd.CommandText = SqlCommandText;
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        da.Fill(wholesaleSet);
-                    }
-                    cmd.Dispose();
-                }
-            });
-            List<dynamic> counters = new List<dynamic>();
-            List<dynamic> pointers = new List<dynamic>();
-            List<dynamic> deals = new List<dynamic>();
-            List<dynamic> locations = new List<dynamic>();
-            List<dynamic> wholesales = new List<dynamic>();
-
-            #region
-
-            var a = new Task(() =>
-            {
-
-                foreach (DataRow row in Rows(dealsSet))
-                {
-                    var dealId = row["DealID"].ToString();
-                    var dealName = row["DealName"].ToString();
-                    var dealDate = row["DealDate"].ToString();
-                    deals.Add(new { dealId, dealName, dealDate });
-
-                };
-            });
-
-            var b = new Task(() =>
-            {
-
-                foreach (DataRow row in Rows(counterSet))
-                {
-                    var id = row[0].ToString();
-                    var name = row[1].ToString();
-                    counters.Add(new { id, name });
-
-                }
-            });
-
-            var c = new Task(() =>
-            {
-
-                foreach (DataRow row in Rows(pointSet))
-                {
-                    var id = row[0].ToString();
-                    var name = row[1].ToString();
-                    pointers.Add(new { id, name });
-                }
-            });
-
-            var d = new Task(() =>
-            {
-
-                foreach (DataRow row in Rows(locationSet))
-                {
-                    var id = row[0].ToString();
-                    var name = row[1].ToString();
-                    locations.Add(new { id, name });
-                }
-            });
-
-            var e = new Task(() =>
-            {
-
-                foreach (DataRow row in Rows(wholesaleSet))
-                {
-                    var id = row[0].ToString();
-                    var name = row[1].ToString();
-                    wholesales.Add(new { id, name });
-                }
-            });
-
-            Task[] tasks = new Task[] { a, b, c, d, e };
-            foreach (var t in tasks) t.Start();
-
-            Task.WaitAll(tasks);
-            #endregion
-
-            return
-                new
-                {
-                    counters,
-                    pointers,
-                    deals,
-                    locations,
-                    wholesales,
-                };
-
-        }
         private IEnumerable<DataRow> Rows(DataSet set) => set.Tables[0].Rows.Cast<DataRow>();
 
         public async Task<dynamic> GetDealInfo(int id)
@@ -593,11 +356,13 @@ namespace RiskDeskDev.GraphsBLL.Services
             return info;
 
         }
+
         static string[] SaveInt = new string[] { "DealID", "CounterPartyID", "SecondCounterPartyID", "SetPointID", "CongestionZonesID", " WholeSaleBlocksID" };
         static string[] SaveFloat = new string[] { "VolumeMW", "VolumeMWh", "Price", "Fee" };
         static string[] SaveDate = new string[] { "DealDate", "StartDate", "EndDate" };
         static string[] SaveString = new string[] { "DealName", "Notes" };
         //        static string[] DealSaveKeys = new string []{ "CongestionZonesID", "CounterPartyID", "DealDate", "DealID", "DealName", "EndDate", "Fee", "Notes", "Price", "SecondCounterPartyID", "SetPointID", "StartDate", "VolumeMW", "VolumeMWh", "WholeSaleBlocksID" };
     }
+
 
 }

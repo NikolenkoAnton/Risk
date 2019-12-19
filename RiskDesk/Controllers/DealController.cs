@@ -71,11 +71,6 @@ namespace RiskDeskDev.Controllers
         {
             return await service.GetDealInfo(id);
         }
-        [HttpGet("dropdownsInfo")]
-        public async Task<dynamic> DropDownsInfo()
-        {
-            return await service.DropDownsInfo();
-        }
 
     }
 
