@@ -3,8 +3,10 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Dapper;
+using System.Linq;
 using RiskDesk.GraphsBLL.Interfaces;
-
+using RiskDesk.Models.Graphs.DropdownsEntityResponse;
+using RiskDeskDev.Models.Graphs;
 namespace RiskDesk.GraphsBLL.Services
 {
     public class DropdownService : IDropdownService//<T> where T : BaseEntity
@@ -28,5 +30,33 @@ namespace RiskDesk.GraphsBLL.Services
             }
 
         }
+
+        public List<WholesaleBlock> GetSelectedBlocks(string[] blocksID)
+        {
+            var blocks = GetData<WholesaleBlock>(new WholesaleBlock());
+            var test = new List<Month>();
+            if (blocksID != null || blocksID.Length != 0)
+            {
+                blocks.Where(m => blocksID.Contains(m.WholeSaleBlocksId));
+            }
+            return blocks;
+        }
+
+        public List<Month> GetSelectedMonths(string[] monthsID)
+        {
+            var months = GetData<Month>(new Month());
+            var test = new List<Month>();
+            if (monthsID != null || monthsID.Length != 0)
+            {
+                months.Where(m => monthsID.Contains(m.MonthsNamesID));
+            }
+            return months;
+        }
+        public ResponseDropdownItemEntity SetIDForResponseEntities(ResponseDropdownItemEntity responseEntity, BaseEntity dbEntity)
+        {
+            responseEntity.Id = dbEntity.EntityId();
+            return responseEntity;
+        }
+
     }
 }

@@ -1,9 +1,3 @@
-async function getRequestData(url) {
-
-    const response = await fetch(url);
-    return response.json();
-}
-
 const getGraphData = (params) => {
     params = params ? params : getQueryParam();
     const url = `/api/graphs/Ercot` + params; //hours ,Month,  Scenario, WholeSales, AccNumbers

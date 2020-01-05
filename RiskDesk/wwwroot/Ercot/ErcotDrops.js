@@ -5,10 +5,10 @@ const getSelectedMonthsValue = () => {
 
 }
 const getSelectedWholeBlocks = () => {
-    let selectedIndexes = $('#FilterWholeSales').val();
-    selectedIndexes = selectedIndexes ? selectedIndexes.map(el => Number(el)) : [1, 2, 3, 4];
-    const selectedNames = selectedIndexes.map((el) => blocksNames[el - 1]);
-    return selectedNames;
+    // let selectedIndexes = $('#FilterWholeSales').val();
+    // selectedIndexes = selectedIndexes ? selectedIndexes.map(el => Number(el)) : [1, 2, 3, 4];
+    // const selectedNames = selectedIndexes.map((el) => blocksNames[el - 1]);
+    return blocksNames;
 
 }
 const getBlocksColors = () => {
@@ -16,6 +16,15 @@ const getBlocksColors = () => {
     selectedIndexes = selectedIndexes ? selectedIndexes.map(el => Number(el)) : [1, 2, 3, 4];
     const colors = selectedIndexes.map(el => blocksColors[el - 1]);
     return colors;
+}
+const getSelectedMonthsArr = (dropdown) => {
+
+    let indexes = [];
+    const options = [...dropdown.selectedOptions];
+    for (const opt of options) {
+        indexes.push(+opt.value);
+    }
+    return indexes;
 }
 const getSelectedMonths = (dropdown) => {
 

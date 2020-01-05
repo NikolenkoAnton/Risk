@@ -70,7 +70,7 @@
         }
         #graph1 {
             border:5px solid black;
-             background-image:url("@Url.Content("~/Background.jpg")");  
+             background-image:url("@Url.Content("~/Background.jpg")");
               background:rgba(255,255,255,0.5);
         }
         .loader {
@@ -140,8 +140,7 @@
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
-                fillScatterPlotDropdowns();
-
+genericFillDropdowns();
             }
             catch (e) {
                 HeaderDataErrorReport(e);
@@ -331,11 +330,11 @@
                             <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
                             </select>
                         </div>
-                        
+
                             <div class="filterCell">
                             <div class="filterTitle">Select Congestion Zone</div>
                             <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" onchange="changeScatterPlotDropdowns()">
-                                
+
                             </select>
                         </div>
 
@@ -371,7 +370,7 @@
 
                         </div>
 
-                      
+
                     </div>
 
                     <!-- Dashboard Wrapper End -->

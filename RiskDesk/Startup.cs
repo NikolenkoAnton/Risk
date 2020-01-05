@@ -15,11 +15,8 @@ using RiskDeskDev.GraphsBLL.Services;
 using System.Net.Http;
 using Newtonsoft.Json;
 using T;
-using RiskDeskDev.Web.GraphsBLL.Interfaces;
-using RiskDeskDev.Web.GraphsBLL.Services;
 using RiskDesk.GraphsBLL.Interfaces;
 using RiskDesk.GraphsBLL.Services;
-using RiskDesk.Dao;
 using RiskDesk.GraphsBLL.DTO;
 using RiskDesk.GraphsBLL;
 
@@ -38,15 +35,14 @@ namespace RiskDeskDev
         {
 
             services.AddTransient<IHourlyScalarService, HourlyScalarService>();
-            services.AddTransient<IRiskService, RiskService>();
             services.AddTransient<IMapePeakService, MapePeakService>();
             services.AddSingleton<IDealService, DealService>();
             services.AddTransient<IMapePeakService, MapePeakService>();
             services.AddTransient<IDealEntryServiceSecond, DealEntryServiceSecond>();
-            services.AddTransient<IScatterPlotService, ScatterPlotService>();
             services.AddTransient<IXMLService, XMLService>();
-            services.AddTransient<IErcotService, ErcotService>();
-            services.AddTransient<IErcotRepository, ErcotRepository>();
+            services.AddTransient<IMonthlyService, MonthlyService>();
+            services.AddTransient<IGraphService, GraphService>();
+
 
             services.AddTransient<IDropdownService, DropdownService>();
 

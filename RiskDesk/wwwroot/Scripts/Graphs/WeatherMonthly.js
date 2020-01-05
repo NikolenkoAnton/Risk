@@ -1,13 +1,7 @@
 ﻿google.charts.load('current', {
-    'packages': ['corechart']
+    'packages': ['line', 'corechart']
 });
-google.charts.load('current', {
-    packages: ['table']
-});
-google.charts.load('current', {
-    'packages': ['bar']
-});
-google.charts.setOnLoadCallback(drawMonthly);
+google.charts.setOnLoadCallback(drawHourly);
 const getRequestData = async (url) => {
 
     const response = await fetch(url);
@@ -20,10 +14,18 @@ const getDataMontlyGraphs = async () => {
 }
 
 
-const drawGraphHourly = (arr) => {
-    const data = google.visualization.arrayToDataTable([
-        ['Weather Scenario', 'avg', 'mild', 'xtreme'],
+const drawGraphHourly = (data) => {
+    const rows = data.map(el => [el.xdate, el.weatherScenario, el.TotalLoad])
+    // const data = google.visualization.arrayToDataTable([
+    //     ['Weather Scenario', ...shortScenarios],
 
+    // ]);
+    // const data = new google.visualization.DataTable();
+    // data.addColumn()
+
+    const data = google.visualization.arrayToDataTable([
+        ['Date', 'WeatherScenario', 'Load'],
+        ...data
     ]);
 
     const options = {

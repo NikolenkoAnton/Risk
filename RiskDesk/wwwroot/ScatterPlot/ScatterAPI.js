@@ -1,10 +1,4 @@
-﻿async function getRequestData(url) {
-
-    const response = await fetch(url);
-    return response.json();
-}
-
-//async function getCongestionZones() {
+﻿//async function getCongestionZones() {
 //    const url = `/api/graphs/CongestionZones`;
 //    return getRequestData(url);
 //}
@@ -26,7 +20,7 @@
 //}
 
 const getGraphData = () => {
-    const url = `/api/graphs/ScatterPlot` + getFilteringScatterPlot(); //hours ,Month,  Scenario, WholeSales, AccNumbers
+    const url = `/api/graphs/ScatterPlot`;
     return getRequestData(url);
 }
 // }

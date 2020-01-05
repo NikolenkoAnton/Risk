@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RiskDesk.Models.Graphs.DropdownsEntityResponse;
 
 namespace RiskDeskDev.Models.Graphs
 {
-    public class AccIdGraphDTO
+    public class AccNumberDTO : ResponseDropdownItemEntity
     {
         public string AccNumber { get; set; }
+        public string AccNumberId { get; set; }
 
-        public double Percentage { get; set; }
 
-        public double RetailRiskAdder { get; set; }
-
-        public double RevatRisk { get; set; }
     }
 }

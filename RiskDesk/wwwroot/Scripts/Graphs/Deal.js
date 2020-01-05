@@ -6,11 +6,7 @@ google.charts.load('current', {
 });
 google.charts.setOnLoadCallback(drawDeal);
 let isDateChange = false;
-const getRequestData = async (url) => {
 
-    const response = await fetch(url);
-    return response.json();
-}
 
 const changeDealDrops = (dropdown) => {
     changeDropdowns(dropdown);
@@ -48,8 +44,8 @@ const drawDateInputs = (dealMin, dealMax, min, max) => {
     // removeOldDateInput(inpConts[0], inpConts[1]);
     // removeOldDateInput(inpConts[2], inpConts[3]);
 
-    inpConts[0].innerHTML += `<input type="text" id="start" onchange="changeDateInput(this)">`;
     inpConts[1].innerHTML += `<input type="text" id="end" onchange="changeDateInput(this)">`;
+    inpConts[0].innerHTML += `<input type="text" id="start" onchange="changeDateInput(this)">`;
 
     inpConts[2].innerHTML += `<input type="text" id="startDeal" onchange="changeDateInput(this)">`;
 
@@ -114,32 +110,6 @@ const getFilteringStringDeal = () => {
 
     return `?${zone}${counter}${wholesale}`;
 }
-const fillDrops = async () => {
-
-    const url = '/api/graphs/DealDrops';
-    const {
-        zones,
-        blocks,
-        counters
-    } = await getRequestData(url);
-
-    const [zonesDrop, countersDrop, blocksDrop] = [...document.querySelectorAll('.dropdownFilter')];
-
-    zones.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => zonesDrop.innerHTML += el);
-    counters.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => countersDrop.innerHTML += el);
-    blocks.map((el, ind) => getSelectOption(el.name, ind + 1)).forEach(el => blocksDrop.innerHTML += el);
-
-    $(zonesDrop).multiselect({
-        selectAll: true
-    });
-    $(countersDrop).multiselect({
-        selectAll: true
-    });
-    $(blocksDrop).multiselect({
-        selectAll: true
-    });
-}
-fillDrops();
 
 function drawChart1(arr) {
 
@@ -279,7 +249,7 @@ async function drawDeal() {
         graph3,
         graph4
     } = await getRequestData(url);
-    drawDateInputs(dealMin, dealMax, min, max);
+    //drawDateInputs(dealMin, dealMax, min, max);
     drawChart1(graph4);
     drawChart2(graph2);
     drawChart3(graph3);

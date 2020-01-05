@@ -120,6 +120,7 @@
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
+                genericFillDropdowns();
 
             }
             catch (e) {
@@ -308,21 +309,21 @@
                         <div class="filterCell">
                             <div class="filterTitle">Select Month</div>
                             <select id="FilterMonth" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops(this)">
-                      
+
                             </select>
                         </div>
 
                         <div class="filterCell">
                             <div class="filterTitle">Select Congestion Zone</div>
                             <select id="FilterCongestionZone" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops(this)">
-                         
+
                             </select>
                         </div>
 
                         <div class="filterCell">
                             <div class="filterTitle">Select AccountID</div>
                             <select id="FilterAccNumber" multiple="multiple" class="form-control dropdownFilter" onchange="changeDrops(this)">
-                   
+
                             </select>
                         </div>
 

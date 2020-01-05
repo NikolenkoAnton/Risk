@@ -130,7 +130,8 @@
                 DrawHorizontalGraphsNav();
                 document.querySelector('#FirstColumn').classList = '';
                 document.querySelector('#ThirdColumn').classList = 'active';
-                fillMonth();
+
+                genericFillDropdowns();
             }
             catch (e) {
                 HeaderDataErrorReport(e);

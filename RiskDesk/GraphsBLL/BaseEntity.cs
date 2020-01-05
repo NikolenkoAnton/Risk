@@ -10,10 +10,14 @@ namespace RiskDesk.GraphsBLL
     }
     public abstract class BaseEntity//<T> where T : class
     {
-        public virtual string Procedure { get; set; }
+        public abstract string Procedure { get; set; }
 
-        public virtual object MapToViewModel<T>(T model) { return null; }
+        public abstract string EntityId();
 
+        protected virtual string GetEntityId(string EntityId)
+        {
+            return EntityId;
+        }
     }
 
     public class Month : BaseEntity
@@ -21,13 +25,15 @@ namespace RiskDesk.GraphsBLL
         public override string Procedure { get; set; } = "[WebSite].[MonthsGetInfo]";
 
         public string MonthsLongName { get; set; }
+        public string MonthsShortName { get; set; }
 
-        public override object MapToViewModel<MonthDTO>(MonthDTO m)
+        public string MonthsNamesID { get; set; }
+
+        public override string EntityId()
         {
-
-            return null;
-
+            return base.GetEntityId(MonthsNamesID);
         }
+
     }
 
     public class CongestionZone : BaseEntity
@@ -35,11 +41,12 @@ namespace RiskDesk.GraphsBLL
         public override string Procedure { get; set; } = "[WebSite].[CongestionZonesAllGetInfo]";
 
         public string CongestionZones { get; set; }
+        public string CongestionZonesID { get; set; }
 
-        // public override CongestionZoneDTO MapToViewModel<CongestionZoneDTO>()
-        // {
-        //     return new CongestionZoneDTO { Zone = CongestionZones };
-        // }
+        public override string EntityId()
+        {
+            return base.GetEntityId(CongestionZonesID);
+        }
     }
 
     public class WholesaleBlock : BaseEntity
@@ -48,12 +55,13 @@ namespace RiskDesk.GraphsBLL
 
         public string WholeSaleBlocks { get; set; }
 
-        public int WholeSaleBlocksId { get; set; }
+        public string WholeSaleBlocksId { get; set; }
 
-        // public override WholeSalesDTO MapToViewModel<WholeSalesDTO>()
-        // {
-        //     return new WholeSalesDTO { Block = WholeSaleBlocks };
-        // }
+        public override string EntityId()
+        {
+            return base.GetEntityId(WholeSaleBlocksId);
+        }
+
     }
 
     public class WeatherScenar : BaseEntity
@@ -61,10 +69,12 @@ namespace RiskDesk.GraphsBLL
         public override string Procedure { get; set; } = "[WebSite].[WeatherScenarioAllGetInfo]";
 
         public string WeatherScenario { get; set; }
-        // public override ScenarioDTO MapToViewModel<ScenarioDTO>()
-        // {
-        //     return new ScenarioDTO { Name = WeatherScenario };
-        // }
+        public string WeatherScenarioID { get; set; }
+
+        public override string EntityId()
+        {
+            return base.GetEntityId(WeatherScenarioID);
+        }
     }
 
     public class AccountNumber : BaseEntity
@@ -72,13 +82,25 @@ namespace RiskDesk.GraphsBLL
         public override string Procedure { get; set; } = "[WebSite].[UtilityAccountNumbersAllGetInfo]";
 
         public string UtilityAccountNumber { get; set; }
-        public int UtilityAccountNumberId { get; set; }
+        public string UtilityAccountNumberId { get; set; }
 
+        public override string EntityId()
+        {
+            return base.GetEntityId(UtilityAccountNumberId);
+        }
 
-        // public override AccNumberDTO MapToViewModel<AccNumberDTO>()
-        // {
-        //     return new AccNumberDTO { AccNumber = UtilityAccountNumber };
-        // }
     }
 
+    public class Counterparty : BaseEntity
+    {
+        public override string Procedure { get; set; } = "[WebSite].[CounterPartyGetInfoGetInfo]";
+
+        public string CounterPartyID { get; set; }
+        public string CounterParty { get; set; }
+
+        public override string EntityId()
+        {
+            return base.GetEntityId(CounterPartyID);
+        }
+    }
 }

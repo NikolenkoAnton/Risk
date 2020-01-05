@@ -75,7 +75,7 @@ namespace RiskDeskDev.GraphsBLL.DTO
             switch (wholesales)
             {
                 case "2x16":
-                    frst = Math.Round(Convert.ToDouble(value)*100,1);
+                    frst = Math.Round(Convert.ToDouble(value) * 100, 1);
                     break;
                 case "5x16":
                     scnd = Math.Round(Convert.ToDouble(value) * 100, 1);
@@ -99,8 +99,8 @@ namespace RiskDeskDev.GraphsBLL.DTO
 
         public void Set(DataRow row)
         {
-            List<string> arr = new List<string>{ "2x16", "5x16", "7x8" };
-            int month = Convert.ToInt32(row["MonthsNamesID"])-1;
+            List<string> arr = new List<string> { "2x16", "5x16", "7x8" };
+            int month = Convert.ToInt32(row["MonthsNamesID"]) - 1;
             string wholeSale = row["WholeSaleBlocks"].ToString();
             double value = Math.Round(Convert.ToDouble(row["AVGMAPE"]) * 100, 1);
             int index = arr.IndexOf(wholeSale);
@@ -119,10 +119,10 @@ namespace RiskDeskDev.GraphsBLL.DTO
                     break;
             }
         }
-        
+
     }
 
-    
+
 
     public class Mape
     {
