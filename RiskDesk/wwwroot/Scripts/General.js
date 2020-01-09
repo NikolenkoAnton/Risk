@@ -574,14 +574,47 @@ function AddHeader() {
         AddDataEntryHeader($('#SecondColumnFirstUL'));
 
 
-        RowString = "<li id='ThirdColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Graphs</a></li>";
-        RowString = "<li id='ThirdColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Graphs</a></li>";
-        $('#MainUL').append(RowString);
-        RowString = "<ul id='ThirdColumnFirstUL'></ul>";
-        $('#ThirdColumn').append(RowString);
+        const ThirdColumn = "<li id='ThirdColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Pricing</a></li>";
+        $('#MainUL').append(ThirdColumn);
 
-        const container = $('#ThirdColumnFirstUL');
-        AddGraphsHeader(container);
+        $('#ThirdColumn').append("<ul id='ThirdColumnFirstUL'></ul>");
+
+
+        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Summary</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Monthly Cash Flow</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Monthly Volumes</a></li>`);
+
+
+        const FourthColumn = "<li id='FourthColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Load Research</a></li>";
+        $('#MainUL').append(FourthColumn);
+
+        $('#FourthColumn').append("<ul id='FourthColumnFirstUL'></ul>");
+
+
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/Monthly'>Months</a></li>`);
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/HourlyScalar'>Hourly Shapes</a></li>`);
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/Risk'>Volumetric Risk</a></li>`);
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/WeatherHourly'>Weather Scenario</a></li>`);
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/Ercot'>Ercot Animation</a></li>`);
+        $('#FourthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/Peak'>Peak Model</a></li>`);
+
+        const FifthColumn = "<li id='FifthColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Risk</a></li>";
+        $('#MainUL').append(FifthColumn);
+
+        $('#FifthColumn').append("<ul id='FifthColumnFirstUL'></ul>");
+
+
+        $('#FifthColumnFirstUL').append(`<li><a href='#'>Monthly Detail</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#'>Monthly Position</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#'>Hourly Position</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#'>Wholesale Trades</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#'>Wholesale Settlment Report</a></li>`);
+
+        // RowString = "<ul id='ThirdColumnFirstUL'></ul>";
+        // $('#ThirdColumn').append(RowString);
+
+        // const container = $('#ThirdColumnFirstUL');
+        // AddGraphsHeader(container);
 
     } catch (e) {
         HeaderDataErrorReport(e);

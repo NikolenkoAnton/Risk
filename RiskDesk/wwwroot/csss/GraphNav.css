@@ -6,6 +6,10 @@
     /* background-image: url("@Url.Content("~/Background.jpg")"); */
 }
 
+.filterCell {
+    position: relative;
+}
+
 .filterTitle,
 .dateLabel {
     font-weight: bold;
