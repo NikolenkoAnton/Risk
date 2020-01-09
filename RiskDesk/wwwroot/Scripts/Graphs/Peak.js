@@ -8,7 +8,9 @@ google.charts.load('current', {
     'packages': ['bar']
 });
 google.charts.setOnLoadCallback(draw);
-
+var data;
+var grp;
+var tbls;
 const drawGrap = async (arr) => {
 
     const arrMap = shortMonths.map(el => [el, 0, 0]);
@@ -127,12 +129,47 @@ const getFiltering = () => {
     const accNumbers = `AccNumbers=${getSelectedFields(arr[2])}`;
     return `?${month}&${scenario}&${accNumbers}`;
 }
+const getGraphAndTableData = () => {
+    const filters = genericChangeDropdowbs();
+    const url = `/api/graphs/Peak`;
+    return postData(url, filters);
+}
+const proccesRowsForTable = (data) => {
+    const rows = [];
+    const accNumbers = [...new Set(data.peakAccNumbers.map(el => el.utilityAccountNumber))]
+    for (const num of accNumbers) {
+        const record = {
+            acc: num,
+            cp: (new Array(12)).fill(0),
+            ncp: (new Array(12)).fill(0),
+            factor: (new Array(12)).fill(0)
+        };
+        rows.push(record);
+    }
+    for (const row of rows) {
+        const num = row.acc;
+        for (const rec of data.peakAccNumbers) {
+            if (num === rec.utilityAccountNumber) {
+                const index = rec.monthsNamesID - 1;
+
+                row.cp[index] = Math.round(rec.avgCP * 100) / 100;
+                row.ncp[index] = Math.round(rec.avgNCP * 100) / 100;
+                row.factor[index] = Math.round(rec.avgCoincidenceFactor * 100) / 100;
+            }
+        }
+    }
+    return rows;
+}
 async function draw() {
-    const url = `/api/graphs/Peak${getFiltering()}`;
-    const {
-        graphs,
-        tables
-    } = await getRequestData(url);
-    drawGrap(graphs);
-    drawTable(tables)
+    data = await getGraphAndTableData();
+    const graphs1 = await data.peakMonths
+        .map(el =>
+            ({
+                month: el.monthsShortName,
+                cp: el.avgCP,
+                ncp: el.avgNCP,
+            }));
+    const tables1 = await proccesRowsForTable(data);
+    drawGrap(graphs1);
+    drawTable(tables1)
 }
