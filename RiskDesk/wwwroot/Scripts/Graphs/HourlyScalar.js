@@ -93,6 +93,7 @@ const maps = row => {
         row[i] = 0;
     }
 }
+
 const getTotal = arr => {
     let sum = 0;
 
@@ -118,7 +119,6 @@ const addTableRows = (values, data) => {
         const row = [b];
         const ubarRow = ['ubar'];
         const sgmRow = ['sigmau'];
-        maps(row);
         maps(ubarRow);
         maps(sgmRow);
         rows.push(row);
