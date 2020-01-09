@@ -42,7 +42,7 @@ const drawChartMonthlyChart = async (data, blocks, months) => {
     ]);
 
     var options = {
-        width: $(window).width(),
+        width: $(window).width() - 150,
         height: 600,
         legend: {
             position: 'top',
@@ -170,7 +170,7 @@ const drawTableMonthlyChart = (tableData, blocks, months) => {
     table.draw(data, {
         allowHtml: true,
         showRowNumber: false,
-        width: '100%',
+        width: $(window).width() - 150 + 'px',
         height: '100%'
     });
 }

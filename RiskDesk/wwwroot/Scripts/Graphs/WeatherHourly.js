@@ -57,7 +57,7 @@
      ]);
 
      var options = {
-         width: $(window).width(),
+         width: $(window).width() - 150,
          height: 500,
          backgroundColor: 'none',
          curveType: 'function',

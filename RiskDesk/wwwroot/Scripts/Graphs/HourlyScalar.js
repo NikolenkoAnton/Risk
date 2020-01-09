@@ -63,7 +63,7 @@ const drawChart = async data => {
 
     var options = {
         height: 400,
-        width: 2000,
+        width: $(window).width() - 150,
 
         legend: {
             position: 'top',
@@ -255,7 +255,7 @@ const drawTable = arr => {
     table.draw(data, {
         allowHtml: true,
         showRowNumber: false,
-        width: '100%',
+        width: $(window).width() - 150 + 'px',
         height: '100%'
     });
 }

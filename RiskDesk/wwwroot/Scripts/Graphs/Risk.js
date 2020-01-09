@@ -20,7 +20,7 @@ const drawChart = async (data) => {
     ]);
 
     var options = {
-        width: 1140,
+        width: $(window).width() - 150,
         height: 600,
         backgroundColor: 'none',
         legend: {
@@ -53,8 +53,8 @@ const drawTable = async (arr) => {
     const data = new google.visualization.DataTable();
 
     data.addColumn('string', ' ');
-    for (let i = 1; i < 13; i++) {
-        data.addColumn('number', String(i));
+    for (let i = 0; i < 12; i++) {
+        data.addColumn('number', shortMonths[i]);
     }
 
     const rows = [
@@ -83,7 +83,7 @@ const drawTable = async (arr) => {
     table.draw(data, {
         allowHtml: true,
         showRowNumber: false,
-        width: '100%',
+        width: $(window).width() - 150 + 'px',
         height: '100%'
     });
 }

@@ -29,7 +29,7 @@ const drawGrap = async (arr) => {
     ]);
 
     const options = {
-        width: $(window).width(),
+        width: $(window).width() - 150,
         height: 400,
 
         legend: {
@@ -38,9 +38,6 @@ const drawGrap = async (arr) => {
         },
         chart: {
             title: 'Monthly Usage(KWH)',
-        },
-        chartArea: {
-            left: 60,
         },
         backgroundColor: 'none',
 
@@ -97,7 +94,7 @@ const drawTable = async (arr) => {
     table.draw(data, {
         allowHtml: true,
         showRowNumber: false,
-        width: '100%',
+        width: $(window).width() - 150 + 'px',
         height: '250px'
     });
 }

@@ -11,7 +11,7 @@ namespace RiskDesk.GraphsBLL.DTO
 
         public string WeatherScenario { get; set; }
 
-        public DateTime xdate { get; set; }
+        public string xdate { get; set; }
         public double TotalLoad { get; set; }
 
     }
