@@ -61,10 +61,7 @@ function drawStuff(dataRows) {
         // },
         backgroundColor: 'none',
         legend: {
-            position: 'left',
-            textStyle: {
-                fontSize: 16
-            }
+            position: 'top',
         },
         colors: ['#118DFF', '#E8D166', '#573B92', '#000'],
     };
@@ -72,8 +69,10 @@ function drawStuff(dataRows) {
 
 
     function drawMaterialChart() {
-        var materialChart = new google.charts.Scatter(chartDiv);
-        materialChart.draw(data, google.charts.Scatter.convertOptions(materialOptions));
+        // var chart = new google.visualization.ScatterChart(chartDiv);
+
+        var materialChart = new google.visualization.ScatterChart(chartDiv);
+        materialChart.draw(data, materialOptions);
         // button.innerText = 'Change to Classic';
         // button.onclick = drawClassicChart;
     }
@@ -87,21 +86,49 @@ function drawStuff(dataRows) {
 
 const procesGraphsDataBeforeDrawc = (data) => {
     const tempsArr = new Set(data.map(el => el.tempF));
+    // const mapData = data.map(el => ({
+    //     block: el.wholeSaleBlocks,
+    //     temp: el.tempF,
+    //     KW: Math.round(el.loadKW),
+    // }));
+
     const mapData = data.map(el => ({
         block: el.wholeSaleBlocks,
         temp: el.tempF,
         KW: Math.round(el.loadKW),
+        realTime: el.realTimePrice,
+        month: el.xmonth
     }));
 
     const graphRows = [];
 
     for (const t of tempsArr) {
+        let tempIndex = 10;
         const row = [t, ...'0'.repeat(shortBlocks.length).split('').map(el => +el)];
         for (const blocks of mapData) {
 
             if (blocks.temp === t) {
                 const blockIndex = shortBlocks.indexOf(blocks.block) + 1;
-                row[blockIndex] = blocks.KW;
+                const {
+                    KW,
+                    temp,
+                    block,
+                    realTime,
+                    month
+                } = blocks;
+                row[blockIndex] = KW === 0 ? null : {
+                    v: tempIndex++,
+                    f: `\n\nWholeSalesBlock - ${block},
+                        \nLoad (KWt) - ${KW.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 })},
+                        \nRealTime Price - ${realTime.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits:1
+                        })},
+                        \nTemperature (F) - ${temp}`
+                };
+                tempIndex++;
             }
 
         }
