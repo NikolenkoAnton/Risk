@@ -240,5 +240,7 @@ async function draw() {
         tables
     } = await getRequestData(url);
     drawGrap(graphs);
-    drawTable(tables)
+    drawTable(tables);
+    alertify.success('Finished processing');
+
 }

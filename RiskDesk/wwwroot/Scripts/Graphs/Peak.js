@@ -171,5 +171,7 @@ async function draw() {
             }));
     const tables1 = await proccesRowsForTable(data);
     drawGrap(graphs1);
-    drawTable(tables1)
+    drawTable(tables1);
+    alertify.success('Finished processing');
+
 }

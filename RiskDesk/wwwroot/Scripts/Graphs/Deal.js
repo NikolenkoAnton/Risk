@@ -254,4 +254,6 @@ async function drawDeal() {
     drawChart2(graph2);
     drawChart3(graph3);
     drawTableMontly(graph1);
+    alertify.success('Finished processing');
+
 }

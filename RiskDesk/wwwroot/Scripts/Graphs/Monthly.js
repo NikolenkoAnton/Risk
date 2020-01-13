@@ -221,5 +221,7 @@ async function drawMonthlyGraph() {
 
 
     drawTableMonthlyChart(data, selectedBlocks, selectedMonths);
+    alertify.success('Finished processing');
+
 
 }

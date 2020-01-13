@@ -287,5 +287,6 @@ async function drawHourlyScalar() {
     const data = await getGraphicData();
     drawChart(data);
     drawTable(data);
+    alertify.success('Finished processing');
 
 }

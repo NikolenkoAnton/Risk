@@ -98,5 +98,7 @@ async function draw() {
     const url1 = `/api/graphs/Risk`;
     const data1 = await genericGetGraphData(url1);
     drawChart(data1);
-    drawTable(data1)
+    drawTable(data1);
+    alertify.success('Finished processing');
+
 }

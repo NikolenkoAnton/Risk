@@ -130,6 +130,8 @@
 
 
      drawChartWeatherHourly(data1);
+     alertify.success('Finished processing');
+
  }
  async function fillDropdownsWeatherHourly() {
      const accNumbers = await getAccNumbers();

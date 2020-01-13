@@ -143,6 +143,8 @@ async function changeScatterPlotDropdowns() {
     const data = await genericGetGraphData('/api/graphs/ScatterPlot');
     const graphRows = await procesGraphsDataBeforeDrawc(data);
     drawStuff(graphRows);
+    alertify.success('Finished processing');
+
 }
 //WholeSale Block
 //Weather Scenario
