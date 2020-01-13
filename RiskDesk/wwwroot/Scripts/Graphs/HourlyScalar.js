@@ -105,13 +105,10 @@ const getTotal = arr => {
 }
 
 const addTotal = (row) => {
-    console.log(row);
     row[25] = getTotal(row);
-    console.log(row);
 
 }
 const addTableRows = (values, data) => {
-    console.log("THIS");
 
     const rows = [];
     shortBlocks;
@@ -125,7 +122,6 @@ const addTableRows = (values, data) => {
         rows.push(ubarRow);
         rows.push(sgmRow);
     }
-    console.log(rows);
     //ind 0 - rows 0,1,2
     //ind 1 - rows 3,4,5
     //ind 2 - rows 6,7,8
@@ -140,32 +136,55 @@ const addTableRows = (values, data) => {
         rows[ubInd][h] = ubar;
         rows[sgmInd][h] = sigmau;
     }
-    console.log(rows);
-    const totalUb = ['ubar'];
-    const totalSg = ['sigmau'];
+    const totalUb = ['Total'];
+    // const totalSg = ['sigmau'];
     maps(totalUb);
-    maps(totalSg);
-    rows.push(totalUb);
-    rows.push(totalSg);
 
     for (let i = 1; i < 26; i++) {
-        const totalUbarRow = rows[rows.length - 2];
-        const totalSigmauRow = rows[rows.length - 1];
-        let ubarSum = 0;
-        let sigmauSum = 0;
-        for (let j = 0; j < wholesalesBlocks.length; j++) {
-            const ubRow = rows[j * 3 + 1];
-            const sgRow = rows[j * 3 + 2];
-            ubarSum += ubRow[j + 1];
-            sigmauSum += sgRow[j + 1];
-        }
-        totalUbarRow[i] = ubarSum;
-        totalSigmauRow[i] = sigmauSum;
+        let sum = 0;
+        for (let row of rows) {
+            let num = row[i];
 
+            if (num && !Number.isNaN(Number(num))) {
+                sum += num;
+            }
+        }
+        totalUb[i] = sum;
     }
+    // maps(totalSg);
+    rows.push(totalUb);
+
+
+
+
+    // rows.push(totalSg);
+    console.log(rows);
+
+
+    // for (let i = 1; i < 26; i++) {
+    //     const totalUbarRow = rows[rows.length - 2];
+    //     const totalSigmauRow = rows[rows.length - 1];
+    //     let ubarSum = 0;
+    //     let sigmauSum = 0;
+    //     for (let j = 0; j < wholesalesBlocks.length; j++) {
+    //         const ubRow = rows[j * 3 + 1];
+    //         const sgRow = rows[j * 3 + 2];
+    //         ubarSum += ubRow[j + 1];
+    //         sigmauSum += sgRow[j + 1];
+    //     }
+    //     totalUbarRow[i] = ubarSum;
+    //     totalSigmauRow[i] = sigmauSum;
+
+    // }
     for (const r of rows) {
-        addTotal(r);
+        if (!wholesalesBlocks.includes(r[0]))
+            addTotal(r);
+        else {
+            r[25] = null;
+        }
     }
+    console.log(rows);
+
 
 
     //ubar 1 4 7 10
