@@ -74,6 +74,22 @@ namespace RiskDeskDev.Controllers
 
 
 
+        [HttpPost]
+        [Route("MonthlyDetail")]
+        public List<MonthlyDetailDBModel> MonthlyDetail(MonthlyDetailPositionGraphFilters filters)
+        {
+            var list = _graphService.GetMonthlyDetail(filters);
+            return list;
+        }
+
+
+        [HttpPost]
+        [Route("MonthlyPosition")]
+        public List<MonthlyPositionDBModel> MonthlyPosition(MonthlyDetailPositionGraphFilters filters)
+        {
+            var list = _graphService.GetMonthlyPosition(filters);
+            return list;
+        }
         [HttpGet]
         [Route("Deal")]
         public async Task<Deal> Deal([FromQuery]string Zone, [FromQuery]string Counter, [FromQuery] string WholeSales, [FromQuery] string StartDate, [FromQuery] string EndDate, [FromQuery] string StartDeal, [FromQuery] string EndDeal)

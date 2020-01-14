@@ -1,6 +1,16 @@
 using System;
 namespace RiskDesk.GraphsBLL.XmlDTO
 {
+    public class MonthlyDetailPositionXML
+    {
+        public string BookOfBussinesString { get; set; }
+        public string LineOfBussinesString { get; set; }
+        public string CongestionZoneString { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+    }
+
     public class PeakXML
     {
         public string WeatherScenarioString { get; set; }

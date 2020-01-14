@@ -12,6 +12,8 @@ namespace RiskDesk.GraphsBLL.Interfaces
         List<WeatherScenarioDBModel> GetWeatherScenario(WeatherScenarioGraphFilters filters);
         List<ScatterPlotDBModel> GetScatterPlot(ScatterPlotGraphFilters filters);
         List<ErcotDBModel> GetErcot(ErcotGraphFilters filters);
+        List<MonthlyDetailDBModel> GetMonthlyDetail(MonthlyDetailPositionGraphFilters filters);
+        List<MonthlyPositionDBModel> GetMonthlyPosition(MonthlyDetailPositionGraphFilters filters);
         PeakDBModel GetPeak(PeakGraphFilters filters);
 
     }

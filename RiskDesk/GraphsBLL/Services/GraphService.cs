@@ -23,6 +23,43 @@ namespace RiskDesk.GraphsBLL.Services
             _connectionString = config.GetConnectionString("Develop");
             _xmlService = xmlService;
         }
+
+        public List<MonthlyDetailDBModel> GetMonthlyDetail(MonthlyDetailPositionGraphFilters filters)
+        {
+            var model = new MonthlyDetailPositionXML
+            {
+                BookOfBussinesString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
+                LineOfBussinesString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
+                CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
+                StartDate = filters.StartDate,
+                EndDate = filters.EndDate,
+
+            };
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
+                var data = conn.Query<MonthlyDetailDBModel>("[WebSite].[RiskMonthlyDetailsFilteredGetInfo]",
+                    commandType: CommandType.StoredProcedure).ToList();
+                return data;
+            }
+        }
+        public List<MonthlyPositionDBModel> GetMonthlyPosition(MonthlyDetailPositionGraphFilters filters)
+        {
+            var model = new MonthlyDetailPositionXML
+            {
+                BookOfBussinesString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
+                LineOfBussinesString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
+                CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
+                StartDate = filters.StartDate,
+                EndDate = filters.EndDate,
+
+            };
+            using (IDbConnection conn = new SqlConnection(_connectionString))
+            {
+                var data = conn.Query<MonthlyPositionDBModel>("[WebSite].[RiskMonthlyPositionFilteredGetInfo]",
+                    commandType: CommandType.StoredProcedure).ToList();
+                return data;
+            }
+        }
         public DealEntryDBModel GetDealEntry(DealGraphFilters filters)
         {
             var model = new DealXML
