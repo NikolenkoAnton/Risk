@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Risk Desk</title>
+    <title>Weather Scenario</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Blue Moon - Responsive Admin Dashboard" />
@@ -130,7 +130,11 @@
                 //$("#end").datepicker();
             });
                  $("#start").datepicker();
-     $("#end").datepicker();
+                 $("#start").datepicker('setDate','01/31/2019');
+
+                 $("#end").datepicker();
+                 $("#end").datepicker('setDate','01/31/2020');
+
 
                 AddHeader();
                 DrawHorizontalGraphsNav();

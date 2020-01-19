@@ -128,6 +128,11 @@
      filters.EndDate = end;
      const data1 = await postData(url, filters);
 
+     if (!data1.length) {
+         alertify.error("No values present in results");
+         $('#graph1').html('');
+         return;
+     }
 
      drawChartWeatherHourly(data1);
      alertify.success('Finished processing');

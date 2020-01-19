@@ -580,9 +580,9 @@ function AddHeader() {
         $('#ThirdColumn').append("<ul id='ThirdColumnFirstUL'></ul>");
 
 
-        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Summary</a></li>`);
-        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Monthly Cash Flow</a></li>`);
-        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Monthly Volumes</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Summary")'>Summary</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Monthly Cash Flow")'>Monthly Cash Flow</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Monthly Volumes")'>Monthly Volumes</a></li>`);
 
 
         const FourthColumn = "<li id='FourthColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Load Research</a></li>";
@@ -606,9 +606,9 @@ function AddHeader() {
 
         $('#FifthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/MonthlyDetail' >Monthly Detail</a></li>`);
         $('#FifthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/MonthlyPosition' >Monthly Position</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Hourly Position</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Wholesale Trades</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Wholesale Settlment Report</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Hourly Position")' >Hourly Position</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Wholesale Trades")' >Wholesale Trades</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert("Wholesale Settlment Report")' >Wholesale Settlment Report</a></li>`);
 
 
     } catch (e) {
@@ -703,4 +703,8 @@ function CalcPricing() {
     } catch (e) {
         HeaderDataErrorReport(e);
     }
+}
+
+function graphIsComingAlert(graphName) {
+    alertify.error(`${graphName} is coming!`);
 }

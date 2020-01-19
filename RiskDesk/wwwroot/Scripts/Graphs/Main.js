@@ -8,6 +8,7 @@ let currentGraphs = '';
 let positionBooks;
 const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'ercot', 'peak', ];
 
+
 let filtersKeys = {
     FilterMonth: "monthsID",
     FilterScenario: "scenariosID",
