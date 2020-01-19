@@ -29,8 +29,6 @@ const validateSelected = () => {
 
     //const selects = [...document.querySelectorAll('.dropDownTable')].map(el => el.value);
     const uniqueSelects = [...new Set(requiredSelect)];
-    console.log(uniqueSelects);
-    console.log(requiredSelect);
     if (requiredSelect.length !== uniqueSelects.length) {
         alertify.error('You select a field more than 1 times');
         return false;
@@ -148,7 +146,6 @@ const renderNewTbody = (data) => {
     changePageNumber();
 }
 const updateRows = () => {
-    console.log(changedRows)
     if (!changedRows.length) {
         alertify.error('No changes found!');
     }
@@ -220,7 +217,6 @@ const upsertDataToBaseTable = () => {
         FirstRowOfData: linedata,
         FieldArr: selects,
     }
-    console.log(data);
     const url = '/api/generic/UpsertDataToTable';
     fetch(url, {
         method: 'POST',

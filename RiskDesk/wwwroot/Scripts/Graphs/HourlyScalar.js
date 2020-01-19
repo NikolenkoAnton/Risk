@@ -183,77 +183,21 @@ const addTableRows = (values, data) => {
             r[25] = null;
         }
     }
-    console.log(rows);
-
-
-
-    //ubar 1 4 7 10
-    //sg 2 5 8 11
-
-    // for (let i = 1; i < 26; i++) {
-    //     const ubar = ubarRow[i] + ubarRow1[i] + ubarRow2[i];
-    //     const sigmau = sigmauRow[i] + sigmauRow1[i] + sigmauRow2[i];
-    //     totalUbar[i] = ubar;
-    //     totalsigmau[i] = sigmau;
-
-    // }
-
-
-
 
     data.addRows([
         ...rows
     ]);
     addStyleToTableCell(rows, data);
-    // data.addRows([
-    //     frstRow,
-    //     ubarRow,
-    //     sigmauRow,
-    //     sec,
-    //     ubarRow1,
-    //     sigmauRow1,
-    //     third,
-    //     ubarRow2,
-    //     sigmauRow2,
-    //     totalUbar,
-    //     totalsigmau
-    // ])
-
 
 }
-
-/*background-color: black;
-    color: white;
-    text-align: right;*/
 
 const addStyleToTableCell = (rows, data) => {
     for (let i = 0; i < rows.length; i++) {
         data.setProperties(i, 0, {
             style: 'background-color:black; color:white; text-align:center;'
         });
-        // data.setProperties(9, i, {
-        //     style: 'background-color:black; color:white; text-align:center;'
-        // });
-        // data.setProperties(10, i, {
-        //     style: 'background-color:black; color:white; text-align:center;'
-        // });
 
     }
-    // for (let i = 1; i < 11; i++) {
-    //     data.setProperties(i, 0, {
-    //         style: 'background-color:black; color:white; text-align:center;'
-    //     });
-    //     data.setProperties(i, 25, {
-    //         style: 'background-color:black; color:white; text-align:center;'
-    //     });
-    //     if (i !== 0 && i !== 3 && i !== 6) {
-    //         data.setProperties(i, 0, {
-    //             style: 'background-color:black; color:white; text-align:right;'
-    //         });
-    //     }
-    // }
-
-
 }
 const drawTable = arr => {
 
@@ -266,8 +210,6 @@ const drawTable = arr => {
     data.addColumn('number', 'Total');
 
     addTableRows(arr, data);
-    // addStyleToTableCell(data);
-    // data.setProperty(1, 0, "font-weight", "bold");
 
     const table = new google.visualization.Table(document.getElementById('table1'));
 

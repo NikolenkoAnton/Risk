@@ -85,6 +85,7 @@ function drawMonthlyPositionChart(rows) {
     var data = google.visualization.arrayToDataTable(rows);
     var options = {
 
+        height: 400,
         width: $(window).width() - 150,
         legend: {
             position: 'top',

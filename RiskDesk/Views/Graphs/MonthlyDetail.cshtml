@@ -13,8 +13,23 @@
     <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
     <meta name="author" content="Bootstrap Gallery" />
 
+    
+    <link href="@Url.Content("~/csss/alertify.core.css")" rel="stylesheet" id="toggleCSS">
+    <script type="text/javascript" src="@Url.Content("~/js/alertify.min.js")"></script>
+
     <link href="@Url.Content("~/csss/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/csss/wysi/bootstrap-wysihtml5.css")" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="@Url.Content("~/js/jquery-ui-v1.10.3.js")"></script>
+    <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
+
 
     <script src="@Url.Content("~/js/date-picker/date.js")"></script>
     <script src="@Url.Content("~/js/date-picker/daterangepicker.js")"></script>
@@ -30,27 +45,9 @@
     <link rel="stylesheet" href="@Url.Content("~/csss/color-picker/jquery.minicolors.css")">
 
     <link href="@Url.Content("~/fonts/font-awesome.min.css")" rel="stylesheet">
-
-    <!--Included Scripts-->
-    <!--AutoComplete Scripts-->
-    <!-- <link rel="stylesheet" href="@Url.Content("~/csss/AutoComplete.css")" /> -->
-    <!--Normal Scripts-->
-
-
-
-    <script src="@Url.Content("~/js/jquery.js")"></script>
-    <!-- <script src="@Url.Content("~/js/jquery.datatables.js")"></script>
-    <script src="@Url.Content("~/js/jquery.scrollUp.js")"></script>
-    AutoComplete New-- -->
     <!--Custom Java Script-->
     <script src="@Url.Content("~/Scripts/General.js")"></script>
-    <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/Customer.js")"></script> -->
-    <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/AutoComplete.js")"></script> -->
-    <!-- <script type="text/javascript" src="Scripts/DealEntry.js"></script> -->
-    <!-- <script type="text/javascript" src="Scripts/Facility.js"></script>--> 
-    <!-- <script type="text/javascript" src="@Url.Content("~/Scripts/GenericUploader.js")"></script> -->
-    <!--Links to Azure-->
-
+    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
@@ -71,7 +68,9 @@
              background-image:url("@Url.Content("~/Background.jpg")");  
               background:rgba(255,255,255,0.5);
         }
-        
+        .graphsContainer {
+            justify-content:space-around;
+        }
 
        
     </style>
@@ -262,34 +261,44 @@
             </div>
             <!-- Sub Nav End -->
             <!-- Dashboard Wrapper Start -->
-            <div class="dashboard-wrapper">
+        <div class="dashboard-wrapper">
                 <!-- Left Sidebar Start -->
                 <div >
                     <!-- Row Start -->
                     <div class="row">
 
-                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="dropdownWrapper">
                             <div class="filterTitle">Select Books of Bussines</div>
-                            <select id="Books" multiple="multiple" class="form-control dropdownFilter">
+                            <select id="Books" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
                         
-                         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                         <div class="dropdownWrapper">
                             <div class="filterTitle">Select Lines of Bussines</div>
-                            <select id="Lines" multiple="multiple" class="form-control dropdownFilter">
+                            <select id="Lines" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
 
-                        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <div class="dropdownWrapper">
                             <div class="filterTitle">Select Congestion Zones
                             </div>
-                            <select id="Zones" multiple="multiple" class="form-control dropdownFilter">
+                            <select id="Zones" multiple="multiple" class="form-control dropdownFilter" >
                             </select>
                         </div>
 
 
+                    </div>
 
+                    <div class="row">
+                            <div class="dropdownWrapper">
+                            <div class="filterTitle">Start Date: </div>
+                            <input type="text"  id="StartDate" >
+                            </div>
 
+                            <div class="dropdownWrapper">
+                            <div class="filterTitle">End Date: </div>
+                            <input type="text"  id="EndDate" >
+                            </div>
                     </div>
                     <div class="graphsContainer">
 
@@ -301,7 +310,6 @@
 
                     </div>
 
-                    <!-- Dashboard Wrapper End -->
 
 
                 </div>

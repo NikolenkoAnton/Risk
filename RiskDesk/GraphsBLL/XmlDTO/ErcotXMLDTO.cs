@@ -3,8 +3,8 @@ namespace RiskDesk.GraphsBLL.XmlDTO
 {
     public class MonthlyDetailPositionXML
     {
-        public string BookOfBussinesString { get; set; }
-        public string LineOfBussinesString { get; set; }
+        public string BookOfBusinessString { get; set; }
+        public string LineOfBusinessString { get; set; }
         public string CongestionZoneString { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

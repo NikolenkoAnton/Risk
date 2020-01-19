@@ -94,21 +94,13 @@ function processListOfDatas(arrObj) {
 async function changeDrops() {
     const filters = await genericChangeDropdowbs();
     if (!filters || !filters.monthID) {
-        console.log(filters);
         filters.monthsID = [12];
     }
     const data1 = await postData('/api/graphs/Ercot', filters);
     const graphRows1 = await procesGraphsDataBeforeDrawc(data1);
 
-    console.log(data1);
-    console.log(graphRows1);
     const data = await getGraphData();
     const graphRows = await processListOfDatas(data);
-    console.log('after');
-
-    console.log(data);
-    console.log(graphRows);
-    //drawStuffAnimate(graphRows);
     ArrayOfDataMonths = graphRows;
 }
 var f;
@@ -194,7 +186,6 @@ async function draw(rows) {
     f = animateDraw;
     const filters = await genericChangeDropdowbs();
     if (!filters || !filters.monthID) {
-        console.log(filters);
         filters.monthsID = [12];
     }
     const data1 = await postData('/api/graphs/Ercot', filters);

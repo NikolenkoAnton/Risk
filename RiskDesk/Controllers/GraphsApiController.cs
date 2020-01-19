@@ -76,10 +76,61 @@ namespace RiskDeskDev.Controllers
 
         [HttpPost]
         [Route("MonthlyDetail")]
-        public List<MonthlyDetailDBModel> MonthlyDetail(MonthlyDetailPositionGraphFilters filters)
+        public dynamic MonthlyDetail(MonthlyDetailPositionGraphFilters filters)
         {
-            var list = _graphService.GetMonthlyDetail(filters);
-            return list;
+
+            var list1 = new List<dynamic>();
+            var list2 = new List<dynamic>();
+            var list = _graphService.GetMonthlyDetail(filters).GroupBy(el => el.DeliveryDateString);
+
+            foreach (var el in list)
+            {
+                var rec = new
+                {
+                    date = el.Key,
+                    netUsage = el.Sum(x => x.NetUsage),
+                    grossUsage = el.Sum(x => x.GrossUsage),
+                    costTotal = el.Sum(x => x.CostTotal),
+                    c_Energy = el.Sum(x => x.C_Energy),
+                    c_Losses = el.Sum(x => x.C_Losses),
+                    c_Basis = el.Sum(x => x.C_Basis),
+                    c_VolRisk = el.Sum(x => x.C_VolRisk),
+                    c_ANC = el.Sum(x => x.C_ANC),
+                    c_ADMIN_MISC = el.Sum(x => x.C_ADMIN_MISC),
+                    c_CRR = el.Sum(x => x.C_CRR),
+                    revenue = el.Sum(x => x.Revenue),
+                    netRevenue = el.Sum(x => x.NetRevenue),
+                };
+                var rec1 = new
+                {
+                    date = el.Key,
+                    Books = el.Select(x => new { usage = x.NetRevenue, book = x.BookOfBusiness }).ToArray(),
+                };
+
+                list1.Add(rec);
+                list2.Add(rec1);
+            }
+
+
+            return new
+            {
+                graph = list2,
+                table = new {
+                dates = list1.Select(x => x.date),
+                netUsage = list1.Select(x => x.netUsage),
+                grossUsage = list1.Select(x => x.grossUsage),
+costTotal = list1.Select( x => x.costTotal),
+c_Energy = list1.Select( x => x.c_Energy),
+c_Losses = list1.Select( x => x.c_Losses ),
+c_Basis = list1.Select( x => x.c_Basis ),
+c_VolRisk = list1.Select( x => x.c_VolRisk ),
+c_ANC = list1.Select( x => x.c_ANC ),
+c_ADMIN_MISC = list1.Select( x => x.c_ADMIN_MISC),
+c_CRR = list1.Select( x => x.c_CRR),
+revenue = list1.Select( x => x.revenue),
+netRevenue = list1.Select( x => x.netRevenue),
+            }};
+
         }
 
 

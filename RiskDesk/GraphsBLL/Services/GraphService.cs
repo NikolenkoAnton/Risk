@@ -28,8 +28,8 @@ namespace RiskDesk.GraphsBLL.Services
         {
             var model = new MonthlyDetailPositionXML
             {
-                BookOfBussinesString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
-                LineOfBussinesString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
+                BookOfBusinessString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
+                LineOfBusinessString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
                 CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
                 StartDate = filters.StartDate,
                 EndDate = filters.EndDate,
@@ -38,26 +38,41 @@ namespace RiskDesk.GraphsBLL.Services
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
                 var data = conn.Query<MonthlyDetailDBModel>("[WebSite].[RiskMonthlyDetailsFilteredGetInfo]",
-                    commandType: CommandType.StoredProcedure).ToList();
+                   model, commandType: CommandType.StoredProcedure).ToList();
                 return data;
             }
         }
+
+        private DateTime ConvertDate(DateTime? Date, int days) =>
+        Date == null ?
+            DateTime.Today.AddDays(days) :
+         ((DateTime)Date).ToLocalTime();
         public IEnumerable<MonthlyPositionDBModel> GetMonthlyPosition(MonthlyDetailPositionGraphFilters filters)
         {
+            // var start = ConvertDate(filters.StartDate, -7);
+            // var end = ConvertDate(filters.EndDate, 7);
 
+            // if (DateTime.Compare(start, end) > 0)
+            // {
+            //     var temp = end;
+            //     end = start;
+            //     start = temp;
+            // }
             var model = new MonthlyDetailPositionXML
             {
-                BookOfBussinesString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
-                LineOfBussinesString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
+                BookOfBusinessString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
+                LineOfBusinessString = _xmlService.GetFilterXMLRows("LOB", filters.LinesOfBussinesID),
                 CongestionZoneString = _xmlService.GetFilterXMLRows("CZ", filters.ZonesID),
                 StartDate = filters.StartDate,
-                EndDate = filters.EndDate,
+                EndDate = filters.EndDate
 
             };
+
+
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
                 var data = conn.Query<MonthlyPositionDBModel>("[WebSite].[RiskMonthlyPositionFilteredGetInfo]",
-                    commandType: CommandType.StoredProcedure);
+                model, commandType: CommandType.StoredProcedure);
                 return data;
             }
         }

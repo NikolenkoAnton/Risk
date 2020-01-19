@@ -338,12 +338,26 @@ const getMonthlyPositionDetailFilters = () => {
 
     const ZonesID = getSelectedIndexesArray(zonesDrop);
     const LinesOfBussinesID = getSelectedIndexesArray(linesDrop)
-    const BooksID = getSelectedIndexesArray(booksDrop)
+    const BooksID = getSelectedIndexesArray(booksDrop);
+
+    if (!$('#StartDate').datepicker('getDate')) {
+        $('#StartDate').datepicker('setDate', '12/31/2019');
+
+    }
+    if (!$('#EndDate').datepicker('getDate')) {
+        $('#EndDate').datepicker('setDate', '12/31/2020')
+    }
+
+    const StartDate = $('#StartDate').datepicker('getDate');
+    const EndDate = $('#EndDate').datepicker('getDate');
 
     return {
         ZonesID,
         BooksID,
-        LinesOfBussinesID
+        LinesOfBussinesID,
+        StartDate,
+        EndDate
+
     }
 }
 // // } public string[] ZonesID { get; set; }
@@ -386,6 +400,15 @@ const fillMonthlyPositionDetailDropdowns = async (changeFunction) => {
     $(booksDrop).change(changeFunction);
     $(linesDrop).change(changeFunction);
     $(zonesDrop).change(changeFunction);
+    $('#StartDate').datepicker({
+        onSelect: changeFunction,
+    });
+    $('#StartDate').datepicker('setDate', '12/31/2019');
+
+    $('#EndDate').datepicker({
+        onSelect: changeFunction,
+    });
+    $('#EndDate').datepicker('setDate', '12/31/2020')
 
 
 
