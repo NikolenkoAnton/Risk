@@ -3,7 +3,7 @@ namespace RiskDesk.GraphsBLL.DTO
 {
     public class MonthlyPositionDBModel
     {
-        public string BookOfBussines { get; set; }
+        public string BookOfBusiness { get; set; }
         public DateTime? deliverydate { get; set; }
         public string DeliveryDateString { get; set; }
         public double GrossUsageMWH { get; set; }

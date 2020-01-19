@@ -5,6 +5,7 @@ let FilterMonth = ['0'];
 let FilterWholeSales = ['0'];
 let FilterCounterparty = ['0'];
 let currentGraphs = '';
+let positionBooks;
 const graphsNames = ['monthly', 'hourlyscalar', 'risk', 'weatherhourly', 'scatterplot', 'ercot', 'peak', ];
 
 let filtersKeys = {
@@ -325,31 +326,70 @@ async function DrawHorizontalGraphsNav() {
     wrapper.innerHTML = html;
     SetCurrentGraph();
 }
+const getSelectedIndexesArray = (dropdown) => {
+    const options = [...dropdown.selectedOptions].map(opt => opt.value);
+    return options;
+}
+const getMonthlyPositionDetailFilters = () => {
+    const booksDrop = document.getElementById('Books');
+    const linesDrop = document.getElementById('Lines');
+    const zonesDrop = document.getElementById('Zones');
 
 
-/*
-  <div id="navCont">
-                    <div>Graphs</div>
-                     <div><a href="aggregates">  Aggregates</a></div>
-                    <div id="selected"><a href="monthly">  Standart Graphs</a></div>
+    const ZonesID = getSelectedIndexesArray(zonesDrop);
+    const LinesOfBussinesID = getSelectedIndexesArray(linesDrop)
+    const BooksID = getSelectedIndexesArray(booksDrop)
 
-                     <div><a href="WeatherMonthly">  Weather Monthly</a></div>
+    return {
+        ZonesID,
+        BooksID,
+        LinesOfBussinesID
+    }
+}
+// // } public string[] ZonesID { get; set; }
+// public string[] LinesOfBussinesID { get; set; }
+// public string[] BooksID { get; set; }
+// public DateTime? StartDate { get; set; }
+// public DateTime? EndDate { get; set; }
+const fillMonthlyPositionDetailDropdowns = async (changeFunction) => {
+    const books = await getRequestData('/api/graphs/Books');
+    const lines = await getRequestData('/api/graphs/Lines');
+    const zones = await getCongestionZones();
 
-                     <div><a href="WeatherHourly">  Weather Hourly</a></div>
-                    <div><a href="WeatherHourly">  Weather Scenario</a></div>
+    positionBooks = books;
+    const booksDrop = document.getElementById('Books');
+    const linesDrop = document.getElementById('Lines');
+    const zonesDrop = document.getElementById('Zones');
 
-                     <div><a href="HourlyScalar">  Hourly Scalar</a></div>
-                    <div><a href="HourlyScalar">  Hourly Shapes</a></div>
-                      <div><a href="Risk">  Risk</a></div>
-                    <div><a href="Risk">  Volumetric Risk</a></div>
+    for (const book of books) {
+        booksDrop.innerHTML += getSelectOption(book.book, book.id);
+    }
 
-                    <div><a href="Peak">  Peak Model</a></div>
-                    <div><a href="Mape">  MAPE</a></div>
-                    <div><a href="ScatterPlot">  ScatterPlot</a></div>
+    for (const line of lines) {
+        linesDrop.innerHTML += getSelectOption(line.line, line.id);
+    }
 
-                     <div><a href="Deal">  Deal Entry Chart</a></div>
-                </div>
-*/
+    for (const zone of zones) {
+        zonesDrop.innerHTML += getSelectOption(zone.zone, zone.id);
+    }
+
+    $(booksDrop).multiselect({
+        selectAll: true,
+    })
+
+    $(linesDrop).multiselect({
+        selectAll: true,
+    })
+    $(zonesDrop).multiselect({
+        selectAll: true,
+    })
+    $(booksDrop).change(changeFunction);
+    $(linesDrop).change(changeFunction);
+    $(zonesDrop).change(changeFunction);
+
+
+
+}
 
 
 async function postData(url = '', data = {}) {

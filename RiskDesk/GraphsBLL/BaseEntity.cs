@@ -103,4 +103,25 @@ namespace RiskDesk.GraphsBLL
             return base.GetEntityId(CounterPartyID);
         }
     }
+    public class Books : BaseEntity
+    {
+        public override string Procedure { get; set; } = "[WebSite].[BookOfBusinessGetInfo]";
+
+        public string BookOfBusinessID { get; set; }
+        public string BookOfBusiness { get; set; }
+        public override string EntityId()
+        {
+            return base.GetEntityId(BookOfBusinessID);
+        }
+    }
+    public class Lines : BaseEntity
+    {
+        public override string Procedure { get; set; } = "[WebSite].[LineOfBusinessGetInfo]";
+        public string LineOfBusinessID { get; set; }
+        public string LineOfBusiness { get; set; }
+        public override string EntityId()
+        {
+            return base.GetEntityId(LineOfBusinessID);
+        }
+    }
 }

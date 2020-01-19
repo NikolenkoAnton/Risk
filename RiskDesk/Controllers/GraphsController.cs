@@ -8,6 +8,15 @@ namespace RiskDeskDev.Controllers
 {
     public class GraphsController : Controller
     {
+        public IActionResult MonthlyDetail()
+        {
+            return View();
+        }
+        public IActionResult MonthlyPosition()
+        {
+            return View();
+
+        }
         public IActionResult Ercot()
         {
             return View();

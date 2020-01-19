@@ -85,10 +85,30 @@ namespace RiskDeskDev.Controllers
 
         [HttpPost]
         [Route("MonthlyPosition")]
-        public List<MonthlyPositionDBModel> MonthlyPosition(MonthlyDetailPositionGraphFilters filters)
+        public dynamic MonthlyPosition(MonthlyDetailPositionGraphFilters filters)
         {
-            var list = _graphService.GetMonthlyPosition(filters);
-            return list;
+            var list = _graphService.GetMonthlyPosition(filters)
+                            .GroupBy(el => el.DeliveryDateString)
+                            ;
+            List<dynamic> l = new List<dynamic>();
+
+            foreach (var grp in list)
+            {
+                l.Add(
+                    new
+                    {
+                        Book = grp.Key,
+                        Rows = grp.ToList(),
+                    }
+                );
+            }
+            return l;
+
+            // var keys = list.Select(gr => gr.Key);
+            // return new
+            // {
+
+            // };
         }
         [HttpGet]
         [Route("Deal")]
@@ -180,6 +200,33 @@ namespace RiskDeskDev.Controllers
 
         #region  Dropdowns
         [HttpGet]
+        [Route("Lines")]
+        public List<LinesDTO> GetLinesOfBussines()
+        {
+            var lines = _dropService.GetData<Lines>(new Lines())
+                                .Select(b => new LinesDTO
+                                {
+                                    Line = b.LineOfBusiness,
+                                    Id = b.EntityId()
+                                })
+                                .ToList();
+            return lines;
+        }
+
+        [HttpGet]
+        [Route("Books")]
+        public List<BooksDTO> GetBooksOfBussines()
+        {
+            var books = _dropService.GetData<Books>(new Books())
+                                .Select(b => new BooksDTO
+                                {
+                                    Book = b.BookOfBusiness,
+                                    Id = b.EntityId()
+                                })
+                                .ToList();
+            return books;
+        }
+        [HttpGet]
         [Route("CongestionZones")]
         public List<CongestionZoneDTO> GetCongestionZones()
         {
@@ -242,6 +289,9 @@ namespace RiskDeskDev.Controllers
 
             return scenarios;
         }
+
+
+
         #endregion
     }
 }

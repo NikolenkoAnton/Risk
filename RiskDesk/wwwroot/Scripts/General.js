@@ -580,9 +580,9 @@ function AddHeader() {
         $('#ThirdColumn').append("<ul id='ThirdColumnFirstUL'></ul>");
 
 
-        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Summary</a></li>`);
-        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Monthly Cash Flow</a></li>`);
-        $('#ThirdColumnFirstUL').append(`<li><a href='#'>Monthly Volumes</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Summary</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Monthly Cash Flow</a></li>`);
+        $('#ThirdColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()'>Monthly Volumes</a></li>`);
 
 
         const FourthColumn = "<li id='FourthColumn'><a href='#'><i class=\"fa fa-bar-chart-o\"></i>Load Research</a></li>";
@@ -604,17 +604,12 @@ function AddHeader() {
         $('#FifthColumn').append("<ul id='FifthColumnFirstUL'></ul>");
 
 
-        $('#FifthColumnFirstUL').append(`<li><a href='#'>Monthly Detail</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#'>Monthly Position</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#'>Hourly Position</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#'>Wholesale Trades</a></li>`);
-        $('#FifthColumnFirstUL').append(`<li><a href='#'>Wholesale Settlment Report</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/MonthlyDetail' >Monthly Detail</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='${window.location.origin}/graphs/MonthlyPosition' >Monthly Position</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Hourly Position</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Wholesale Trades</a></li>`);
+        $('#FifthColumnFirstUL').append(`<li><a href='#' onclick='graphIsComingAlert()' >Wholesale Settlment Report</a></li>`);
 
-        // RowString = "<ul id='ThirdColumnFirstUL'></ul>";
-        // $('#ThirdColumn').append(RowString);
-
-        // const container = $('#ThirdColumnFirstUL');
-        // AddGraphsHeader(container);
 
     } catch (e) {
         HeaderDataErrorReport(e);

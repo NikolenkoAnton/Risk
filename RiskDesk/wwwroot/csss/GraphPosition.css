@@ -1,0 +1,12 @@
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 10px;
+}
+
+.dropdownWrapper {
+    position: relative;
+    width: 180px;
+    flex-shrink: 1;
+}

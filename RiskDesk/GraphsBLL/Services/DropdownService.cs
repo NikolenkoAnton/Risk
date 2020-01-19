@@ -26,7 +26,7 @@ namespace RiskDesk.GraphsBLL.Services
 
                 var data = conn.Query<T>(proc,
                     commandType: CommandType.StoredProcedure).AsList();
-                return data;
+                return data;    
             }
 
         }

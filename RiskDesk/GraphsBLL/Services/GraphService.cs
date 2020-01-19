@@ -42,8 +42,9 @@ namespace RiskDesk.GraphsBLL.Services
                 return data;
             }
         }
-        public List<MonthlyPositionDBModel> GetMonthlyPosition(MonthlyDetailPositionGraphFilters filters)
+        public IEnumerable<MonthlyPositionDBModel> GetMonthlyPosition(MonthlyDetailPositionGraphFilters filters)
         {
+
             var model = new MonthlyDetailPositionXML
             {
                 BookOfBussinesString = _xmlService.GetFilterXMLRows("BOB", filters.BooksID),
@@ -56,7 +57,7 @@ namespace RiskDesk.GraphsBLL.Services
             using (IDbConnection conn = new SqlConnection(_connectionString))
             {
                 var data = conn.Query<MonthlyPositionDBModel>("[WebSite].[RiskMonthlyPositionFilteredGetInfo]",
-                    commandType: CommandType.StoredProcedure).ToList();
+                    commandType: CommandType.StoredProcedure);
                 return data;
             }
         }
